@@ -13,14 +13,13 @@ const app = express();
 app.use(cors());
 
 app.set('view engine', 'pug');
-app.set('views', path.join(process.cwd(), 'views'));
+app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.json());
 
 app.use(morgan('dev'));
 
-app.get('/', (req, res) => res.json({ message: 'UP'}));
-app.use('/api', routes);
+app.use('/', routes);
 
 app.use(errorHandler);
 
