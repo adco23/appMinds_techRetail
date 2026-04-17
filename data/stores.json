@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "name": "TecnoShop",
+    "status": "active",
+    "createdAt": "2026-04-01T10:00:00Z",
+    "commerceId": 1
+  },
+  {
+    "id": 2,
+    "name": "Moda Urbana",
+    "status": "active",
+    "createdAt": "2026-04-05T15:30:00Z",
+    "commerceId": 2
+  },
+  {
+    "id": 3,
+    "name": "Hogar & Deco",
+    "status": "inactive",
+    "createdAt": "2026-04-10T12:15:00Z",
+    "commerceId": 3
+  }
+]
