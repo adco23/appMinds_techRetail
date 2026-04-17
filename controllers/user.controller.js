@@ -1,6 +1,6 @@
-import * as userService from "../services/user.service.js";
+const userService = require('../services/user.service.js');
 
-export const getUsers = (req, res, next) => {
+const getUsers = (req, res, next) => {
   try {
     const users = userService.getAllUsers();
     res.json(users);
@@ -9,11 +9,16 @@ export const getUsers = (req, res, next) => {
   }
 };
 
-export const createUser = (req, res, next) => {
+const createUser = (req, res, next) => {
   try {
     const newUser = userService.createUser(req.body);
     res.status(201).json(newUser);
   } catch (error) {
     next(error);
   }
+};
+
+module.exports = {
+  getUsers,
+  createUser,
 };

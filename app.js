@@ -1,18 +1,27 @@
-import express from "express";
-import morgan from "morgan";
-import cors from "cors";
-import dotenv from "dotenv";
-import routes from "./routes/index.js";
+const express = require('express');
+const morgan = require('morgan');
+const cors = require('cors');
+const dotenv = require('dotenv');
+const path = require('path');
+const routes = require('./routes/index.js');
+const { errorHandler } = require('./middlewares/error.middleware.js');
 
 dotenv.config();
 
 const app = express();
 
 app.use(cors());
+
+app.set('view engine', 'pug');
+app.set('views', path.join(process.cwd(), 'views'));
+
 app.use(express.json());
 
-app.use(morgan("dev"));
+app.use(morgan('dev'));
 
-app.use("/api", routes);
+app.get('/', (req, res) => res.json({ message: 'UP'}));
+app.use('/api', routes);
 
-export default app;
+app.use(errorHandler);
+
+module.exports = app;

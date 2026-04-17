@@ -10,10 +10,10 @@ El objetivo de esta instancia es implementar la estructura base del sistema, inc
 
 ## Tecnologías utilizadas
 
-* Node.js
-* Express
-* Nodemon (entorno de desarrollo)
-* Persistencia en archivos JSON
+- Node.js
+- Express
+- Nodemon (entorno de desarrollo)
+- Persistencia en archivos JSON
 
 ---
 
@@ -87,33 +87,33 @@ http://localhost:3000
 
 ### Stores
 
-* GET `/api/stores`
-* POST `/api/stores`
+- GET `/api/stores`
+- POST `/api/stores`
 
 ### Transactions
 
-* GET `/api/transactions`
-* POST `/api/transactions`
+- GET `/api/transactions`
+- POST `/api/transactions`
 
 ---
 
 ## Alcance de esta entrega
 
-* Estructura base del backend ✔
-* Implementación de módulos iniciales ✔
-* Persistencia en archivos JSON ✔
-* Separación por capas (routes, controllers, storage) ✔
-* Sin lógica de negocio ✔
+- Estructura base del backend ✔
+- Implementación de módulos iniciales ✔
+- Persistencia en archivos JSON ✔
+- Separación por capas (routes, controllers, storage) ✔
+- Sin lógica de negocio ✔
 
 ---
 
 ## Próximas etapas
 
-* Implementación de lógica de negocio
-* Validaciones de datos
-* Integración con base de datos (MongoDB)
-* Simulación de pagos y logística
-* Generación de reportes y estadísticas
+- Implementación de lógica de negocio
+- Validaciones de datos
+- Integración con base de datos (MongoDB)
+- Simulación de pagos y logística
+- Generación de reportes y estadísticas
 
 ---
 

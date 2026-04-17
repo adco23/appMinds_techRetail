@@ -1,10 +1,13 @@
-import { Router } from "express";
-import userRoutes from "./user.routes.js";
+const { Router } = require('express');
+const userRoutes = require('./user.routes.js');
+const viewRoutes = require('./views.routes.js');
 
 const router = Router();
 
-router.get("/", (req, res) => res.status(200).json({ message: "Bienvenido a la API"}))
+// API
+router.use('/users', userRoutes);
 
-router.use("/users", userRoutes);
+// Vistas
+router.get('/', viewRoutes);
 
-export default router;
+module.exports = router;
