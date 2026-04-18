@@ -1,0 +1,34 @@
+extends ../layouts/main
+
+block content
+  h1.title Alta de Usuario
+
+  form(method="POST", action="/api/users")
+    .field
+      label.label Nombre
+      .control
+        input.input(type="text", name="name", placeholder="Ingrese nombre", required)
+
+    .field
+      label.label Email
+      .control
+        input.input(type="email", name="email", placeholder="Ingrese email", required)
+
+    .field
+      label.label Contraseña
+      .control
+        input.input(type="password", name="password", placeholder="Ingrese contraseña", required)
+
+    .field
+      label.label Rol
+      .control
+        .select
+          select(name="role")
+            option(value="user") Usuario
+            option(value="admin") Administrador
+
+    .field.is-grouped
+      .control
+        button.button.is-primary(type="submit") Guardar
+      .control
+        a.button.is-light(href="/users") Cancelar

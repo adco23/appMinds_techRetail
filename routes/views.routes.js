@@ -10,4 +10,8 @@ router.get('/transactions', (req, res) => {
   res.render('transactions/index');
 });
 
+router.get('/users', (req, res) => {
+  res.render('users/index');
+});
+
 module.exports = router;
