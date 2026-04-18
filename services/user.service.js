@@ -7,7 +7,7 @@ const getAllUsers = () => {
   return users;
 };
 
-const createUser = (data) => {
+const createUser = data => {
   if (!data.name) {
     throw new Error('El nombre es obligatorio');
   }
