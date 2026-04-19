@@ -1,26 +1,23 @@
 const express = require('express');
-const morgan = require('morgan');
-const cors = require('cors');
-const dotenv = require('dotenv');
 const path = require('path');
-const routes = require('./routes/index.js');
-const { errorHandler } = require('./middlewares/error.middleware.js');
-
-dotenv.config();
+const userRoutes = require('./routes/user.routes');
 
 const app = express();
-
-app.use(cors());
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(morgan('dev'));
+app.use('/api/user', userRoutes);
 
-app.use('/', routes);
+app.get('/', (req, res) => {
+    res.send('El servidor está vivo. Probá entrar a /api/user/registro');
+});
 
-app.use(errorHandler);
-
-module.exports = app;
+const PORT = 3000;
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+});

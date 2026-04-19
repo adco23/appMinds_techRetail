@@ -1,0 +1,33 @@
+extends ../layouts/main
+
+block content
+  h1.title Listado de Sale Details
+
+  table.table.is-striped.is-fullwidth
+    thead
+      tr
+        th ID
+        th Venta ID
+        th Prod. ID
+        th Cant.
+        th Precio U.
+        th Subtotal
+        th Acciones
+    tbody
+      each d in details
+        tr
+          td= d.id
+          td= d.ventaId
+          td= d.productoId
+          td= d.cantidad
+          td $#{d.precioUnitario}
+          td.has-text-weight-bold $#{d.subtotal}
+          td
+            .buttons
+              a.button.is-small.is-info(href=`/api/saleDetail/${d.id}`) Ver
+              a.button.is-small.is-warning(href=`/api/saleDetail/editar/${d.id}`) Editar
+              form(method="POST", action=`/api/saleDetail/borrar/${d.id}`, style="display:inline")
+                button.button.is-small.is-danger(type="submit") Eliminar
+
+  hr
+  a.button.is-primary(href="/api/saleDetail/registro") Nuevo Detalle

@@ -3,11 +3,16 @@ extends ../layouts/main
 block content
   h1.title Alta de Usuario
 
-  form(method="POST", action="/api/users")
+  form(method="POST", action="/api/user/registro")
     .field
       label.label Nombre
       .control
-        input.input(type="text", name="name", placeholder="Ingrese nombre", required)
+        input.input(type="text", name="nombre", placeholder="Ingrese nombre", required)
+
+    .field
+      label.label Apellido
+      .control
+        input.input(type="text", name="apellido", placeholder="Ingrese apellido", required)
 
     .field
       label.label Email
@@ -23,12 +28,17 @@ block content
       label.label Rol
       .control
         .select
-          select(name="role")
+          select(name="rol")
             option(value="user") Usuario
             option(value="admin") Administrador
+
+    .field
+      label.label ID de Comercio
+      .control
+        input.input(type="number", name="comercioId", placeholder="ID de comercio", required)
 
     .field.is-grouped
       .control
         button.button.is-primary(type="submit") Guardar
       .control
-        a.button.is-light(href="/users") Cancelar
+        a.button.is-light(href="/api/user/registro") Cancelar

@@ -1,31 +1,33 @@
 const fileHandler = require('../utils/fileHandler.js');
+const Usuario = require('../models/User.js');
 
-let users = fileHandler.readFile('users.json');
+let users = fileHandler.readFile('users.json') || [];
 
 const getAllUsers = () => {
   return users;
 };
 
 const createUser = data => {
-  if (!data.name) {
-    throw new Error('El nombre es obligatorio');
+  if (!data.nombre || !data.email || !data.password) {
+    throw new Error('Nombre, email y contraseña son obligatorios');
   }
 
-  if (!data.email) {
-    throw new Error('El email es obligatorio');
-  }
+  const nuevoUsuario = new Usuario(
+    users.length > 0 ? users[users.length - 1].id + 1 : 1,
+    data.nombre,
+    data.apellido,
+    data.email,
+    data.password,
+    data.rol || 'user',
+    data.comercioId || null,
+    'activo'
+  );
 
-  const newUser = {
-    id: users.length + 1,
-    name: data.name,
-    email: data.email,
-    role: data.role || 'user',
-    storeId: data.storeId || null,
-  };
+    users.push(nuevoUsuario);
 
-  users.push(newUser);
-  fileHandler.writeFile('users.json', users);
-  return newUser;
+    fileHandler.writeFile('users.json', users);
+
+  return nuevoUsuario;
 };
 
 module.exports = {

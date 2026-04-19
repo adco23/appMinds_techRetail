@@ -1,0 +1,27 @@
+extends ../layouts/main
+
+block content
+  h1.title Detalle del Usuario
+
+  .box
+    p
+      strong ID:
+      | #{user.id}
+    p
+      strong Nombre completo:
+      | #{user.nombre} #{user.apellido}
+    p
+      strong Email:
+      | #{user.email}
+    p
+      strong Rol:
+      | #{user.rol}
+    p
+      strong Comercio ID:
+      | #{user.comercioId}
+    p
+      strong Estado:
+      span.tag.is-success #{user.estado}
+
+  hr
+  a.button.is-light(href="/api/user") Volver al listado

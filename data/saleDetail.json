@@ -1,0 +1,10 @@
+[
+  {
+    "id": 1,
+    "cantidad": 2,
+    "precioUnitario": 500.00,
+    "subtotal": 1000.00,
+    "ventaId": 5001,
+    "productoId": 202
+  }
+]

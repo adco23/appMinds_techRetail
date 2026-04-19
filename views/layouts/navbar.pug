@@ -1,19 +1,15 @@
-nav.navbar.is-primary(role="navigation", aria-label="main navigation")
-  .navbar-brand
-    a.navbar-item(href="/")
-      strong TechRetail Solutions
+nav.navbar.is-light(role="navigation" aria-label="main navigation")
+  .container
+    .navbar-brand
+      a.navbar-item.has-text-weight-bold(href="/api/user") 🚀 TechRetail
 
-    a.navbar-burger(role="button", aria-label="menu", aria-expanded="false")
-      span(aria-hidden="true")
-      span(aria-hidden="true")
-      span(aria-hidden="true")
+    .navbar-menu.is-active
+      .navbar-start
+        a.navbar-item(href="/api/user") 👥 Listado
+        a.navbar-item(href="/api/user/registro") ➕ Nuevo Usuario
 
-  .navbar-menu
-    .navbar-start
-      a.navbar-item(href="/users") Usuarios
-      a.navbar-item(href="/stores") Tiendas
-
-    .navbar-end
-      .navbar-item
-        .buttons
-          a.button.is-light(href="#") Log in
+//      .navbar-end
+        .navbar-item
+          .tags.has-addons
+            span.tag.is-dark Sistema
+            span.tag.is-info v1.0

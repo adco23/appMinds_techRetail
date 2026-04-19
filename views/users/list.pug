@@ -1,0 +1,35 @@
+extends ../layouts/main
+
+block content
+  h1.title Usuarios Registrados
+
+  table.table.is-striped.is-fullwidth
+    thead
+      tr
+        th ID
+        th Nombre Completo
+        th Email
+        th Estado
+        th Acciones
+    tbody
+      each u in users
+        tr
+          td= u.id
+          td #{u.nombre} #{u.apellido}
+          td= u.email
+          td
+            span.tag(class=u.estado === 'activo' ? 'is-success' : 'is-danger')= u.estado
+          td
+            .buttons
+              a.button.is-small.is-info(href=`/api/user/${u.id}`) Ver
+              a.button.is-small.is-warning(href=`/api/user/editar/${u.id}`) Editar
+
+              if u.estado === 'activo'
+                form(method="POST", action=`/api/user/borrar/${u.id}`, style="display:inline")
+                  button.button.is-small.is-danger(type="submit") Desactivar
+              else
+                form(method="POST", action=`/api/user/activar/${u.id}`, style="display:inline")
+                  button.button.is-small.is-success(type="submit") Activar
+
+  hr
+  a.button.is-primary(href="/api/user/registro") Registrar Nuevo Usuario

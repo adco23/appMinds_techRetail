@@ -8,6 +8,6 @@ const router = Router();
 router.use('/', viewRoutes);
 
 // API
-router.use('/api/users', userRoutes);
+router.use('/api/user', userRoutes);
 
 module.exports = router;

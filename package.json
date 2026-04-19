@@ -4,8 +4,8 @@
   "description": "Este proyecto corresponde al desarrollo de un sistema backend para una plataforma de e-commerce autogestionada.",
   "main": "app.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js",
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "format": "prettier --write ."
   },
   "repository": {
