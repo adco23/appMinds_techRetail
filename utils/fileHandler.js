@@ -11,7 +11,7 @@ module.exports = {
       return [];
     }
   },
-  // writeFile: (file, data) => {
-  //   await fs.writeFile(path, JSON.stringify(data, null, 2));
-  // },
+  writeFile: (file, data) => {
+    fs.writeFileSync(path.join(__dirname, '..', 'data', file), JSON.stringify(data, null, 2));
+  },
 };

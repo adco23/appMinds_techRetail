@@ -24,6 +24,7 @@ const createUser = data => {
   };
 
   users.push(newUser);
+  fileHandler.writeFile('users.json', users);
   return newUser;
 };
 
