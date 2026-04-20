@@ -1,0 +1,34 @@
+.box
+  h2.subtitle Alta de Comercio
+
+  form(method="POST", action="/api/commerces")
+    .field
+      label.label Razón Social
+      .control
+        input.input(type="text", name="name", placeholder="Ingrese razón social", required)
+
+    .field
+      label.label CUIT
+      .control
+        input.input(type="number", name="cuit", placeholder="Ingrese CUIT", required)
+
+    .field
+      label.label Email
+      .control
+        input.input(type="email", name="email", placeholder="Ingrese email", required)
+
+    .field
+      label.label Teléfono
+      .control
+        input.input(type="tel", name="phone", placeholder="Ingrese teléfono")
+
+    .field
+      label.label Dirección
+      .control
+        input.input(type="text", name="address", placeholder="Ingrese dirección")
+
+    .field.is-grouped
+      .control
+        button.button.is-primary(type="submit") Guardar
+      .control
+        a.button.is-light(href="/commerces") Cancelar

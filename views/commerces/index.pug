@@ -1,0 +1,15 @@
+extends ../layouts/main
+
+block content
+  h1.title Gestión de Comercios
+
+  .buttons
+    a.button(href="/commerces?view=form") Agregar Nuevo
+    a.button(href="/commerces?view=list") Listado
+
+  if view === 'form'
+    include create
+  else if view === 'list'
+    include list
+
+

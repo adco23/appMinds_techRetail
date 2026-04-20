@@ -1,5 +1,15 @@
 const service = require('../services/commerce.service.js');
 
+function validate(validations, res) {
+  for (let v of validations) {
+    if (v.condition) {
+      res.status(400).json({ error: v.message });
+      return false;
+    }
+  }
+  return true;
+}
+
 const getCommerce = (req, res, next) => {
   try {
     const commerces = service.getCommerce();
@@ -20,19 +30,14 @@ const createCommerce = (req, res, next) => {
       { condition: service.existsByCuit(cuit), message: 'El CUIT ya existe.' }
     ];
 
-    validate(validations, res);
+    if (!validate(validations, res)) return;
 
-    const newCommerce = service.createCommerce({ name, cuit, email, phone, address });
-    res.status(201).json(newCommerce);
+    const statusCreated = service.createCommerce({ name, cuit, email, phone, address });
+
+    if (!statusCreated) return res.status(500).json({ error: 'Error al crear el comercio.' });
+    res.status(201).json({ message: 'Comercio creado exitosamente.' });
   } catch (error) {
     next(error);
-  }
-}
-
-
-function validate(validatins, res) {
-  for (const v of validations) {
-    if (condition) return res.status(400).json({ error: v.message });
   }
 }
 

@@ -18,12 +18,11 @@ const existsByCuit = cuit => {
 
 const createCommerce = ({ name, cuit, email, phone, address }) => {
 
-
   let newCommerce = new Commerce(commerces.length + 1, name, cuit, email, phone, address);
 
   fileHandler.writeFile(JSON_FILE, [...commerces, newCommerce]);
 
-  return commerces;
+  return true;
 };
 
-module.exports = { getCommerce, createCommerce };
+module.exports = { getCommerce, createCommerce, existsByCuit, findByCuit };
