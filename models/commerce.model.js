@@ -1,5 +1,5 @@
 class Commerce {
-  constructor(id, name, cuit, email, phone, address) {
+  constructor(id, name, cuit, email, phone = null, address = null) {
     this.id = id;
     this.name = name;
     this.cuit = cuit;
@@ -26,3 +26,5 @@ class Commerce {
     this.address = data.address || this.address;
   }
 }
+
+module.exports = Commerce;

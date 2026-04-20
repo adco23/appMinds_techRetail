@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "name": "slkdfj",
+    "cuit": 4451,
+    "email": "lksfj",
+    "phone": null,
+    "address": null,
+    "status": 0,
+    "createdAt": "2026-04-20T02:26:28.442Z"
+  },
+  {
+    "id": 2,
+    "name": "slkdfj",
+    "cuit": 4451,
+    "email": "lksfj",
+    "phone": null,
+    "address": null,
+    "status": 0,
+    "createdAt": "2026-04-20T02:29:17.989Z"
+  }
+]
