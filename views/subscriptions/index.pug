@@ -4,30 +4,75 @@ block content
   h1.title Suscripciones
   h2.subtitle Lista de planes activos
 
+  // Botón para nueva suscripción
+  .level
+    .level-left
+    .level-right
+      a.button.is-primary.is-rounded(href="/subscriptions/new")
+        span.icon
+          i.fas.plus
+        span Nueva Suscripción
+
+  // Sección de Acciones Rápidas por ID
+  .box
+    h3.title.is-5 Buscar por ID para Acciones Rápidas
+    .field.has-addons
+      .control.is-expanded
+        input#subIdInput.input(type="number" placeholder="Ingrese el ID de la suscripción:")
+      .control
+        button.button.is-info(onclick="handleAction('renew')")
+          span.icon
+            i.fas.fa-sync
+          span Renovar
+      .control
+        button.button.is-danger(onclick="handleAction('cancel')")
+          span.icon
+            i.fas.fa-ban
+          span Cancelar
+
+  script.
+    function handleAction(actionType) {
+      const id = document.getElementById('subIdInput').value;
+      if (!id) {
+        alert('Por favor, ingrese un ID válido');
+        return;
+      }
+      // Redirige a la ruta correspondiente que definiremos en el servidor
+      window.location.href = `/subscriptions/${actionType}/${id}`;
+    }
+
+
+
   .columns.is-multiline
     each sub in subscriptions
       .column.is-4
         .card
           header.card-header
-            p.card-header-title Plan: #{sub.detail}
+            p.card-header-title Plan: #{sub.detail} (ID: #{sub.id})
           .card-content
             .content
               p
-                strong Store ID:
+                strong Tienda ID:
                 | #{sub.storeId}
               p
-                strong Amount:
+                strong Monto:
                 span.tag.is-success.is-light $#{sub.amount}
               p
                 strong Status:
                 span.tag.is-info #{sub.status}
               p.is-size-7
-                | Start: #{sub.startDate}
+                | Inicio: #{sub.startDate}
                 br
-                | Expires: #{sub.expDate}
+                | Venicimiento: #{sub.expDate}
           footer.card-footer
-            a.card-footer-item(href="#") Edit
-            a.card-footer-item(href="#") Cancel
+            // Botón Renovar
+            a.card-footer-item.has-text-info(href=`/subscriptions/renew/${sub.id}`)
+              strong Renovar
+            // Botón Cancelar
+            a.card-footer-item.has-text-danger(href=`/subscriptions/cancel/${sub.id}`)
+              strong Cancelar
     else
       .notification.is-warning
-        | No subscriptions registered yet.
+        | No hay subscripciones registradas.
+
+

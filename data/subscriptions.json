@@ -6,7 +6,7 @@
     "startDate": "2026-04-01",
     "deliveryAddress": "Av. Corrientes 1234, CABA",
     "expDate": "2026-05-01",
-    "status": "active",
+    "status": "cancelled",
     "storeId": 101
   },
   {
@@ -15,8 +15,13 @@
     "amount": 2500,
     "startDate": "2026-04-15",
     "deliveryAddress": "Calle 123, Rosario",
-    "expDate": "2026-05-15",
-    "status": "pending",
+    "expDate": "2026-07-14",
+    "status": "active",
     "storeId": 102
+  },
+  {
+    "id": 3,
+    "startDate": "2026-04-21",
+    "status": "active"
   }
 ]
