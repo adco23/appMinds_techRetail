@@ -6,10 +6,6 @@ const transactionRoutes = require('./transaction.routes.js');
 
 const router = Router();
 
-router.get('/', (req, res) => {
-    res.send('¡Servidor funcionando! Estás viendo la ruta de vistas.');
-});
-
 // Vistas
 router.use('/', viewRoutes);
 

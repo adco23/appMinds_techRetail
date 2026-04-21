@@ -31,10 +31,6 @@ router.get('/subscriptions', async (req, res) => {
   try {
     const data = await subscriptionService.getAll();
 
-    // ESTO VA A APARECER EN LA TERMINAL DE VS CODE
-    console.log("¿Qué leyó el servidor?:", data);
-
-
     res.render('subscriptions/index', {
       subscriptions: data || []
     });
@@ -50,13 +46,12 @@ router.get('/subscriptions/new', (req, res) => {
 });
 
 // 2. Ruta post recibe datos y los guarda
-// Fijate que el "action" del formulario en el PUG debe coincidir con este nombre
 router.post('/subscriptions/create', async (req, res) => {
     try {
-        // req.body tiene los datos que escribiste en el formulario
+        // datos desde formulario
         await subscriptionService.crear(req.body);
 
-        // Si todo sale bien, lo mandamos de vuelta a la lista principal
+        // muestra en lista principal
         res.redirect('/subscriptions');
     } catch (error) {
         console.error(error);

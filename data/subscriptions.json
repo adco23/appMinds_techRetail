@@ -15,8 +15,8 @@
     "amount": 2500,
     "startDate": "2026-04-15",
     "deliveryAddress": "Calle 123, Rosario",
-    "expDate": "2026-07-14",
-    "status": "active",
+    "expDate": "2026-08-13",
+    "status": "cancelled",
     "storeId": 102
   },
   {
