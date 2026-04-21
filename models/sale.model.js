@@ -1,5 +1,5 @@
 class Sale {
-  constructor(id, clientId, storeId, paymentMethod, totalAmount = null, detailsId) {
+  constructor(id, clientId, storeId, paymentMethod, detailsId, totalAmount = null ) {
     this.id = id;
     this.clientId = clientId;
     this.storeId = storeId;

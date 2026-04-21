@@ -1,0 +1,15 @@
+extends ../layouts/main
+
+block content
+  h1.title Gestión de Ventas
+
+  .buttons
+    //- a.button(href="/sales?view=form") Agregar Nuevo
+    a.button(href="/sales?view=list") Listado
+
+  if view === 'form'
+    include create
+  else if view === 'list'
+    include list
+
+

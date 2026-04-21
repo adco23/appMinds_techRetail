@@ -1,0 +1,51 @@
+.box
+  h2.subtitle Listado de Ventas
+
+  table.table.is-fullwidth.is-striped
+    thead
+      tr
+        th
+        th ID
+        th Fecha
+        th Estado
+        th Monto Total
+        th
+    tbody
+      each sale in sales
+        tr
+          td= sale.id
+          td= sale.date
+          td
+            if sale.status === 1
+              span.tag.is-rounded.is-success Pagada
+            else if sale.status === 0
+              span.tag.is-rounded.is-danger Cancelada
+            else
+              span.tag.is-rounded.is-warning Pendiente
+          td= sale.totalAmount
+          td
+            //- button.button.is-small.mr-1(href="/sales/" + sale.cuit) Editar
+            if sale.status === 1
+              button.button.is-small.is-danger(onclick=`cancelSale(${sale.id})`) Cancelar
+            else
+              button.button.is-small(onclick=`cancelSale(${sale.id})`, disabled=true) Cancelar
+
+  script.
+    async function cancelSale(id) {
+      if (!confirm('¿Está seguro de cancelar este pedido?')) return;
+
+      try {
+        const response = await fetch(`/api/sales/${id}`, { method: 'PUT' });
+        console.log(response);
+        if (response.ok) {
+          alert(response.message || 'Pedido cancelado exitosamente.');
+          location.reload();
+        } else {
+          const errorData = await response.json();
+          alert('Error al cancelar el pedido: ' + errorData.error);
+        }
+      } catch (error) {
+        alert('Error de red al cancelar el pedido.');
+      }
+    }
+

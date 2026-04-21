@@ -1,14 +1,5 @@
 const service = require('../services/commerce.service.js');
-
-function validate(validations, res) {
-  for (let v of validations) {
-    if (v.condition) {
-      res.status(400).json({ error: v.message });
-      return false;
-    }
-  }
-  return true;
-}
+const { validate } = require('../utils/validations.js');
 
 const getCommerce = (req, res, next) => {
   try {
