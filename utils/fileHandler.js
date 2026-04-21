@@ -12,6 +12,12 @@ module.exports = {
     }
   },
   writeFile: (file, data) => {
-    fs.writeFileSync(path.join(__dirname, '..', 'data', file), JSON.stringify(data, null, 2));
+    try {
+      fs.writeFileSync(path.join(__dirname, '..', 'data', file), JSON.stringify(data, null, 2));
+      return true;
+    } catch (error) {
+      console.error(`Error escribiendo el archivo ${file}:`, error);
+      return false;
+    }
   },
 };

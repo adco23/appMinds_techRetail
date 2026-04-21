@@ -19,6 +19,24 @@
           td= commerce.phone
           td= commerce.address
           td
-            a.button.is-small(href="/commerces/" + commerce.id) Editar
-            a.button.is-small(href="/commerces/" + commerce.id, method="POST", action="/api/commerces/" + commerce.id) Eliminar
+            //- button.button.is-small.mr-1(href="/commerces/" + commerce.cuit) Editar
+            button.button.is-small.is-danger(onclick=`deleteCommerce(${commerce.cuit})`) Eliminar
+
+  script.
+    async function deleteCommerce(cuit) {
+      if (!confirm('¿Está seguro de eliminar este comercio?')) return;
+
+      try {
+        const response = await fetch(`/api/commerces/${cuit}`, { method: 'DELETE' });
+        if (response.ok) {
+          alert('Comercio eliminado exitosamente.');
+          location.reload();
+        } else {
+          const errorData = await response.json();
+          alert('Error al eliminar el comercio: ' + errorData.error);
+        }
+      } catch (error) {
+        alert('Error de red al eliminar el comercio.');
+      }
+    }
 
