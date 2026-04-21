@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "detail": "Premium",
+    "amount": 5000,
+    "startDate": "2026-04-01",
+    "deliveryAddress": "Av. Corrientes 1234, CABA",
+    "expDate": "2026-05-01",
+    "status": "active",
+    "storeId": 101
+  },
+  {
+    "id": 2,
+    "detail": "Basico",
+    "amount": 2500,
+    "startDate": "2026-04-15",
+    "deliveryAddress": "Calle 123, Rosario",
+    "expDate": "2026-05-15",
+    "status": "pending",
+    "storeId": 102
+  }
+]

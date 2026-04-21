@@ -1,0 +1,33 @@
+extends ../layouts/main.pug
+
+block content
+  h1.title Suscripciones
+  h2.subtitle Lista de planes activos
+
+  .columns.is-multiline
+    each sub in subscriptions
+      .column.is-4
+        .card
+          header.card-header
+            p.card-header-title Plan: #{sub.detail}
+          .card-content
+            .content
+              p
+                strong Store ID:
+                | #{sub.storeId}
+              p
+                strong Amount:
+                span.tag.is-success.is-light $#{sub.amount}
+              p
+                strong Status:
+                span.tag.is-info #{sub.status}
+              p.is-size-7
+                | Start: #{sub.startDate}
+                br
+                | Expires: #{sub.expDate}
+          footer.card-footer
+            a.card-footer-item(href="#") Edit
+            a.card-footer-item(href="#") Cancel
+    else
+      .notification.is-warning
+        | No subscriptions registered yet.

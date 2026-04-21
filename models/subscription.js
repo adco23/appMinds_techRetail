@@ -4,7 +4,7 @@ class Subscription{
          this.detail=detail;
          this.amount=amount;
          this.startDate=startDate;
-         this.deliveryAdress=deliveryAdress;
+         this.deliveryAddress=deliveryAdress;
          this.expDate=expDate;
          this.status=status;
          this.storeId=storeId;

@@ -1,5 +1,31 @@
-extends ../layouts/main
+extends ../layouts/main.pug
 
 block content
-  h1 Lista de transacciones
-  p Vista en construcción
+  h1.title Transacciones
+  p.subtitle 2% de comisión incluida
+
+  table.table.is-striped.is-fullwidth.is-hoverable
+    thead
+      tr
+        th ID
+        th Comprobante
+        th Monto Bruto
+        th Comisión (2%)
+        th Monto Neto
+        th Fecha
+        th Estado
+    tbody
+      each tx in transactions
+        tr
+          td= tx.id
+          td= tx.receiptId
+          td $#{tx.grossAmount}
+          td.has-text-danger $#{tx.feeAmount}
+          td.has-text-success $#{tx.netAmount}
+          td= tx.date ? tx.date.split('T')[0] : 'No date'
+          td
+            span.tag(class=tx.status === 'approved' ? 'is-success' : 'is-warning')= tx.status
+      else
+        tr
+          td.has-text-centered(colspan="7") No hay transacciones registradas.
+
