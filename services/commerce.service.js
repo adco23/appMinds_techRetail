@@ -20,21 +20,20 @@ const createCommerce = ({ name, cuit, email, phone, address }) => {
 
   let newCommerce = new Commerce(commerces.length + 1, name, cuit, email, phone, address);
 
-  fileHandler.writeFile(JSON_FILE, [...commerces, newCommerce]);
-
-  return true;
+  return fileHandler.writeFile(JSON_FILE, [...commerces, newCommerce]);
 };
 
 const deleteCommerce = cuit => {
-  const index = commerces.findIndex(commerce => Number(commerce.cuit) === Number(cuit));
+  const commerce = commerces.find(commerce => commerce.cuit === cuit);
 
-  if (index === -1) return false;
+  if (!commerce) return false;
 
-  const list = commerces.filter((_, i) => i !== index);
+  const updated = new Commerce(commerce.id, commerce.name, commerce.cuit, commerce.email, commerce.phone, commerce.address);
+  updated.deactivate();
 
-  const result = fileHandler.writeFile(JSON_FILE, list);
+  const list = commerces.map(c => c.cuit === cuit ? updated : c);
 
-  return result;
+  return fileHandler.writeFile(JSON_FILE, list);
 };
 
 const updateCommerce = (cuit, { name, email, phone, address }) => {

@@ -4,6 +4,7 @@
   table.table.is-fullwidth.is-striped
     thead
       tr
+        th Estado
         th Razón Social
         th CUIT
         th Email
@@ -13,6 +14,13 @@
     tbody
       each commerce in commerces
         tr
+          td
+            if commerce.status === 1
+              span.tag.is-success Activo
+            else if commerce.status === 0
+              span.tag.is-danger Inactivo
+            else
+              span.tag.is-light Pendiente
           td= commerce.name
           td= commerce.cuit
           td= commerce.email
@@ -28,6 +36,7 @@
 
       try {
         const response = await fetch(`/api/commerces/${cuit}`, { method: 'DELETE' });
+        console.log(response);
         if (response.ok) {
           alert('Comercio eliminado exitosamente.');
           location.reload();
