@@ -1,0 +1,37 @@
+extends ../layouts/main
+
+block content
+  h1.title Detalle de tienda
+  p.subtitle Información general del módulo Store
+
+  .box
+    p
+      strong ID:
+      |  #{store.id}
+    p
+      strong Nombre:
+      |  #{store.name}
+    p
+      strong Rubro:
+      |  #{store.category}
+    p
+      strong Subdominio:
+      |  #{store.subdomain}
+    p
+      strong Estado:
+      |  #{store.status}
+    p
+      strong Comercio ID:
+      |  #{store.commerceId}
+    p
+      strong Fecha de creación:
+      |  #{store.createdAt}
+
+  .box
+    h2.title.is-5 Productos de esta tienda
+    p Por el momento esta sección está en construcción.
+    p Más adelante acá se mostrarán los productos asociados a esta tienda.
+
+  .buttons
+    a.button.is-link(href="/stores/view") Volver al listado
+    a.button.is-warning(href=`/stores/edit/${store.id}`) Editar tienda

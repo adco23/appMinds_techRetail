@@ -1,17 +1,23 @@
-const { Router } = require('express');
+const { Router } = require("express");
 
 const router = Router();
 
-router.get('/stores', (req, res) => {
-  res.render('stores/index');
+router.get("/", (req, res) => {
+  res.render("home/index", {
+    title: "Inicio",
+  });
 });
 
-router.get('/transactions', (req, res) => {
-  res.render('transactions/index');
+router.get("/transactions", (req, res) => {
+  res.render("transactions/index", {
+    title: "Transacciones",
+  });
 });
 
-router.get('/users', (req, res) => {
-  res.render('users/index');
+router.get("/users", (req, res) => {
+  res.render("users/index", {
+    title: "Usuarios",
+  });
 });
 
 module.exports = router;
