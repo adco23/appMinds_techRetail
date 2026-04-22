@@ -1,3 +1,4 @@
+const Subscription = require('../models/subscription.js');
 const fileHandler = require('../utils/fileHandler');
 const FILE_PATH = 'subscriptions.json';
 
@@ -6,17 +7,31 @@ const getAll = async () => {
 };
 
 // 1. NUEVA SUSCRIPCIÓN
-const crear = async (newSubData) => {
+
+const crear = async (data) => {
     const subscriptions = await getAll();
-    const newSub = {
-        id: subscriptions.length > 0 ? subscriptions[subscriptions.length - 1].id + 1 : 1,
-        ...newSubData,
-        startDate: new Date().toISOString().split('T')[0],
-        status: 'active'
-    };
-    subscriptions.push(newSub);
+    const nuevoId = subscriptions.length > 0 ? subscriptions[subscriptions.length - 1].id + 1 : 1;
+
+    const hoy = new Date();
+    const startDate = hoy.toISOString().split('T')[0];
+
+    const vencimiento = new Date();
+    vencimiento.setDate(hoy.getDate() + 30);
+    const expDate = vencimiento.toISOString().split('T')[0];
+
+    const nuevaSub = new Subscription(
+        nuevoId,
+        data.detail,
+        Number(data.amount),
+        startDate,
+        expDate,
+        'active',
+        Number(data.storeId)
+    );
+
+    subscriptions.push(nuevaSub);
     await fileHandler.writeFile(FILE_PATH, subscriptions);
-    return newSub;
+    return nuevaSub;
 };
 
 // 2. RENOVAR

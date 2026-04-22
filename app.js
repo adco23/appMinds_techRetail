@@ -9,6 +9,7 @@ const { errorHandler } = require('./middlewares/error.middleware.js');
 dotenv.config();
 
 const app = express();
+app.use(express.urlencoded({ extended: true })); // Para que Express pueda leer los datos del formulario
 
 app.use(cors());
 

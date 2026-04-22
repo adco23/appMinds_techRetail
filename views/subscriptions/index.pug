@@ -37,11 +37,9 @@ block content
         alert('Por favor, ingrese un ID válido');
         return;
       }
-      // Redirige a la ruta correspondiente que definiremos en el servidor
+      // Redirige
       window.location.href = `/subscriptions/${actionType}/${id}`;
     }
-
-
 
   .columns.is-multiline
     each sub in subscriptions

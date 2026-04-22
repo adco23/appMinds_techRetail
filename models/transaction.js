@@ -13,5 +13,4 @@ class Transaction {
         this.saleId = saleId; // ventaId
     }
 }
-
 module.exports = Transaction;

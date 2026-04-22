@@ -10,7 +10,6 @@ const getAll = async (req, res) => {
     }
 };
 
-
 const create = async (req, res) => {
     try {
         const result = await transactionService.createTransaction(req.body);
@@ -22,7 +21,6 @@ const create = async (req, res) => {
         res.status(500).json({ message: "Error creating transaction", error: error.message });
     }
 };
-
 
 module.exports = {
     getAll,
