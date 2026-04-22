@@ -17,38 +17,40 @@ block content
           th Apellido
           th Email
           th Comercio
+          th Rol
           th Estado
           th Acciones
       tbody
         if users && users.length > 0
           each user in users
-            tr(id=`row-${user.email.replace(/[@.]/g, '-')}`)
+            - const emailSuffix = user.email.replace(/[@.]/g, '-')
+            tr(id=`row-${emailSuffix}`)
               td= user.id
               td= user.firstName
               td= user.lastName
               td= user.email
               td= user.commerceId
-              td
-                span.tag(id=`tag-${user.email.replace(/[@.]/g, '-')}` class=user.status === 'active' ? 'is-success' : 'is-danger')
-                  = user.status === 'active' ? 'Activo' : 'Inactivo'
+              td= user.role
+              td(id=`text-${emailSuffix}`)
+                = user.status === 'active' ? 'Activo' : 'Inactivo'
               td
                 .buttons
                   a.button.is-small.is-warning(href=`/users/edit/${user.email}`) Editar
                   button.button.is-small.is-dark(onclick=`handleDelete('${user.email}')`) Eliminar
 
                   button.button.is-small.is-outlined(
-                    id=`btn-${user.email.replace(/[@.]/g, '-')}`
+                    id=`btn-${emailSuffix}`
                     class=user.status === 'active' ? 'is-danger' : 'is-info'
                     onclick=`handleStatus('${user.email}', '${user.status === 'active' ? 'deactivate' : 'activate'}')`
                   )
                     = user.status === 'active' ? 'Desactivar' : 'Activar'
         else
           tr
-            td.has-text-centered(colspan="7") No hay usuarios para mostrar.
+            td.has-text-centered(colspan="8") No hay usuarios para mostrar.
 
   script.
     async function handleDelete(email) {
-      if (!confirm('¿Seguro?')) return;
+      if (!confirm('¿Seguro que querés eliminar este usuario?')) return;
       const res = await fetch(`/api/users/${email}`, { method: 'DELETE' });
       if (res.ok) {
         const rowId = `row-${email.replace(/[@.]/g, '-')}`;
@@ -64,18 +66,16 @@ block content
 
       if (res.ok) {
         const idSuffix = email.replace(/[@.]/g, '-');
-        const tag = document.getElementById(`tag-${idSuffix}`);
+        const statusText = document.getElementById(`text-${idSuffix}`);
         const btn = document.getElementById(`btn-${idSuffix}`);
 
         if (action === 'deactivate') {
-          tag.className = 'tag is-danger';
-          tag.innerText = 'Inactivo';
+          statusText.innerText = 'Inactivo';
           btn.className = 'button is-small is-info is-outlined';
           btn.innerText = 'Activar';
           btn.setAttribute('onclick', `handleStatus('${email}', 'activate')`);
         } else {
-          tag.className = 'tag is-success';
-          tag.innerText = 'Activo';
+          statusText.innerText = 'Activo';
           btn.className = 'button is-small is-danger is-outlined';
           btn.innerText = 'Desactivar';
           btn.setAttribute('onclick', `handleStatus('${email}', 'deactivate')`);

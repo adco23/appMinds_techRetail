@@ -1,21 +1,21 @@
 [
   {
     "id": 1,
-    "firstName": "Enrique",
-    "lastName": "Saracco",
-    "email": "enrique@enrique.com.ar",
-    "password": "hashed_password_123",
-    "role": "admin",
-    "commerceId": 101,
-    "status": "active"
-  },
-  {
-    "id": 2,
     "firstName": "Pedro",
     "lastName": "Picapiedra",
     "email": "ppicapiedra@hanna-barbera.com",
     "password": "pebbles",
     "role": "admin",
+    "commerceId": 10000,
+    "status": "active"
+  },
+  {
+    "id": 2,
+    "firstName": "Pablo",
+    "lastName": "Marmol",
+    "email": "pmarmol@hanna-barbera.com",
+    "password": "bambam",
+    "role": "vendedor",
     "commerceId": 10000,
     "status": "active"
   }

@@ -1,0 +1,61 @@
+extends ../layouts/main
+
+block content
+  .columns.is-centered
+    .column.is-6
+      h1.title.is-3 Agregar Nuevo Usuario
+      hr
+      form(id="addForm")
+        .field
+          label.label Nombre
+          input.input(type="text" name="firstName" required)
+
+        .field
+          label.label Apellido
+          input.input(type="text" name="lastName" required)
+
+        .field
+          label.label Email
+          input.input(type="email" name="email" required)
+
+        .field
+          label.label Password
+          input.input(type="password" name="password" required minlength="6")
+
+        .field
+          label.label Rol
+          .select.is-fullwidth
+            select(name="role")
+              option(value="admin") Admin
+              option(value="vendedor") Vendedor
+
+        .field
+          label.label ID Comercio
+          input.input(type="number" name="commerceId" required)
+
+        .buttons.is-right
+          a.button.is-light(href="/users") Cancelar
+          button.button.is-primary(type="submit") Guardar Usuario
+
+      script.
+        document.getElementById('addForm').onsubmit = async (e) => {
+          e.preventDefault();
+          const formData = Object.fromEntries(new FormData(e.target));
+
+          try {
+            const res = await fetch('/api/users', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(formData)
+            });
+
+            if (res.ok) {
+              window.location.href = '/users';
+            } else {
+              const data = await res.json();
+              alert('Error: ' + (data.error || 'No se pudo crear el usuario'));
+            }
+          } catch (err) {
+            alert('Error de conexión con el servidor');
+          }
+        };
