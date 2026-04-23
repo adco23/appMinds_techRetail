@@ -1,0 +1,36 @@
+include ./_statusTag
+
+.container
+  .level.is-mobile.mb-4
+    .level-left
+      div
+        p.heading Orden
+        p.title.is-4.mb-0 ##{order.id}
+    .level-right
+      +orderStatusTag(order.status)
+
+  .columns.is-multiline
+    .column.is-half
+      p.heading.mb-1 Cliente
+      p= order.clientId || 'No disponible'
+    .column.is-half
+      p.heading.mb-1 Tienda
+      p= order.storeId || 'No disponible'
+    .column.is-half
+      p.heading.mb-1 Metodo de pago
+      p= order.paymentMethod || 'No disponible'
+    .column.is-half
+      p.heading.mb-1 Monto total
+      p= order.totalAmount || 'No disponible'
+    .column.is-half
+      p.heading.mb-1 Fecha
+      p= order.date || 'No disponible'
+    .column.is-half
+      p.heading.mb-1 Detalle
+      p= order.detailsId || 'No disponible'
+    .column.is-half
+      p.heading.mb-1 Pago
+      p= order.paymentId || 'Sin asignar'
+    .column.is-half
+      p.heading.mb-1 Logistica
+      p= order.logisticsId || 'Sin asignar'

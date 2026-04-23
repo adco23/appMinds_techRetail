@@ -1,0 +1,15 @@
+extends ../layouts/main
+
+block content
+  .level.is-mobile.mb-4
+    .level-left
+      h1.title.mb-0 Detalle de la orden
+    .level-right
+      a.button(href="/orders?view=list") Volver al listado
+
+  if order
+    include ./_detailContent
+  else
+    .notification.is-warning
+      p No se encontro la orden solicitada.
+      a.button.is-light.mt-3(href="/orders?view=list") Ir al listado

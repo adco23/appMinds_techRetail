@@ -17,7 +17,6 @@ const existsByCuit = cuit => {
 };
 
 const createCommerce = ({ name, cuit, email, phone, address }) => {
-
   let newCommerce = new Commerce(commerces.length + 1, name, cuit, email, phone, address);
 
   return fileHandler.writeFile(JSON_FILE, [...commerces, newCommerce]);
@@ -28,10 +27,17 @@ const deleteCommerce = cuit => {
 
   if (!commerce) return false;
 
-  const updated = new Commerce(commerce.id, commerce.name, commerce.cuit, commerce.email, commerce.phone, commerce.address);
+  const updated = new Commerce(
+    commerce.id,
+    commerce.name,
+    commerce.cuit,
+    commerce.email,
+    commerce.phone,
+    commerce.address,
+  );
   updated.deactivate();
 
-  const list = commerces.map(c => c.cuit === cuit ? updated : c);
+  const list = commerces.map(c => (c.cuit === cuit ? updated : c));
 
   return fileHandler.writeFile(JSON_FILE, list);
 };
@@ -48,6 +54,6 @@ const updateCommerce = (cuit, { name, email, phone, address }) => {
 
   fileHandler.writeFile(JSON_FILE, commerces);
   return true;
-}
+};
 
 module.exports = { getCommerce, createCommerce, existsByCuit, findByCuit, deleteCommerce, updateCommerce };

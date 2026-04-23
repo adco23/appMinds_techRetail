@@ -16,7 +16,7 @@ const getCommerce = (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
 
 const createCommerce = (req, res, next) => {
   try {
@@ -26,7 +26,7 @@ const createCommerce = (req, res, next) => {
       { condition: !name, message: 'La razon social es obligatoria.' },
       { condition: !cuit, message: 'El CUIT es obligatorio.' },
       { condition: !email, message: 'El correo es obligatorio.' },
-      { condition: service.existsByCuit(cuit), message: 'El CUIT ya existe.' }
+      { condition: service.existsByCuit(cuit), message: 'El CUIT ya existe.' },
     ];
 
     if (!validate(validations, res)) return;
@@ -38,7 +38,7 @@ const createCommerce = (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
 
 const deleteCommerce = (req, res, next) => {
   try {
@@ -58,7 +58,7 @@ const deleteCommerce = (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
 
 const updateCommerce = (req, res, next) => {
   try {
@@ -73,7 +73,7 @@ const updateCommerce = (req, res, next) => {
 
     const validations = [
       { condition: !name, message: 'La razon social es obligatoria.' },
-      { condition: !email, message: 'El correo es obligatorio.' }
+      { condition: !email, message: 'El correo es obligatorio.' },
     ];
 
     if (!validate(validations, res)) return;
@@ -85,6 +85,6 @@ const updateCommerce = (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
 
 module.exports = { getCommerce, createCommerce, deleteCommerce, updateCommerce };

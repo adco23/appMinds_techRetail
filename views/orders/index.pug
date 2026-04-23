@@ -1,11 +1,11 @@
 extends ../layouts/main
 
 block content
-  h1.title Gestión de Ventas
+  h1.title Gestión de Ordenes
 
   .buttons
     //- a.button(href="/sales?view=form") Agregar Nuevo
-    a.button(href="/sales?view=list") Listado
+    a.button(href="/orders?view=list") Listado
 
   if view === 'form'
     include create

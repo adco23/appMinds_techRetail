@@ -1,0 +1,106 @@
+include ./partials/_statusTag
+
+.div
+
+  table.table.is-fullwidth.is-striped
+    thead
+      tr
+        th ID
+        th Fecha
+        th Estado
+        th Monto Total
+        th
+    tbody
+      each order in orders
+        tr
+          td= order.id
+          td= order.date
+          td
+            +orderStatusTag(order.status)
+          td= order.totalAmount || 'No disponible'
+          td
+            button.button.is-small.mr-1.js-open-order-modal(
+              type="button"
+              data-order-id=order.id
+            ) Ver
+            if order.status === 0
+              //- button.button.is-small(type="button", onclick=`updateOrder(${order.id}, "confirmar")`) Confirmar
+              button.button.is-small(type="button", onclick=`updateOrder(${order.id}, "cancelar")`) Cancelar
+
+  each order in orders
+    template(id=`order-detail-template-${order.id}`)
+      include ./partials/_detailContent
+
+  #order-detail-modal.modal
+    .modal-background
+    .modal-card
+      header.modal-card-head.p-4
+        p.modal-card-title Detalle de la orden
+        button.delete(type="button", aria-label="Cerrar")
+      section#order-detail-modal-content.modal-card-body
+      footer.modal-card-foot.is-justify-content-space-between.p-3
+        a#order-detail-link.button(href="#") Ver pagina completa
+        button#order-detail-close.button(type="button") Cerrar
+
+  script.
+    async function updateOrder(id, action) {
+      if (!confirm(`¿Está seguro de ${action} este pedido?`)) return;
+
+      let status = action === 'confirmar' ? 1 : action === 'cancelar' ? 2 : null;
+
+      try {
+        const response = await fetch(`/api/orders/${id}?status=${status}`, { method: 'PUT' });
+
+        if (response.ok) {
+          alert(response.message || 'Pedido actualizado exitosamente.');
+          location.reload();
+        } else {
+          const errorData = await response.json();
+          alert('Error al modificar el pedido: ' + errorData.error);
+        }
+      } catch (error) {
+        alert('Error de red al modificar el pedido.');
+      }
+    }
+
+    (() => {
+      const modal = document.getElementById('order-detail-modal');
+      const modalContent = document.getElementById('order-detail-modal-content');
+      const detailLink = document.getElementById('order-detail-link');
+      const openButtons = document.querySelectorAll('.js-open-order-modal');
+      const closeButtons = [
+        document.getElementById('order-detail-close'),
+        modal.querySelector('.delete'),
+        modal.querySelector('.modal-background')
+      ];
+
+      const closeModal = () => {
+        modal.classList.remove('is-active');
+        modalContent.innerHTML = '';
+        detailLink.setAttribute('href', '#');
+      };
+
+      const openModal = (orderId) => {
+        const template = document.getElementById(`order-detail-template-${orderId}`);
+
+        if (!template) return;
+
+        modalContent.innerHTML = template.innerHTML;
+        detailLink.setAttribute('href', `/orders/${orderId}`);
+        modal.classList.add('is-active');
+      };
+
+      openButtons.forEach((button) => {
+        button.addEventListener('click', () => openModal(button.dataset.orderId));
+      });
+
+      closeButtons.forEach((button) => {
+        button.addEventListener('click', closeModal);
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && modal.classList.contains('is-active')) {
+          closeModal();
+        }
+      });
+    })();

@@ -1,0 +1,7 @@
+mixin orderStatusTag(status)
+  if status === 1
+    span.tag.is-rounded.is-success Pagada
+  else if status === 2
+    span.tag.is-rounded.is-danger Cancelada
+  else
+    span.tag.is-rounded Pendiente

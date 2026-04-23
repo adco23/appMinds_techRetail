@@ -1,5 +1,5 @@
-class Sale {
-  constructor(id, clientId, storeId, paymentMethod, detailsId, totalAmount = null ) {
+class Order {
+  constructor(id, clientId, storeId, paymentMethod, detailsId, totalAmount = null) {
     this.id = id;
     this.clientId = clientId;
     this.storeId = storeId;
@@ -25,4 +25,18 @@ class Sale {
   calculateTotalAmount(details) {
     // Aquí podrías implementar la lógica para calcular el total basado en los detalles de la venta
   }
+
+  dateOnlyFormat() {
+    const date = new Date(this.date);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    this.date = `${day}/${month}/${year}`;
+  }
+
+  currencyFormat() {
+    this.totalAmount = '$' + (this.totalAmount ? this.totalAmount : '0.00');
+  }
 }
+
+module.exports = Order;

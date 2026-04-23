@@ -1,5 +1,10 @@
 const { Router } = require('express');
-const { getCommerce, createCommerce, deleteCommerce, updateCommerce } = require('../controllers/commerce.controller.js');
+const {
+  getCommerce,
+  createCommerce,
+  deleteCommerce,
+  updateCommerce,
+} = require('../controllers/commerce.controller.js');
 
 const router = Router();
 
