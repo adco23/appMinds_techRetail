@@ -47,8 +47,10 @@ const getProductEditView = (req, res, next) => {
 
 const getProductNewView = (req, res, next) => {
   try {
+    const storeId = req.params.storeId || "";
     res.render("products/new", {
       title: "Nuevo producto",
+      storeId,
     });
   } catch (error) {
     next(error);
@@ -78,8 +80,8 @@ const createProduct = (req, res, next) => {
 
 const createProductFromView = (req, res, next) => {
   try {
-    productService.createProduct(req.body);
-    res.redirect("/products/view");
+    const newProduct = productService.createProduct(req.body);
+    res.redirect(`/stores/view/${newProduct.storeId}`);
   } catch (error) {
     next(error);
   }
@@ -87,11 +89,7 @@ const createProductFromView = (req, res, next) => {
 
 const updateProduct = (req, res, next) => {
   try {
-    const updatedProduct = productService.updateProduct(
-      req.params.id,
-      req.body
-    );
-
+    const updatedProduct = productService.updateProduct(req.params.id, req.body);
     res.json({
       message: "Product updated successfully",
       product: updatedProduct,
@@ -103,8 +101,8 @@ const updateProduct = (req, res, next) => {
 
 const updateProductFromView = (req, res, next) => {
   try {
-    productService.updateProduct(req.params.id, req.body);
-    res.redirect("/products/view");
+    const updatedProduct = productService.updateProduct(req.params.id, req.body);
+    res.redirect(`/stores/view/${updatedProduct.storeId}`);
   } catch (error) {
     next(error);
   }
@@ -121,8 +119,9 @@ const deleteProduct = (req, res, next) => {
 
 const deleteProductFromView = (req, res, next) => {
   try {
+    const product = productService.getProductById(req.params.id);
     productService.deleteProduct(req.params.id);
-    res.redirect("/products/view");
+    res.redirect(`/stores/view/${product.storeId}`);
   } catch (error) {
     next(error);
   }

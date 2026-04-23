@@ -22,6 +22,16 @@ const getStoresView = (req, res, next) => {
   }
 };
 
+const getStoreNewView = (req, res, next) => {
+  try {
+    res.render("stores/new", {
+      title: "Nueva tienda",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const getStoreDetailView = (req, res, next) => {
   try {
     const store = storeService.getStoreById(req.params.id);
@@ -70,6 +80,15 @@ const createStore = (req, res, next) => {
   }
 };
 
+const createStoreFromView = (req, res, next) => {
+  try {
+    storeService.createStore(req.body);
+    res.redirect("/stores/view");
+  } catch (error) {
+    next(error);
+  }
+};
+
 const updateStore = (req, res, next) => {
   try {
     const updatedStore = storeService.updateStore(req.params.id, req.body);
@@ -112,10 +131,12 @@ const deleteStoreFromView = (req, res, next) => {
 module.exports = {
   getStores,
   getStoresView,
+  getStoreNewView,
   getStoreDetailView,
   getStoreEditView,
   getStoreById,
   createStore,
+  createStoreFromView,
   updateStore,
   updateStoreFromView,
   deleteStore,

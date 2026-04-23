@@ -4,10 +4,12 @@ const router = express.Router();
 const {
   getStores,
   getStoresView,
-  getStoreById,
   getStoreDetailView,
   getStoreEditView,
+  getStoreNewView,
+  getStoreById,
   createStore,
+  createStoreFromView,
   updateStore,
   updateStoreFromView,
   deleteStore,
@@ -16,12 +18,14 @@ const {
 
 router.get("/", getStores);
 router.get("/view", getStoresView);
+router.get("/view/new", getStoreNewView);
 router.get("/view/:id", getStoreDetailView);
 router.get("/edit/:id", getStoreEditView);
 
 router.get("/:id", getStoreById);
 
 router.post("/", createStore);
+router.post("/view", createStoreFromView);
 router.post("/edit/:id", updateStoreFromView);
 router.post("/delete/:id", deleteStoreFromView);
 

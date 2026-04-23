@@ -19,6 +19,7 @@ const {
 router.get("/", getProducts);
 router.get("/view", getProductsView);
 router.get("/view/new", getProductNewView);
+router.get("/view/new/:storeId", getProductNewView);
 router.get("/view/:id", getProductDetailView);
 router.get("/edit/:id", getProductEditView);
 

@@ -8,6 +8,10 @@ block content
           h1.title Lista de tiendas
           p.subtitle Visualización del módulo Store
 
+    .level-right
+      .level-item
+        a.button.is-primary(href="/stores/view/new") Nueva tienda
+
   if stores && stores.length > 0
     .table-container
       table.table.is-striped.is-hoverable.is-fullwidth

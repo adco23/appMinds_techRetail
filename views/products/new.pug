@@ -37,7 +37,7 @@ block content
     .field
       label.label Store ID
       .control
-        input.input(type="number", name="storeId", required)
+        input.input(type="number", name="storeId", value=storeId, required)
 
     .field
       label.label Estado
@@ -48,4 +48,7 @@ block content
       .control
         button.button.is-primary(type="submit") Guardar
       .control
-        a.button.is-light(href="/products/view") Cancelar
+        if storeId
+          a.button.is-light(href=`/stores/view/${storeId}`) Cancelar
+        else
+          a.button.is-light(href="/products/view") Cancelar
