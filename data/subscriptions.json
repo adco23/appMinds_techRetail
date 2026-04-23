@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "detail": "Premium",
+    "amount": 50,
+    "startDate": "2026-04-01",
+    "expDate": "2026-05-01",
+    "status": "cancelled",
+    "storeId": 101
+  },
+  {
+    "id": 2,
+    "detail": "Basico",
+    "amount": 25,
+    "startDate": "2026-04-15",
+    "expDate": "2026-08-13",
+    "status": "cancelled",
+    "storeId": 102
+  },
+  {
+    "id": 3,
+    "detail": "Premium",
+    "amount": 50,
+    "startDate": "2026-05-01",
+    "expDate": "2026-08-30",
+    "status": "active",
+    "storeId": 101
+  },
+  {
+    "id": 4,
+    "detail": "dfd",
+    "amount": 444,
+    "startDate": "2026-04-22",
+    "expDate": "2026-05-22",
+    "status": "active",
+    "storeId": 4
+  }
+]

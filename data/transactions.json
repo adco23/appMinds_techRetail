@@ -1,34 +1,50 @@
 [
   {
     "id": 1,
-    "amount": 15000,
+    "receiptId": "REC-001",
+    "grossAmount": 5000,
+    "feeAmount": 100,
+    "netAmount": 4900,
+    "date": "2026-04-21T15:00:00Z",
     "status": "approved",
-    "paymentMethod": "credit_card",
-    "createdAt": "2026-04-12T14:20:00Z",
-    "storeId": 1
+    "paymentMethod": "Credit Card",
+    "gatewayReference": "REF12345",
+    "saleId": 501
   },
   {
-    "id": 2,
-    "amount": 8200,
+    "id": 5,
+    "receiptId": "TK-88291",
+    "grossAmount": 12500.50,
+    "feeAmount": 250.01,
+    "netAmount": 12250.49,
+    "date": "2026-04-20T10:30:00Z",
+    "status": "approved",
+    "paymentMethod": "Debito",
+    "gatewayReference": "PAY-99221",
+    "saleId": 1005
+  },
+  {
+    "id": 6,
+    "receiptId": "TK-88292",
+    "grossAmount": 3200.00,
+    "feeAmount": 64.00,
+    "netAmount": 3136.00,
+    "date": "2026-04-21T09:15:00Z",
     "status": "pending",
-    "paymentMethod": "debit_card",
-    "createdAt": "2026-04-13T09:45:00Z",
-    "storeId": 2
+    "paymentMethod": "Transferencia",
+    "gatewayReference": "TRF-44102",
+    "saleId": 1006
   },
   {
-    "id": 3,
-    "amount": 23000,
+    "id": 7,
+    "receiptId": "TK-88293",
+    "grossAmount": 8500.00,
+    "feeAmount": 170.00,
+    "netAmount": 8330.00,
+    "date": "2026-04-21T14:45:00Z",
     "status": "rejected",
-    "paymentMethod": "credit_card",
-    "createdAt": "2026-04-14T18:10:00Z",
-    "storeId": 1
-  },
-  {
-    "id": 4,
-    "amount": 5600,
-    "status": "approved",
-    "paymentMethod": "cash",
-    "createdAt": "2026-04-15T11:05:00Z",
-    "storeId": 3
+    "paymentMethod": "Credito",
+    "gatewayReference": "ERR-55210",
+    "saleId": 1007
   }
 ]
