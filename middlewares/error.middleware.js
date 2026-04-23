@@ -1,8 +1,20 @@
 const errorHandler = (err, req, res, next) => {
   console.error(err);
 
-  res.status(500).json({
-    message: err.message || 'Error interno del servidor',
+  if (err.message === "Store not found") {
+    return res.status(404).json({
+      message: err.message,
+    });
+  }
+
+  if (err.message === "Product not found") {
+    return res.status(404).json({
+      message: err.message,
+    });
+  }
+
+  return res.status(400).json({
+    message: err.message || "Internal server error",
   });
 };
 

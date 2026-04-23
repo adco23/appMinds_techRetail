@@ -3,7 +3,10 @@ const morgan = require('morgan');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
+
 const routes = require('./routes/index.js');
+const storeRoutes = require('./routes/store.routes.js');
+const productRoutes = require('./routes/product.routes.js');
 const { errorHandler } = require('./middlewares/error.middleware.js');
 
 dotenv.config();
@@ -21,7 +24,14 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(morgan('dev'));
 
+// Rutas generales del proyecto
 app.use('/', routes);
+
+// API y vistas del módulo Store
+app.use('/stores', storeRoutes);
+
+// API y vistas del módulo Product
+app.use('/products', productRoutes);
 
 app.use(errorHandler);
 

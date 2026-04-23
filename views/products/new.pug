@@ -1,0 +1,54 @@
+extends ../layouts/main
+
+block content
+  h1.title Nuevo producto
+
+  form(method="POST", action="/products/view")
+    .field
+      label.label ID
+      .control
+        input.input(type="number", name="id", required)
+
+    .field
+      label.label Nombre
+      .control
+        input.input(type="text", name="name", required)
+
+    .field
+      label.label Descripción
+      .control
+        textarea.textarea(name="description", required)
+
+    .field
+      label.label Precio
+      .control
+        input.input(type="number", name="price", required)
+
+    .field
+      label.label Stock
+      .control
+        input.input(type="number", name="stock", required)
+
+    .field
+      label.label Categoría
+      .control
+        input.input(type="text", name="category", required)
+
+    .field
+      label.label Store ID
+      .control
+        input.input(type="number", name="storeId", value=storeId, required)
+
+    .field
+      label.label Estado
+      .control
+        input.input(type="text", name="status", value="active", required)
+
+    .field.is-grouped
+      .control
+        button.button.is-primary(type="submit") Guardar
+      .control
+        if storeId
+          a.button.is-light(href=`/stores/view/${storeId}`) Cancelar
+        else
+          a.button.is-light(href="/products/view") Cancelar
