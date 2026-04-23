@@ -1,25 +1,36 @@
-const express = require("express");
-const cors = require("cors");
-const morgan = require("morgan");
+const express = require('express');
+const morgan = require('morgan');
+const cors = require('cors');
+const dotenv = require('dotenv');
+const path = require('path');
 
-const indexRoutes = require("./routes/index");
-const storeRoutes = require("./routes/store.routes");
-const productRoutes = require("./routes/product.routes");
-const { errorHandler } = require("./middlewares/error.middleware");
+const routes = require('./routes/index.js');
+const storeRoutes = require('./routes/store.routes.js');
+const productRoutes = require('./routes/product.routes.js');
+const { errorHandler } = require('./middlewares/error.middleware.js');
+
+dotenv.config();
 
 const app = express();
 
 app.use(cors());
-app.use(morgan("dev"));
+
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.set("view engine", "pug");
-app.set("views", "./views");
+app.use(morgan('dev'));
 
-app.use("/", indexRoutes);
-app.use("/stores", storeRoutes);
-app.use("/products", productRoutes);
+// Rutas generales del proyecto
+app.use('/', routes);
+
+// API y vistas del módulo Store
+app.use('/stores', storeRoutes);
+
+// API y vistas del módulo Product
+app.use('/products', productRoutes);
 
 app.use(errorHandler);
 
