@@ -3,6 +3,15 @@ const Commerce = require('../models/commerce.model');
 
 const JSON_FILE = 'commerces.json';
 const commerces = fileHandler.readFile(JSON_FILE);
+const save = (data) => {
+  try {
+    fileHandler.writeFile(JSON_FILE, data);
+    return true
+  } catch (error) {
+    console.error('Error saving commerces:', error);
+    return false;
+  }
+}
 
 const getCommerce = () => {
   return commerces;
@@ -19,7 +28,7 @@ const existsByCuit = cuit => {
 const createCommerce = ({ name, cuit, email, phone, address }) => {
   let newCommerce = new Commerce(commerces.length + 1, name, cuit, email, phone, address);
 
-  return fileHandler.writeFile(JSON_FILE, [...commerces, newCommerce]);
+  return save([...commerces, newCommerce]);
 };
 
 const deleteCommerce = cuit => {
@@ -39,7 +48,7 @@ const deleteCommerce = cuit => {
 
   const list = commerces.map(c => (c.cuit === cuit ? updated : c));
 
-  return fileHandler.writeFile(JSON_FILE, list);
+  return save(list);
 };
 
 const updateCommerce = (cuit, { name, email, phone, address }) => {
@@ -52,8 +61,7 @@ const updateCommerce = (cuit, { name, email, phone, address }) => {
   commerce.phone = phone || commerce.phone;
   commerce.address = address || commerce.address;
 
-  fileHandler.writeFile(JSON_FILE, commerces);
-  return true;
+  return save(commerces);
 };
 
 module.exports = { getCommerce, createCommerce, existsByCuit, findByCuit, deleteCommerce, updateCommerce };

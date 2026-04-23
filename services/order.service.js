@@ -4,6 +4,16 @@ const Order = require('../models/order.model');
 const JSON_FILE = 'orders.json';
 const orders = fileHandler.readFile(JSON_FILE);
 
+const save = (data) => {
+  try {
+    fileHandler.writeFile(JSON_FILE, data);
+    return true
+  } catch (error) {
+    console.error('Error saving orders:', error);
+    return false;
+  }
+}
+
 const getOrders = () => {
   return orders.map(sale => {
     const obj = Object.assign(new Order(), sale);
@@ -25,7 +35,7 @@ const exists = id => {
 const createOrder = ({ clientId, storeId, paymentMethod, detailsId }) => {
   let newOrder = new Order(orders.length + 1, clientId, storeId, paymentMethod, detailsId);
 
-  return fileHandler.writeFile(JSON_FILE, [...orders, newOrder]);
+  return save([...orders, newOrder]);
 };
 
 const updateOrder = (id, status) => {
@@ -39,7 +49,7 @@ const updateOrder = (id, status) => {
 
   const list = orders.map(o => (o.id === id ? order : o));
 
-  return fileHandler.writeFile(JSON_FILE, list);
+  return save(list);
 };
 
 // const updateSale = (id, { name, email, phone, address }) => {

@@ -1,7 +1,7 @@
 .box
   h2.subtitle Solicitud de Orden
 
-  form(method="POST", action="/api/sales", autocomplete='off')
+  form(autocomplete='off', id="addOrderForm")
     .field
       label.label Fecha
       .control
@@ -31,4 +31,24 @@
       .control
         button.button.is-primary(type="submit") Guardar
       .control
-        a.button.is-light(href="/sales") Cancelar
+        a.button.is-light(href="/orders") Cancelar
+
+script.
+  document.getElementById('addOrderForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    fetch('/api/orders', {
+      method: 'POST',
+      body: new FormData(this)
+    })
+    .then(response => {
+      if (response.ok) {
+        alert('Datos enviados correctamente');
+        window.location.href = '/commerces/list';
+      } else {
+        alert('Error al enviar los datos');
+      }
+    })
+    .catch(() => alert('Error de conexión'));
+  });
+

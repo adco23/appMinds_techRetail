@@ -1,22 +1,42 @@
 [
   {
     "id": 1,
-    "name": "slkdfj",
-    "cuit": 4451,
-    "email": "lksfj",
-    "phone": null,
-    "address": null,
-    "status": 0,
-    "createdAt": "2026-04-20T02:26:28.442Z"
+    "name": "Supermercado La Estrella",
+    "cuit": "30123456789",
+    "email": "contacto@laestrella.com",
+    "phone": "+54 385 4210000",
+    "address": "Av. Belgrano 123, Santiago del Estero",
+    "status": 1,
+    "createdAt": "2024-01-15T10:30:00Z"
   },
   {
     "id": 2,
-    "name": "slkdfj",
-    "cuit": 4451,
-    "email": "lksfj",
+    "name": "Farmacia Central",
+    "cuit": "30876543210",
+    "email": "info@farmaciacentral.com",
+    "phone": "+54 385 4221111",
+    "address": "Calle Libertad 456, Santiago del Estero",
+    "status": 0,
+    "createdAt": "2024-02-20T14:45:00Z"
+  },
+  {
+    "id": 3,
+    "name": "Panadería El Trigal",
+    "cuit": "20112233445",
+    "email": "ventas@eltrigal.com",
     "phone": null,
+    "address": "San Martín 789, Santiago del Estero",
+    "status": 1,
+    "createdAt": "2024-03-05T08:15:00Z"
+  },
+  {
+    "id": 4,
+    "name": "Librería Horizonte",
+    "cuit": "27998877664",
+    "email": "horizonte@libreria.com",
+    "phone": "+54 385 4232222",
     "address": null,
     "status": 0,
-    "createdAt": "2026-04-20T02:29:17.989Z"
+    "createdAt": "2024-04-10T16:00:00Z"
   }
 ]

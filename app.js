@@ -12,15 +12,14 @@ const { errorHandler } = require('./middlewares/error.middleware.js');
 dotenv.config();
 
 const app = express();
-app.use(express.urlencoded({ extended: true })); // Para que Express pueda leer los datos del formulario
 
 app.use(cors());
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
-app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 app.use(morgan('dev'));
 
