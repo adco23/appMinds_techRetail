@@ -1,0 +1,51 @@
+extends ../layouts/main
+
+block content
+  h1.title Editar producto
+
+  form(method="POST", action=`/products/edit/${product.id}`)
+    .field
+      label.label ID
+      .control
+        input.input(type="number", name="id", value=product.id, readonly)
+
+    .field
+      label.label Nombre
+      .control
+        input.input(type="text", name="name", value=product.name, required)
+
+    .field
+      label.label Descripción
+      .control
+        textarea.textarea(name="description", required)= product.description
+
+    .field
+      label.label Precio
+      .control
+        input.input(type="number", name="price", value=product.price, required)
+
+    .field
+      label.label Stock
+      .control
+        input.input(type="number", name="stock", value=product.stock, required)
+
+    .field
+      label.label Categoría
+      .control
+        input.input(type="text", name="category", value=product.category, required)
+
+    .field
+      label.label Store ID
+      .control
+        input.input(type="number", name="storeId", value=product.storeId, required)
+
+    .field
+      label.label Estado
+      .control
+        input.input(type="text", name="status", value=product.status, required)
+
+    .field.is-grouped
+      .control
+        button.button.is-primary(type="submit") Guardar cambios
+      .control
+        a.button.is-light(href="/products/view") Cancelar

@@ -1,4 +1,5 @@
 const storeService = require("../services/store.service");
+const productService = require("../services/product.service");
 
 const getStores = (req, res, next) => {
   try {
@@ -24,9 +25,12 @@ const getStoresView = (req, res, next) => {
 const getStoreDetailView = (req, res, next) => {
   try {
     const store = storeService.getStoreById(req.params.id);
+    const products = productService.getProductsByStoreId(req.params.id);
+
     res.render("stores/show", {
       title: "Detalle de tienda",
       store,
+      products,
     });
   } catch (error) {
     next(error);

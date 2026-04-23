@@ -1,9 +1,18 @@
 [
   {
     "id": 2,
-    "name": "Tecno Lucas",
+    "name": "Tecno Lucas Gabriel",
     "category": "Tecnologia",
     "subdomain": "tecnoplus",
+    "status": "active",
+    "commerceId": 102,
+    "createdAt": "2026-06-16"
+  },
+  {
+    "id": 3,
+    "name": "Moda de trabajo",
+    "category": "Indumentaria",
+    "subdomain": "ropaLaboral",
     "status": "active",
     "commerceId": 102,
     "createdAt": "2026-06-16"
@@ -16,14 +25,5 @@
     "status": "active",
     "commerceId": 102,
     "createdAt": "2026-04-20"
-  },
-  {
-    "id": 3,
-    "name": "Moda de trabajo",
-    "category": "Indumentaria",
-    "subdomain": "ropaLaboral",
-    "status": "active",
-    "commerceId": 102,
-    "createdAt": "2026-06-16"
   }
 ]

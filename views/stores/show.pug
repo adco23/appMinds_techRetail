@@ -29,8 +29,33 @@ block content
 
   .box
     h2.title.is-5 Productos de esta tienda
-    p Por el momento esta sección está en construcción.
-    p Más adelante acá se mostrarán los productos asociados a esta tienda.
+
+    if products && products.length > 0
+      .table-container
+        table.table.is-striped.is-hoverable.is-fullwidth
+          thead
+            tr
+              th ID
+              th Nombre
+              th Descripción
+              th Precio
+              th Stock
+              th Categoría
+              th Estado
+          tbody
+            each product in products
+              tr
+                td= product.id
+                td= product.name
+                td= product.description
+                td= product.price
+                td= product.stock
+                td= product.category
+                td= product.status
+    else
+      article.message.is-warning
+        .message-body
+          | Esta tienda todavía no tiene productos asociados.
 
   .buttons
     a.button.is-link(href="/stores/view") Volver al listado

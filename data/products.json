@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "name": "Remera básica",
+    "description": "Remera de algodón unisex",
+    "price": 15000,
+    "stock": 20,
+    "category": "Indumentaria",
+    "storeId": 1,
+    "status": "active"
+  },
+  {
+    "id": 2,
+    "name": "Zapatilla running",
+    "description": "Zapatilla deportiva liviana",
+    "price": 45000,
+    "stock": 50,
+    "category": "Calzado",
+    "storeId": 1,
+    "status": "active"
+  }
+]
