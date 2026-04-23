@@ -1,30 +1,22 @@
 [
   {
     "id": 1,
-    "name": "Juan Pérez",
-    "email": "juan@tecnoshop.com",
+    "firstName": "Pedro",
+    "lastName": "Picapiedra",
+    "email": "ppicapiedra@hanna-barbera.com",
+    "password": "pebbles",
     "role": "admin",
-    "storeId": 1
+    "commerceId": 10000,
+    "status": "active"
   },
   {
     "id": 2,
-    "name": "Lucía Gómez",
-    "email": "lucia@modaurbana.com",
-    "role": "admin",
-    "storeId": 2
-  },
-  {
-    "id": 3,
-    "name": "Carlos Ruiz",
-    "email": "carlos@hogarydeco.com",
-    "role": "admin",
-    "storeId": 3
-  },
-  {
-    "id": 4,
-    "name": "María López",
-    "email": "soporte@tecnoshop.com",
-    "role": "support",
-    "storeId": 1
+    "firstName": "Pablo",
+    "lastName": "Marmol",
+    "email": "pmarmol@hanna-barbera.com",
+    "password": "bambam",
+    "role": "vendedor",
+    "commerceId": 10000,
+    "status": "active"
   }
 ]

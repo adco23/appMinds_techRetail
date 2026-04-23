@@ -1,0 +1,86 @@
+extends ../layouts/main
+
+block content
+  .level
+    .level-left
+      h1.title.is-3 Listado de Usuarios
+    .level-right
+      a.button.is-primary(href="/users/add") Nuevo Usuario
+  hr
+
+  .table-container
+    table.table.is-striped.is-fullwidth.is-hoverable
+      thead
+        tr
+          th ID
+          th Nombre
+          th Apellido
+          th Email
+          th Comercio
+          th Rol
+          th Estado
+          th Acciones
+      tbody
+        if users && users.length > 0
+          each user in users
+            - const emailSuffix = user.email.replace(/[@.]/g, '-')
+            tr(id=`row-${emailSuffix}`)
+              td= user.id
+              td= user.firstName
+              td= user.lastName
+              td= user.email
+              td= user.commerceId
+              td= user.role
+              td(id=`text-${emailSuffix}`)
+                = user.status === 'active' ? 'Activo' : 'Inactivo'
+              td
+                .buttons
+                  a.button.is-small.is-warning(href=`/users/edit/${user.email}`) Editar
+                  button.button.is-small.is-dark(onclick=`handleDelete('${user.email}')`) Eliminar
+
+                  button.button.is-small.is-outlined(
+                    id=`btn-${emailSuffix}`
+                    class=user.status === 'active' ? 'is-danger' : 'is-info'
+                    onclick=`handleStatus('${user.email}', '${user.status === 'active' ? 'deactivate' : 'activate'}')`
+                  )
+                    = user.status === 'active' ? 'Desactivar' : 'Activar'
+        else
+          tr
+            td.has-text-centered(colspan="8") No hay usuarios para mostrar.
+
+  script.
+    async function handleDelete(email) {
+      if (!confirm('¿Seguro que querés eliminar este usuario?')) return;
+      const res = await fetch(`/api/users/${email}`, { method: 'DELETE' });
+      if (res.ok) {
+        const rowId = `row-${email.replace(/[@.]/g, '-')}`;
+        document.getElementById(rowId).remove();
+      }
+    }
+
+    async function handleStatus(email, action) {
+      const res = await fetch(`/api/users/${email}/${action}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      if (res.ok) {
+        const idSuffix = email.replace(/[@.]/g, '-');
+        const statusText = document.getElementById(`text-${idSuffix}`);
+        const btn = document.getElementById(`btn-${idSuffix}`);
+
+        if (action === 'deactivate') {
+          statusText.innerText = 'Inactivo';
+          btn.className = 'button is-small is-info is-outlined';
+          btn.innerText = 'Activar';
+          btn.setAttribute('onclick', `handleStatus('${email}', 'activate')`);
+        } else {
+          statusText.innerText = 'Activo';
+          btn.className = 'button is-small is-danger is-outlined';
+          btn.innerText = 'Desactivar';
+          btn.setAttribute('onclick', `handleStatus('${email}', 'deactivate')`);
+        }
+      } else {
+        alert('Error al actualizar el estado');
+      }
+    }

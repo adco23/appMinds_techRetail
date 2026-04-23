@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const { getCommerce } = require('../services/commerce.service.js');
 const { getOrders } = require('../services/order.service.js');
+const userService = require('../services/user.service.js');
 
 const router = Router();
 
@@ -38,7 +39,20 @@ router.get('/transactions', (req, res) => {
 });
 
 router.get('/users', (req, res) => {
-  res.render('users/index');
+  const users = userService.getUsers();
+  res.render('users/list', { users });
+});
+
+router.get('/users/add', (req, res) => {
+  res.render('users/add');
+});
+
+router.get('/users/edit/:email', (req, res) => {
+  const user = userService.findByEmail(req.params.email);
+  if (!user) {
+    return res.redirect('/users');
+  }
+  res.render('users/edit', { user });
 });
 
 module.exports = router;

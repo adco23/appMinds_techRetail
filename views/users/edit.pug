@@ -1,0 +1,64 @@
+extends ../layouts/main
+
+block content
+  .columns.is-centered
+    .column.is-6
+      h1.title.is-3 Editar Usuario
+      hr
+      form(id="editForm")
+        .field
+          label.label Nombre
+          input.input(type="text" name="firstName" value=user.firstName required)
+
+        .field
+          label.label Apellido
+          input.input(type="text" name="lastName" value=user.lastName required)
+
+        .field
+          label.label Email (No se puede modificar)
+          input.input(type="email" value=user.email disabled)
+          // Usamos un campo oculto para mandar el email en el body
+          input(type="hidden" name="email" value=user.email)
+
+        .field
+          label.label Nueva Password (Opcional)
+          input.input(type="password" name="password" placeholder="Dejar en blanco para no cambiar")
+
+        .field
+          label.label Rol
+          .select.is-fullwidth
+            select(name="role")
+              option(value="admin" selected=user.role === 'admin') Admin
+              option(value="vendedor" selected=user.role === 'vendedor') Vendedor
+
+        .field
+          label.label ID Comercio
+          input.input(type="number" name="commerceId" value=user.commerceId required)
+
+        .buttons.is-right
+          a.button.is-light(href="/users") Cancelar
+          button.button.is-warning(type="submit") Guardar Cambios
+
+      script.
+        document.getElementById('editForm').onsubmit = async (e) => {
+          e.preventDefault();
+          const formData = Object.fromEntries(new FormData(e.target));
+          const email = formData.email;
+
+          try {
+            const res = await fetch(`/api/users/${email}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(formData)
+            });
+
+            if (res.ok) {
+              window.location.href = '/users';
+            } else {
+              const data = await res.json();
+              alert('Error: ' + (data.error || 'No se pudo actualizar el usuario'));
+            }
+          } catch (err) {
+            alert('Error de conexión con el servidor');
+          }
+        };
