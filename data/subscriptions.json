@@ -4,7 +4,7 @@
     "detail": "Premium",
     "amount": 50,
     "startDate": "2026-04-01",
-    "expDate": "2026-05-01",
+    "expDate": "2026-05-31",
     "status": "cancelled",
     "storeId": 101
   },
@@ -13,8 +13,8 @@
     "detail": "Basico",
     "amount": 25,
     "startDate": "2026-04-15",
-    "expDate": "2026-08-13",
-    "status": "cancelled",
+    "expDate": "2026-10-12",
+    "status": "active",
     "storeId": 102
   },
   {
@@ -22,8 +22,8 @@
     "detail": "Premium",
     "amount": 50,
     "startDate": "2026-05-01",
-    "expDate": "2026-08-30",
-    "status": "active",
+    "expDate": "2026-09-29",
+    "status": "cancelled",
     "storeId": 101
   },
   {
@@ -31,8 +31,35 @@
     "detail": "dfd",
     "amount": 444,
     "startDate": "2026-04-22",
-    "expDate": "2026-05-22",
+    "expDate": "2026-08-20",
     "status": "active",
     "storeId": 4
+  },
+  {
+    "id": 5,
+    "detail": "Clasico",
+    "amount": 45000,
+    "startDate": "2026-04-23",
+    "expDate": "2026-06-22",
+    "status": "active",
+    "storeId": 6
+  },
+  {
+    "id": 6,
+    "detail": "Premium",
+    "amount": 56000,
+    "startDate": "2026-04-24",
+    "expDate": "2026-06-23",
+    "status": "active",
+    "storeId": 5
+  },
+  {
+    "id": 7,
+    "detail": "jdajdkf",
+    "amount": 6700,
+    "startDate": "2026-04-24",
+    "expDate": "2026-05-24",
+    "status": "active",
+    "storeId": 150
   }
 ]
