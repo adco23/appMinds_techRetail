@@ -4,16 +4,15 @@ const Commerce = require('../models/commerce.model');
 const JSON_FILE = 'commerces.json';
 const commerces = fileHandler.readFile(JSON_FILE);
 
-const save = (data) => {
-  
+const save = data => {
   try {
     fileHandler.writeFile(JSON_FILE, data);
-    return true
+    return true;
   } catch (error) {
     console.error('Error saving commerces:', error);
     return false;
   }
-}
+};
 
 const getCommerce = () => {
   return commerces;
@@ -71,6 +70,6 @@ const activate = id => {
   commerce.status = 1;
 
   return save([...commerces.map(c => (c.id == id ? commerce : c))]);
-}
+};
 
 module.exports = { getCommerce, createCommerce, existsByCuit, findByCuit, deleteCommerce, updateCommerce, activate };

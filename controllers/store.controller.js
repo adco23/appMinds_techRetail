@@ -1,13 +1,13 @@
-const storeService = require("../services/store.service");
-const productService = require("../services/product.service");
+const storeService = require('../services/store.service');
+const productService = require('../services/product.service');
 
 const getSimQuery = req => {
-  const role = req.query.role || "";
-  const subscribed = req.query.subscribed === "1";
+  const role = req.query.role || '';
+  const subscribed = req.query.subscribed === '1';
 
-  if (!role) return "";
+  if (!role) return '';
 
-  return `?role=${role}${subscribed ? "&subscribed=1" : ""}`;
+  return `?role=${role}${subscribed ? '&subscribed=1' : ''}`;
 };
 
 const getStores = (req, res, next) => {
@@ -22,8 +22,8 @@ const getStores = (req, res, next) => {
 const getStoresView = (req, res, next) => {
   try {
     const stores = storeService.getAllStores();
-    res.render("stores/index", {
-      title: "Tiendas",
+    res.render('stores/index', {
+      title: 'Tiendas',
       stores,
     });
   } catch (error) {
@@ -33,8 +33,8 @@ const getStoresView = (req, res, next) => {
 
 const getStoreNewView = (req, res, next) => {
   try {
-    res.render("stores/new", {
-      title: "Nueva tienda",
+    res.render('stores/new', {
+      title: 'Nueva tienda',
     });
   } catch (error) {
     next(error);
@@ -46,8 +46,8 @@ const getStoreDetailView = (req, res, next) => {
     const store = storeService.getStoreById(req.params.id);
     const products = productService.getProductsByStoreId(req.params.id);
 
-    res.render("stores/show", {
-      title: "Detalle de tienda",
+    res.render('stores/show', {
+      title: 'Detalle de tienda',
       store,
       products,
     });
@@ -59,8 +59,8 @@ const getStoreDetailView = (req, res, next) => {
 const getStoreEditView = (req, res, next) => {
   try {
     const store = storeService.getStoreById(req.params.id);
-    res.render("stores/edit", {
-      title: "Editar tienda",
+    res.render('stores/edit', {
+      title: 'Editar tienda',
       store,
     });
   } catch (error) {
@@ -81,7 +81,7 @@ const createStore = (req, res, next) => {
   try {
     const newStore = storeService.createStore(req.body);
     res.status(201).json({
-      message: "Store created successfully",
+      message: 'Store created successfully',
       store: newStore,
     });
   } catch (error) {
@@ -102,7 +102,7 @@ const updateStore = (req, res, next) => {
   try {
     const updatedStore = storeService.updateStore(req.params.id, req.body);
     res.json({
-      message: "Store updated successfully",
+      message: 'Store updated successfully',
       store: updatedStore,
     });
   } catch (error) {

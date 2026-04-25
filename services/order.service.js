@@ -4,15 +4,15 @@ const Order = require('../models/order.model');
 const JSON_FILE = 'orders.json';
 const orders = fileHandler.readFile(JSON_FILE);
 
-const save = (data) => {
+const save = data => {
   try {
     fileHandler.writeFile(JSON_FILE, data);
-    return true
+    return true;
   } catch (error) {
     console.error('Error saving orders:', error);
     return false;
   }
-}
+};
 
 const getOrders = () => {
   return orders.map(sale => {

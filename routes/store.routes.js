@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 
 const {
@@ -14,22 +14,22 @@ const {
   updateStoreFromView,
   deleteStore,
   deleteStoreFromView,
-} = require("../controllers/store.controller");
+} = require('../controllers/store.controller');
 
-router.get("/", getStores);
-router.get("/view", getStoresView);
-router.get("/view/new", getStoreNewView);
-router.get("/view/:id", getStoreDetailView);
-router.get("/edit/:id", getStoreEditView);
+router.get('/', getStores);
+router.get('/view', getStoresView);
+router.get('/view/new', getStoreNewView);
+router.get('/view/:id', getStoreDetailView);
+router.get('/edit/:id', getStoreEditView);
 
-router.get("/:id", getStoreById);
+router.get('/:id', getStoreById);
 
-router.post("/", createStore);
-router.post("/view", createStoreFromView);
-router.post("/edit/:id", updateStoreFromView);
-router.post("/delete/:id", deleteStoreFromView);
+router.post('/', createStore);
+router.post('/view', createStoreFromView);
+router.post('/edit/:id', updateStoreFromView);
+router.post('/delete/:id', deleteStoreFromView);
 
-router.put("/:id", updateStore);
-router.delete("/:id", deleteStore);
+router.put('/:id', updateStore);
+router.delete('/:id', deleteStore);
 
 module.exports = router;

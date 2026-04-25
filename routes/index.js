@@ -10,7 +10,7 @@ const transactionRoutes = require('./transaction.routes.js');
 const router = Router();
 
 // Vistas
-router.use("/", viewRoutes);
+router.use('/', viewRoutes);
 
 // API
 router.use('/api/commerces', commerceRoutes);

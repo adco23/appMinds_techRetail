@@ -1,12 +1,12 @@
-const productService = require("../services/product.service");
+const productService = require('../services/product.service');
 
 const getSimQuery = req => {
-  const role = req.query.role || "";
-  const subscribed = req.query.subscribed === "1";
+  const role = req.query.role || '';
+  const subscribed = req.query.subscribed === '1';
 
-  if (!role) return "";
+  if (!role) return '';
 
-  return `?role=${role}${subscribed ? "&subscribed=1" : ""}`;
+  return `?role=${role}${subscribed ? '&subscribed=1' : ''}`;
 };
 
 const getProducts = (req, res, next) => {
@@ -21,8 +21,8 @@ const getProducts = (req, res, next) => {
 const getProductsView = (req, res, next) => {
   try {
     const products = productService.getAllProducts();
-    res.render("products/index", {
-      title: "Productos",
+    res.render('products/index', {
+      title: 'Productos',
       products,
     });
   } catch (error) {
@@ -33,8 +33,8 @@ const getProductsView = (req, res, next) => {
 const getProductDetailView = (req, res, next) => {
   try {
     const product = productService.getProductById(req.params.id);
-    res.render("products/show", {
-      title: "Detalle de producto",
+    res.render('products/show', {
+      title: 'Detalle de producto',
       product,
     });
   } catch (error) {
@@ -45,8 +45,8 @@ const getProductDetailView = (req, res, next) => {
 const getProductEditView = (req, res, next) => {
   try {
     const product = productService.getProductById(req.params.id);
-    res.render("products/edit", {
-      title: "Editar producto",
+    res.render('products/edit', {
+      title: 'Editar producto',
       product,
     });
   } catch (error) {
@@ -56,9 +56,9 @@ const getProductEditView = (req, res, next) => {
 
 const getProductNewView = (req, res, next) => {
   try {
-    const storeId = req.params.storeId || "";
-    res.render("products/new", {
-      title: "Nuevo producto",
+    const storeId = req.params.storeId || '';
+    res.render('products/new', {
+      title: 'Nuevo producto',
       storeId,
     });
   } catch (error) {
@@ -79,7 +79,7 @@ const createProduct = (req, res, next) => {
   try {
     const newProduct = productService.createProduct(req.body);
     res.status(201).json({
-      message: "Product created successfully",
+      message: 'Product created successfully',
       product: newProduct,
     });
   } catch (error) {
@@ -100,7 +100,7 @@ const updateProduct = (req, res, next) => {
   try {
     const updatedProduct = productService.updateProduct(req.params.id, req.body);
     res.json({
-      message: "Product updated successfully",
+      message: 'Product updated successfully',
       product: updatedProduct,
     });
   } catch (error) {

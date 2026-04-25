@@ -36,7 +36,11 @@ app.use((req, res, next) => {
     query,
   };
 
-  if ((req.path.startsWith('/stores') || req.path.startsWith('/products')) && role === 'commerce-admin' && !subscribed) {
+  if (
+    (req.path.startsWith('/stores') || req.path.startsWith('/products')) &&
+    role === 'commerce-admin' &&
+    !subscribed
+  ) {
     return res.redirect('/commerce-admin/subscription?role=commerce-admin');
   }
 

@@ -1,9 +1,9 @@
-const fs = require("fs");
-const path = require("path");
+const fs = require('fs');
+const path = require('path');
 
-const dataPath = path.join(__dirname, "..", "data");
+const dataPath = path.join(__dirname, '..', 'data');
 
-const readFile = (fileName) => {
+const readFile = fileName => {
   try {
     const filePath = path.join(dataPath, fileName);
 
@@ -11,8 +11,8 @@ const readFile = (fileName) => {
       return [];
     }
 
-    const data = fs.readFileSync(filePath, "utf-8");
-    return JSON.parse(data || "[]");
+    const data = fs.readFileSync(filePath, 'utf-8');
+    return JSON.parse(data || '[]');
   } catch (error) {
     console.error(`Error reading file ${fileName}:`, error);
     return [];

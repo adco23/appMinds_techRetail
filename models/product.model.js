@@ -1,14 +1,5 @@
 class Product {
-  constructor(
-    id,
-    name,
-    description,
-    price,
-    stock,
-    category,
-    storeId,
-    status
-  ) {
+  constructor(id, name, description, price, stock, category, storeId, status) {
     this.id = id;
     this.name = name;
     this.description = description;
@@ -33,17 +24,17 @@ class Product {
 
   decreaseStock(quantity) {
     if (quantity > this.stock) {
-      throw new Error("Insufficient stock");
+      throw new Error('Insufficient stock');
     }
     this.stock -= quantity;
   }
 
   activate() {
-    this.status = "active";
+    this.status = 'active';
   }
 
   deactivate() {
-    this.status = "inactive";
+    this.status = 'inactive';
   }
 }
 

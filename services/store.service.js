@@ -1,65 +1,63 @@
-const fileHandler = require("../utils/fileHandler");
-const Store = require("../models/store.model");
+const fileHandler = require('../utils/fileHandler');
+const Store = require('../models/store.model');
 
-const FILE_NAME = "stores.json";
+const FILE_NAME = 'stores.json';
 
 const getAllStores = () => {
   return fileHandler.readFile(FILE_NAME);
 };
 
-const getStoreById = (id) => {
+const getStoreById = id => {
   const stores = fileHandler.readFile(FILE_NAME);
-  const store = stores.find((store) => store.id === parseInt(id));
+  const store = stores.find(store => store.id === parseInt(id));
 
   if (!store) {
-    throw new Error("Store not found");
+    throw new Error('Store not found');
   }
 
   return store;
 };
 
-const createStore = (data) => {
+const createStore = data => {
   const stores = fileHandler.readFile(FILE_NAME);
 
   if (!data.id) {
-    throw new Error("Store id is required");
+    throw new Error('Store id is required');
   }
 
   if (!data.name) {
-    throw new Error("Store name is required");
+    throw new Error('Store name is required');
   }
 
   if (!data.category) {
-    throw new Error("Store category is required");
+    throw new Error('Store category is required');
   }
 
   if (!data.subdomain) {
-    throw new Error("Store subdomain is required");
+    throw new Error('Store subdomain is required');
   }
 
   if (!data.status) {
-    throw new Error("Store status is required");
+    throw new Error('Store status is required');
   }
 
   if (!data.commerceId) {
-    throw new Error("Commerce id is required");
+    throw new Error('Commerce id is required');
   }
 
   if (!data.createdAt) {
-    throw new Error("Created date is required");
+    throw new Error('Created date is required');
   }
 
-  const existingId = stores.find((store) => store.id === parseInt(data.id));
+  const existingId = stores.find(store => store.id === parseInt(data.id));
   if (existingId) {
-    throw new Error("A store with this id already exists");
+    throw new Error('A store with this id already exists');
   }
 
-  const existingSubdomain = stores.find(
-    (store) => store.subdomain.toLowerCase() === data.subdomain.toLowerCase()
-  );
+  const existingSubdomain = stores.find(store => store.subdomain.toLowerCase() === data.subdomain.toLowerCase());
 
   if (existingSubdomain) {
-    throw new Error("Subdomain already exists");
+    throw new Error('Subdomain already exists');
   }
 
   const newStore = new Store(
@@ -69,7 +67,7 @@ const createStore = (data) => {
     data.subdomain,
     data.status,
     parseInt(data.commerceId),
-    data.createdAt
+    data.createdAt,
   );
 
   stores.push(newStore);
@@ -80,21 +78,19 @@ const createStore = (data) => {
 
 const updateStore = (id, data) => {
   const stores = fileHandler.readFile(FILE_NAME);
-  const store = stores.find((store) => store.id === parseInt(id));
+  const store = stores.find(store => store.id === parseInt(id));
 
   if (!store) {
-    throw new Error("Store not found");
+    throw new Error('Store not found');
   }
 
   if (data.subdomain && data.subdomain !== store.subdomain) {
     const repeatedSubdomain = stores.find(
-      (item) =>
-        item.subdomain.toLowerCase() === data.subdomain.toLowerCase() &&
-        item.id !== store.id
+      item => item.subdomain.toLowerCase() === data.subdomain.toLowerCase() && item.id !== store.id,
     );
 
     if (repeatedSubdomain) {
-      throw new Error("Subdomain already exists");
+      throw new Error('Subdomain already exists');
     }
   }
 
@@ -102,9 +98,7 @@ const updateStore = (id, data) => {
   store.category = data.category ?? store.category;
   store.subdomain = data.subdomain ?? store.subdomain;
   store.status = data.status ?? store.status;
-  store.commerceId = data.commerceId
-    ? parseInt(data.commerceId)
-    : store.commerceId;
+  store.commerceId = data.commerceId ? parseInt(data.commerceId) : store.commerceId;
   store.createdAt = data.createdAt ?? store.createdAt;
 
   fileHandler.writeFile(FILE_NAME, stores);
@@ -112,17 +106,17 @@ const updateStore = (id, data) => {
   return store;
 };
 
-const deleteStore = (id) => {
+const deleteStore = id => {
   const stores = fileHandler.readFile(FILE_NAME);
-  const filteredStores = stores.filter((store) => store.id !== parseInt(id));
+  const filteredStores = stores.filter(store => store.id !== parseInt(id));
 
   if (stores.length === filteredStores.length) {
-    throw new Error("Store not found");
+    throw new Error('Store not found');
   }
 
   fileHandler.writeFile(FILE_NAME, filteredStores);
 
-  return { message: "Store deleted successfully" };
+  return { message: 'Store deleted successfully' };
 };
 
 module.exports = {
