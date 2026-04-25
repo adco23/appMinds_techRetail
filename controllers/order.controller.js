@@ -12,7 +12,7 @@ const getOrders = (req, res, next) => {
       return res.json(order);
     }
 
-    res.json(service.getSales());
+    res.json(service.getOrders());
   } catch (error) {
     next(error);
   }
@@ -31,7 +31,7 @@ const createOrder = (req, res, next) => {
 
     if (!validate(validations, res)) return;
 
-    const statusCreated = service.createSale({ clientId, storeId, paymentMethod, detailsId });
+    const statusCreated = service.createOrder({ clientId, storeId, paymentMethod, detailsId });
 
     if (!statusCreated) return res.status(500).json({ error: 'Error al registrar la Orden.' });
     res.status(201).json({ message: 'Orden (pendiente) registrada exitosamente.' });

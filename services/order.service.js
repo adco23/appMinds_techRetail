@@ -25,11 +25,11 @@ const getOrders = () => {
 };
 
 const findById = id => {
-  return orders.find(order => order.id === id);
+  return orders.find(order => order.id == id);
 };
 
 const exists = id => {
-  return orders.some(order => order.id === id);
+  return orders.some(order => order.id == id);
 };
 
 const createOrder = ({ clientId, storeId, paymentMethod, detailsId }) => {
