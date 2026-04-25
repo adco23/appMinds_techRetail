@@ -1,45 +1,31 @@
 extends ../layouts/main
 
 block content
-  .columns.is-variable.is-6
-    .column.is-7
-      h1.title Bienvenido a TechRetail Solutions SRL
+  h1.title Bienvenido a TechRetail Solutions SRL
 
-      if denied === 'platform-only'
-        .notification.is-warning
-          | Ese modulo solo debe verlo un administrador de la plataforma.
-      else if denied === 'commerce-admin-only'
-        .notification.is-warning
-          | Esta vista solo aplica al administrador del comercio.
+  if sim.isCommerceAdmin && !sim.subscribed
+    .notification.is-warning
+      | El admin de comercio primero debe pagar una suscripción para tener acceso a las funcinalidades.
+    a.button.is-warning.mt-3(href="/commerce-admin/subscription?role=commerce-admin") Ir a pagar suscripción
 
-      if simulatedUser.isCommerceAdmin && !simulatedUser.subscriptionPaid
-        .notification.is-info
-          | Antes de usar los modulos del comercio, primero hay que simular el pago de la suscripcion.
-      else if simulatedUser.isCommerceAdmin && simulatedUser.subscriptionPaid
-        .notification.is-success
-          | La suscripcion del comercio ya esta activa. Ya podes navegar por los modulos habilitados.
-      else if simulatedUser.isPlatformAdmin
-        .notification.is-primary
-          | Estas navegando como administrador de plataforma. Tenes acceso a usuarios, comercios y suscripciones.
+  if sim.isCommerceAdmin && sim.subscribed
+    .notification.is-success
+      | Suscripción activada. Ya puede entrar a los modulos del comercio.
 
-      //- .content
-      //-   p El flujo pedido queda separado asi:
-      //-   ul
-      //-     li El admin de plataforma gestiona usuarios, comercios y suscripciones.
-      //-     li El admin de comercio no ve usuarios ni comercios.
-      //-     li El admin de comercio debe activar primero una suscripcion simulada para acceder al resto.
+  if sim.isPlatformAdmin
+    .notification.is-info
+      | Simulacion de admin de plataforma activa.
 
-    .column.is-5
-      .box
-        h2.title.is-4 Entrar en modo simulacion
-        p.mb-4 Elegi un perfil para probar la experiencia.
+  .box
+    h2.title.is-5 Simulacion simple
+    p Elegi un tipo de usuario para probar la vista.
 
-        .buttons
-          a.button.is-primary(href="/simulation/login/platform-admin") Simular admin
-          a.button.is-link(href="/simulation/login/commerce-admin") Simular comercio
+    .buttons.mt-4
+      a.button.is-primary(href="/?role=platform-admin") Admin plataforma
+      a.button.is-link(href="/?role=commerce-admin") Admin comercio
 
-        if simulatedUser.isCommerceAdmin
-          if simulatedUser.subscriptionPaid
-            a.button.is-success.is-fullwidth.mt-3(href="/stores/view") Ir a modulos habilitados
-          else
-            a.button.is-warning.is-fullwidth.mt-3(href="/commerce-admin/subscription") Pagar suscripcion simulada
+    //- if sim.isCommerceAdmin && !sim.subscribed
+
+
+    if sim.isCommerceAdmin && sim.subscribed
+      a.button.is-success.mt-3(href="/orders?role=commerce-admin&subscribed=1") Ir a modulos del comercio

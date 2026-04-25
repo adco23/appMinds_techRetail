@@ -8,10 +8,6 @@ const routes = require('./routes/index.js');
 const storeRoutes = require('./routes/store.routes.js');
 const productRoutes = require('./routes/product.routes.js');
 const { errorHandler } = require('./middlewares/error.middleware.js');
-const {
-  attachSimulatedAccess,
-  requireCommerceSubscription,
-} = require('./middlewares/simulatedAccess.middleware.js');
 
 dotenv.config();
 
@@ -26,16 +22,26 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(morgan('dev'));
-app.use(attachSimulatedAccess);
+
+app.use((req, res, next) => {
+  const role = req.query.role || '';
+  const subscribed = req.query.subscribed === '1';
+
+  if ((req.path.startsWith('/stores') || req.path.startsWith('/products')) && role === 'commerce-admin' && !subscribed) {
+    return res.redirect('/commerce-admin/subscription?role=commerce-admin');
+  }
+
+  next();
+});
 
 // Rutas generales del proyecto
 app.use('/', routes);
 
 // API y vistas del módulo Store
-app.use('/stores', requireCommerceSubscription, storeRoutes);
+app.use('/stores', storeRoutes);
 
 // API y vistas del módulo Product
-app.use('/products', requireCommerceSubscription, productRoutes);
+app.use('/products', productRoutes);
 
 app.use(errorHandler);
 

@@ -1,37 +1,54 @@
 extends ../layouts/main
 
 block content
-  .columns.is-centered
-    .column.is-7
-      .box
-        h1.title.is-3 Activar suscripcion del comercio
-        p.subtitle Esta pantalla simula el paso previo obligatorio para habilitar los modulos del comercio.
+  h1.title Suscripción disponibles
 
-        if required
-          .notification.is-warning
-            | Intentaste entrar a un modulo bloqueado. Primero hay que registrar el pago de la suscripcion.
+  if sim.isCommerceAdmin
+    p.mt-3 Antes de acceder a ordenes, tiendas, productos y transacciones, tenes que pasar por acá.
 
-        .content
-          p En esta etapa no se implementa autenticacion real ni pasarela de pagos.
-          p El objetivo es representar el flujo funcional:
-          ul
-            li El administrador del comercio entra a la plataforma.
-            li Todavia no puede usar los modulos operativos.
-            li Simula el pago de una suscripcion.
-            li Recien despues se habilitan ordenes, tiendas, productos y transacciones.
+    section.section
+      .container
+        //- h1.title.has-text-centered Nuestros Planes
+        .columns.is-centered.is-variable.is-8
 
-        .notification.is-light
-          p
-            strong Plan simulado:
-            |  Comercio Mensual
-          p
-            strong Precio:
-            |  $ 9.999 ARS
-          p
-            strong Estado inicial:
-            |  Pendiente de pago
+          // Plan Básico
+          .column.is-4
+            .card
+              header.card-header.has-background-light
+                p.card-header-title.is-centered Básico
+              .card-content
+                .content.has-text-centered
+                  p.is-size-1.has-text-weight-bold $10
+                  p.has-text-grey por mes
+              footer.card-footer
+                a.card-footer-item.button.is-light(href="/?role=commerce-admin&subscribed=1") Elegir Plan
 
-        form(action="/commerce-admin/subscription/pay" method="POST")
-          .buttons
-            button.button.is-primary(type="submit") Simular pago y activar acceso
-            a.button.is-light(href="/") Volver al inicio
+          // Plan Pro (Destacado)
+          .column.is-4
+            .card
+              header.card-header.has-background-primary
+                p.card-header-title.is-centered Profesional
+              .card-content
+                .content.has-text-centered
+                  p.is-size-1.has-text-weight-bold $29
+                  p.has-text-grey por mes
+              footer.card-footer
+                a.card-footer-item.button.is-primary(href="/?role=commerce-admin&subscribed=1") Comenzar Ahora
+
+          // Plan Enterprise
+          .column.is-4
+            .card
+              header.card-header.has-background-light
+                p.card-header-title.is-centered Enterprise
+              .card-content
+                .content.has-text-centered
+                  p.is-size-1.has-text-weight-bold $99
+                  p.has-text-grey por mes
+              footer.card-footer
+                a.card-footer-item.button.is-dark(href="/?role=commerce-admin&subscribed=1") Contactar Ventas
+
+    .buttons.mt-4
+      //- a.button.is-primary(href="/?role=commerce-admin&subscribed=1") Simular pago
+      a.button.is-light(href="/?role=commerce-admin") Volver
+  else
+    a.button.is-light.mt-3(href="/") Volver al inicio
