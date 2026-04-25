@@ -1,5 +1,14 @@
 const productService = require("../services/product.service");
 
+const getSimQuery = req => {
+  const role = req.query.role || "";
+  const subscribed = req.query.subscribed === "1";
+
+  if (!role) return "";
+
+  return `?role=${role}${subscribed ? "&subscribed=1" : ""}`;
+};
+
 const getProducts = (req, res, next) => {
   try {
     const products = productService.getAllProducts();
@@ -81,7 +90,7 @@ const createProduct = (req, res, next) => {
 const createProductFromView = (req, res, next) => {
   try {
     const newProduct = productService.createProduct(req.body);
-    res.redirect(`/stores/view/${newProduct.storeId}`);
+    res.redirect(`/stores/view/${newProduct.storeId}${getSimQuery(req)}`);
   } catch (error) {
     next(error);
   }
@@ -102,7 +111,7 @@ const updateProduct = (req, res, next) => {
 const updateProductFromView = (req, res, next) => {
   try {
     const updatedProduct = productService.updateProduct(req.params.id, req.body);
-    res.redirect(`/stores/view/${updatedProduct.storeId}`);
+    res.redirect(`/stores/view/${updatedProduct.storeId}${getSimQuery(req)}`);
   } catch (error) {
     next(error);
   }
@@ -121,7 +130,7 @@ const deleteProductFromView = (req, res, next) => {
   try {
     const product = productService.getProductById(req.params.id);
     productService.deleteProduct(req.params.id);
-    res.redirect(`/stores/view/${product.storeId}`);
+    res.redirect(`/stores/view/${product.storeId}${getSimQuery(req)}`);
   } catch (error) {
     next(error);
   }

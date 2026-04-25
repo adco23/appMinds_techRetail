@@ -34,7 +34,7 @@ block content
           input.input(type="number" name="commerceId" required)
 
         .buttons.is-right
-          a.button.is-light(href="/users") Cancelar
+          a.button.is-light(href=`/users${sim.query}`) Cancelar
           button.button.is-primary(type="submit") Guardar Usuario
 
       script.
@@ -50,7 +50,7 @@ block content
             });
 
             if (res.ok) {
-              window.location.href = '/users';
+              window.location.href = '/users#{sim.query}';
             } else {
               const data = await res.json();
               alert('Error: ' + (data.error || 'No se pudo crear el usuario'));

@@ -5,7 +5,7 @@ block content
     .level-left
       h1.title.is-3 Listado de Usuarios
     .level-right
-      a.button.is-primary(href="/users/add") Nuevo Usuario
+      a.button.is-primary(href=`/users/add${sim.query}`) Nuevo Usuario
   hr
 
   .table-container
@@ -35,7 +35,7 @@ block content
                 = user.status === 'active' ? 'Activo' : 'Inactivo'
               td
                 .buttons
-                  a.button.is-small.is-warning(href=`/users/edit/${user.email}`) Editar
+                  a.button.is-small.is-warning(href=`/users/edit/${user.email}${sim.query}`) Editar
                   button.button.is-small.is-dark(onclick=`handleDelete('${user.email}')`) Eliminar
 
                   button.button.is-small.is-outlined(

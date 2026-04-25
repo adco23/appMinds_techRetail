@@ -6,11 +6,11 @@ block content
       .level-item
         div
           h1.title Detalle de tienda
-          p.subtitle Información general del módulo Store
+          p.subtitle Informacion general del modulo Store
 
     .level-right
       .level-item
-        a.button.is-primary(href=`/products/view/new/${store.id}`) Nuevo producto
+        a.button.is-primary(href=`/products/view/new/${store.id}${sim.query}`) Nuevo producto
 
   .box
     p
@@ -32,7 +32,7 @@ block content
       strong Comercio ID:
       |  #{store.commerceId}
     p
-      strong Fecha de creación:
+      strong Fecha de creacion:
       |  #{store.createdAt}
 
   h2.title.is-4 Productos de esta tienda
@@ -48,7 +48,7 @@ block content
 
               .content
                 p
-                  strong Descripción:
+                  strong Descripcion:
                   |  #{product.description}
                 p
                   strong Precio:
@@ -61,15 +61,15 @@ block content
                   |  #{product.status}
 
             footer.card-footer
-              a.card-footer-item(href=`/products/view/${product.id}`) Ver
-              a.card-footer-item(href=`/products/edit/${product.id}`) Editar
-              form(method="POST", action=`/products/delete/${product.id}`, style="width:100%;")
-                button.card-footer-item(type="submit", style="width:100%; border:none; background:none; cursor:pointer;", onclick="return confirm('¿Eliminar este producto?')") Eliminar
+              a.card-footer-item(href=`/products/view/${product.id}${sim.query}`) Ver
+              a.card-footer-item(href=`/products/edit/${product.id}${sim.query}`) Editar
+              form(method="POST", action=`/products/delete/${product.id}${sim.query}`, style="width:100%;")
+                button.card-footer-item(type="submit", style="width:100%; border:none; background:none; cursor:pointer;", onclick="return confirm('Eliminar este producto?')") Eliminar
   else
     article.message.is-warning
       .message-body
-        | Esta tienda todavía no tiene productos asociados.
+        | Esta tienda todavia no tiene productos asociados.
 
   .buttons.mt-5
-    a.button.is-link(href="/stores/view") Volver al listado
-    a.button.is-warning(href=`/stores/edit/${store.id}`) Editar tienda
+    a.button.is-link(href=`/stores/view${sim.query}`) Volver al listado
+    a.button.is-warning(href=`/stores/edit/${store.id}${sim.query}`) Editar tienda

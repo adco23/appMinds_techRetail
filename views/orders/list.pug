@@ -1,7 +1,6 @@
 include ./partials/_statusTag
 
 .div
-
   table.table.is-fullwidth.is-striped
     thead
       tr
@@ -19,13 +18,14 @@ include ./partials/_statusTag
             +orderStatusTag(order.status)
           td= order.totalAmount || 'No disponible'
           td
-            button.button.is-small.mr-1.js-open-order-modal(
-              type="button"
-              data-order-id=order.id
-            ) Ver
-            if order.status === 0
-              //- button.button.is-small(type="button", onclick=`updateOrder(${order.id}, "confirmar")`) Confirmar
-              button.button.is-small(type="button", onclick=`updateOrder(${order.id}, "cancelar")`) Cancelar
+            .buttons
+              button.button.is-small.js-open-order-modal(
+                type="button"
+                data-order-id=order.id
+              ) Ver
+              if order.status === 0
+                button.button.is-small(type="button", onclick=`updateOrder(${order.id}, "cancelar")`) Cancelar
+                button.button.is-small(type="button", onclick=`updateOrder(${order.id}, "pagar")`) Confirmar
 
   each order in orders
     template(id=`order-detail-template-${order.id}`)
@@ -44,7 +44,7 @@ include ./partials/_statusTag
 
   script.
     async function updateOrder(id, action) {
-      if (!confirm(`¿Está seguro de ${action} este pedido?`)) return;
+      if (!confirm(`Esta seguro de ${action} este pedido?`)) return;
 
       let status = action === 'confirmar' ? 1 : action === 'cancelar' ? 2 : null;
 
@@ -86,7 +86,7 @@ include ./partials/_statusTag
         if (!template) return;
 
         modalContent.innerHTML = template.innerHTML;
-        detailLink.setAttribute('href', `/orders/${orderId}`);
+        detailLink.setAttribute('href', `/orders/${orderId}#{sim.query}`);
         modal.classList.add('is-active');
       };
 

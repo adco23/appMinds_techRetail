@@ -1,6 +1,15 @@
 const storeService = require("../services/store.service");
 const productService = require("../services/product.service");
 
+const getSimQuery = req => {
+  const role = req.query.role || "";
+  const subscribed = req.query.subscribed === "1";
+
+  if (!role) return "";
+
+  return `?role=${role}${subscribed ? "&subscribed=1" : ""}`;
+};
+
 const getStores = (req, res, next) => {
   try {
     const stores = storeService.getAllStores();
@@ -83,7 +92,7 @@ const createStore = (req, res, next) => {
 const createStoreFromView = (req, res, next) => {
   try {
     storeService.createStore(req.body);
-    res.redirect("/stores/view");
+    res.redirect(`/stores/view${getSimQuery(req)}`);
   } catch (error) {
     next(error);
   }
@@ -104,7 +113,7 @@ const updateStore = (req, res, next) => {
 const updateStoreFromView = (req, res, next) => {
   try {
     storeService.updateStore(req.params.id, req.body);
-    res.redirect("/stores/view");
+    res.redirect(`/stores/view${getSimQuery(req)}`);
   } catch (error) {
     next(error);
   }
@@ -122,7 +131,7 @@ const deleteStore = (req, res, next) => {
 const deleteStoreFromView = (req, res, next) => {
   try {
     storeService.deleteStore(req.params.id);
-    res.redirect("/stores/view");
+    res.redirect(`/stores/view${getSimQuery(req)}`);
   } catch (error) {
     next(error);
   }

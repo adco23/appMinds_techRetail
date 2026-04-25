@@ -3,7 +3,7 @@ extends ../layouts/main
 block content
   h1.title Nuevo producto
 
-  form(method="POST", action="/products/view")
+  form(method="POST", action=`/products/view${sim.query}`)
     .field
       label.label ID
       .control
@@ -15,7 +15,7 @@ block content
         input.input(type="text", name="name", required)
 
     .field
-      label.label Descripción
+      label.label Descripcion
       .control
         textarea.textarea(name="description", required)
 
@@ -30,7 +30,7 @@ block content
         input.input(type="number", name="stock", required)
 
     .field
-      label.label Categoría
+      label.label Categoria
       .control
         input.input(type="text", name="category", required)
 
@@ -49,6 +49,6 @@ block content
         button.button.is-primary(type="submit") Guardar
       .control
         if storeId
-          a.button.is-light(href=`/stores/view/${storeId}`) Cancelar
+          a.button.is-light(href=`/stores/view/${storeId}${sim.query}`) Cancelar
         else
-          a.button.is-light(href="/products/view") Cancelar
+          a.button.is-light(href=`/products/view${sim.query}`) Cancelar

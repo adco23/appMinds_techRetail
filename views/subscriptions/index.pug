@@ -8,7 +8,7 @@ block content
   .level
     .level-left
     .level-right
-      a.button.is-primary.is-rounded(href="/subscriptions/new")
+      a.button.is-primary.is-rounded(href=`/subscriptions/new${sim.query}`)
         span.icon
           i.fas.plus
         span Nueva Suscripción
@@ -38,7 +38,7 @@ block content
         return;
       }
       // Redirige
-      window.location.href = `/subscriptions/${actionType}/${id}`;
+      window.location.href = `/subscriptions/${actionType}/${id}#{sim.query}`;
     }
 
   .columns.is-multiline
@@ -64,10 +64,10 @@ block content
                 | Venicimiento: #{sub.expDate}
           footer.card-footer
             // Botón Renovar
-            a.card-footer-item.has-text-info(href=`/subscriptions/renew/${sub.id}`)
+            a.card-footer-item.has-text-info(href=`/subscriptions/renew/${sub.id}${sim.query}`)
               strong Renovar
             // Botón Cancelar
-            a.card-footer-item.has-text-danger(href=`/subscriptions/cancel/${sub.id}`)
+            a.card-footer-item.has-text-danger(href=`/subscriptions/cancel/${sub.id}${sim.query}`)
               strong Cancelar
     else
       .notification.is-warning

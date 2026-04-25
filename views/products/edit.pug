@@ -3,7 +3,7 @@ extends ../layouts/main
 block content
   h1.title Editar producto
 
-  form(method="POST", action=`/products/edit/${product.id}`)
+  form(method="POST", action=`/products/edit/${product.id}${sim.query}`)
     .field
       label.label ID
       .control
@@ -15,7 +15,7 @@ block content
         input.input(type="text", name="name", value=product.name, required)
 
     .field
-      label.label Descripción
+      label.label Descripcion
       .control
         textarea.textarea(name="description", required)= product.description
 
@@ -30,7 +30,7 @@ block content
         input.input(type="number", name="stock", value=product.stock, required)
 
     .field
-      label.label Categoría
+      label.label Categoria
       .control
         input.input(type="text", name="category", value=product.category, required)
 
@@ -48,4 +48,4 @@ block content
       .control
         button.button.is-primary(type="submit") Guardar cambios
       .control
-        a.button.is-light(href=`/stores/view/${product.storeId}`) Cancelar
+        a.button.is-light(href=`/stores/view/${product.storeId}${sim.query}`) Cancelar

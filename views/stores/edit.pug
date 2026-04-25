@@ -3,7 +3,7 @@ extends ../layouts/main
 block content
   h1.title Editar tienda
 
-  form(method="POST", action=`/stores/edit/${store.id}`)
+  form(method="POST", action=`/stores/edit/${store.id}${sim.query}`)
     .field
       label.label ID
       .control
@@ -35,7 +35,7 @@ block content
         input.input(type="number", name="commerceId", value=store.commerceId, required)
 
     .field
-      label.label Fecha de creación
+      label.label Fecha de creacion
       .control
         input.input(type="date", name="createdAt", value=store.createdAt, required)
 
@@ -43,4 +43,4 @@ block content
       .control
         button.button.is-primary(type="submit") Guardar cambios
       .control
-        a.button.is-light(href="/stores/view") Cancelar
+        a.button.is-light(href=`/stores/view${sim.query}`) Cancelar

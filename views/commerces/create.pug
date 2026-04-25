@@ -31,7 +31,7 @@
       .control
         button.button.is-primary(type="submit") Guardar
       .control
-        a.button.is-light(href="/commerces") Cancelar
+        a.button.is-light(href=`/commerces?view=list&role=${sim.role}`) Cancelar
 
 script.
   document.getElementById('addCommerceForm').addEventListener('submit', function(e) {
@@ -53,7 +53,7 @@ script.
     .then(response => {
       if (response.ok) {
         alert('Comercio creado exitosamente');
-        window.location.href = '/commerces?view=list';
+        window.location.href = '/commerces?view=list&role=#{sim.role}';
       } else {
         alert('Error al crear el comercio');
       }

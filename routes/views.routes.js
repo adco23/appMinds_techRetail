@@ -8,6 +8,10 @@ const subscriptionService = require('../services/subscription.service.js');
 const router = Router();
 
 const getSimulationData = req => {
+  if (req.res && req.res.locals && req.res.locals.sim) {
+    return req.res.locals.sim;
+  }
+
   const role = req.query.role || '';
   const subscribed = req.query.subscribed === '1';
 
@@ -45,16 +49,14 @@ const commerceNeedsSubscription = (req, res, next) => {
 router.get('/', (req, res) => {
   res.render('home/index', {
     title: 'TechRetail',
-    sim: getSimulationData(req),
+    sim: res.locals.sim,
   });
 });
 
 router.get('/commerce-admin/subscription', (req, res) => {
-  const sim = getSimulationData(req);
-
   res.render('subscriptions/gate', {
     title: 'Suscripcion',
-    sim,
+    sim: res.locals.sim,
   });
 });
 

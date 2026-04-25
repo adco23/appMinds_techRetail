@@ -1,14 +1,5 @@
 [
   {
-    "id": 2,
-    "name": "Tecno Lucas Gabriel",
-    "category": "Tecnologia",
-    "subdomain": "tecnoplus",
-    "status": "active",
-    "commerceId": 102,
-    "createdAt": "2026-06-16"
-  },
-  {
     "id": 3,
     "name": "Moda de trabajo",
     "category": "Indumentaria",

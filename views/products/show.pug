@@ -2,7 +2,7 @@ extends ../layouts/main
 
 block content
   h1.title Detalle de producto
-  p.subtitle Información general del módulo Product
+  p.subtitle Informacion general del modulo Product
 
   .box
     p
@@ -12,7 +12,7 @@ block content
       strong Nombre:
       |  #{product.name}
     p
-      strong Descripción:
+      strong Descripcion:
       |  #{product.description}
     p
       strong Precio:
@@ -21,7 +21,7 @@ block content
       strong Stock:
       |  #{product.stock}
     p
-      strong Categoría:
+      strong Categoria:
       |  #{product.category}
     p
       strong Store ID:
@@ -31,5 +31,5 @@ block content
       |  #{product.status}
 
   .buttons
-    a.button.is-link(href="/products/view") Volver al listado
-    a.button.is-warning(href=`/products/edit/${product.id}`) Editar producto
+    a.button.is-link(href=`/products/view${sim.query}`) Volver al listado
+    a.button.is-warning(href=`/products/edit/${product.id}${sim.query}`) Editar producto

@@ -26,6 +26,15 @@ app.use(morgan('dev'));
 app.use((req, res, next) => {
   const role = req.query.role || '';
   const subscribed = req.query.subscribed === '1';
+  const query = role ? `?role=${role}${subscribed ? '&subscribed=1' : ''}` : '';
+
+  res.locals.sim = {
+    role,
+    subscribed,
+    isPlatformAdmin: role === 'platform-admin',
+    isCommerceAdmin: role === 'commerce-admin',
+    query,
+  };
 
   if ((req.path.startsWith('/stores') || req.path.startsWith('/products')) && role === 'commerce-admin' && !subscribed) {
     return res.redirect('/commerce-admin/subscription?role=commerce-admin');

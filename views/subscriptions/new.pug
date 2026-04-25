@@ -4,7 +4,7 @@ block content
   .column.is-6.is-offset-3
     .box
       h1.title Nueva Suscripción
-      form(action="/subscriptions/create" method="POST")
+      form(action=`/subscriptions/create${sim.query}` method="POST")
         .field
           label.label Detalle del Plan
           .control
@@ -22,6 +22,6 @@ block content
 
         .buttons
           button.button.is-primary(type="submit") Guardar
-          a.button.is-light(href="/subscriptions") Cancelar
+          a.button.is-light(href=`/subscriptions${sim.query}`) Cancelar
 
 
