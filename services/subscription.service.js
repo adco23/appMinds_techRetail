@@ -2,6 +2,8 @@ const Subscription = require('../models/subscription.js');
 const fileHandler = require('../utils/fileHandler');
 const FILE_PATH = 'subscriptions.json';
 
+const commerceService = require('./commerce.service.js');
+
 const getAll = async () => {
     return await fileHandler.readFile(FILE_PATH);
 };
@@ -29,6 +31,8 @@ const crear = async (data) => {
         Number(data.storeId)
     );
 
+    commerceService.activate(data.storeId);
+
     subscriptions.push(nuevaSub);
     await fileHandler.writeFile(FILE_PATH, subscriptions);
     return nuevaSub;
@@ -46,6 +50,8 @@ const renovar = async (id) => {
 
         subscriptions[index].expDate = currentExp.toISOString().split('T')[0];
         subscriptions[index].status = 'active';
+
+        commerceService.activate(subscriptions[index].storeId);
 
         await fileHandler.writeFile(FILE_PATH, subscriptions);
         return subscriptions[index];

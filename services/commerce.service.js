@@ -3,7 +3,9 @@ const Commerce = require('../models/commerce.model');
 
 const JSON_FILE = 'commerces.json';
 const commerces = fileHandler.readFile(JSON_FILE);
+
 const save = (data) => {
+  
   try {
     fileHandler.writeFile(JSON_FILE, data);
     return true
@@ -61,7 +63,14 @@ const updateCommerce = (cuit, { name, email, phone, address }) => {
   commerce.phone = phone || commerce.phone;
   commerce.address = address || commerce.address;
 
-  return save(commerces);
+  return save([...commerces.map(c => (c.cuit === cuit ? commerce : c))]);
 };
 
-module.exports = { getCommerce, createCommerce, existsByCuit, findByCuit, deleteCommerce, updateCommerce };
+const activate = id => {
+  const commerce = commerces.find(c => c.id == id);
+  commerce.status = 1;
+
+  return save([...commerces.map(c => (c.id == id ? commerce : c))]);
+}
+
+module.exports = { getCommerce, createCommerce, existsByCuit, findByCuit, deleteCommerce, updateCommerce, activate };
