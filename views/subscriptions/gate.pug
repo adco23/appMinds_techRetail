@@ -1,0 +1,37 @@
+extends ../layouts/main
+
+block content
+  .columns.is-centered
+    .column.is-7
+      .box
+        h1.title.is-3 Activar suscripcion del comercio
+        p.subtitle Esta pantalla simula el paso previo obligatorio para habilitar los modulos del comercio.
+
+        if required
+          .notification.is-warning
+            | Intentaste entrar a un modulo bloqueado. Primero hay que registrar el pago de la suscripcion.
+
+        .content
+          p En esta etapa no se implementa autenticacion real ni pasarela de pagos.
+          p El objetivo es representar el flujo funcional:
+          ul
+            li El administrador del comercio entra a la plataforma.
+            li Todavia no puede usar los modulos operativos.
+            li Simula el pago de una suscripcion.
+            li Recien despues se habilitan ordenes, tiendas, productos y transacciones.
+
+        .notification.is-light
+          p
+            strong Plan simulado:
+            |  Comercio Mensual
+          p
+            strong Precio:
+            |  $ 9.999 ARS
+          p
+            strong Estado inicial:
+            |  Pendiente de pago
+
+        form(action="/commerce-admin/subscription/pay" method="POST")
+          .buttons
+            button.button.is-primary(type="submit") Simular pago y activar acceso
+            a.button.is-light(href="/") Volver al inicio

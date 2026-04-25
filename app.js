@@ -8,6 +8,10 @@ const routes = require('./routes/index.js');
 const storeRoutes = require('./routes/store.routes.js');
 const productRoutes = require('./routes/product.routes.js');
 const { errorHandler } = require('./middlewares/error.middleware.js');
+const {
+  attachSimulatedAccess,
+  requireCommerceSubscription,
+} = require('./middlewares/simulatedAccess.middleware.js');
 
 dotenv.config();
 
@@ -22,15 +26,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(morgan('dev'));
+app.use(attachSimulatedAccess);
 
 // Rutas generales del proyecto
 app.use('/', routes);
 
 // API y vistas del módulo Store
-app.use('/stores', storeRoutes);
+app.use('/stores', requireCommerceSubscription, storeRoutes);
 
 // API y vistas del módulo Product
-app.use('/products', productRoutes);
+app.use('/products', requireCommerceSubscription, productRoutes);
 
 app.use(errorHandler);
 

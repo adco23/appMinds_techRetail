@@ -1,4 +1,45 @@
 extends ../layouts/main
 
 block content
-  h1.title Bienvenido a TechRetail Solutions SRL
+  .columns.is-variable.is-6
+    .column.is-7
+      h1.title Bienvenido a TechRetail Solutions SRL
+
+      if denied === 'platform-only'
+        .notification.is-warning
+          | Ese modulo solo debe verlo un administrador de la plataforma.
+      else if denied === 'commerce-admin-only'
+        .notification.is-warning
+          | Esta vista solo aplica al administrador del comercio.
+
+      if simulatedUser.isCommerceAdmin && !simulatedUser.subscriptionPaid
+        .notification.is-info
+          | Antes de usar los modulos del comercio, primero hay que simular el pago de la suscripcion.
+      else if simulatedUser.isCommerceAdmin && simulatedUser.subscriptionPaid
+        .notification.is-success
+          | La suscripcion del comercio ya esta activa. Ya podes navegar por los modulos habilitados.
+      else if simulatedUser.isPlatformAdmin
+        .notification.is-primary
+          | Estas navegando como administrador de plataforma. Tenes acceso a usuarios, comercios y suscripciones.
+
+      //- .content
+      //-   p El flujo pedido queda separado asi:
+      //-   ul
+      //-     li El admin de plataforma gestiona usuarios, comercios y suscripciones.
+      //-     li El admin de comercio no ve usuarios ni comercios.
+      //-     li El admin de comercio debe activar primero una suscripcion simulada para acceder al resto.
+
+    .column.is-5
+      .box
+        h2.title.is-4 Entrar en modo simulacion
+        p.mb-4 Elegi un perfil para probar la experiencia.
+
+        .buttons
+          a.button.is-primary(href="/simulation/login/platform-admin") Simular admin
+          a.button.is-link(href="/simulation/login/commerce-admin") Simular comercio
+
+        if simulatedUser.isCommerceAdmin
+          if simulatedUser.subscriptionPaid
+            a.button.is-success.is-fullwidth.mt-3(href="/stores/view") Ir a modulos habilitados
+          else
+            a.button.is-warning.is-fullwidth.mt-3(href="/commerce-admin/subscription") Pagar suscripcion simulada

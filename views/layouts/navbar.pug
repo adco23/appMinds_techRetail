@@ -10,14 +10,18 @@ nav.navbar.is-primary(role="navigation", aria-label="main navigation")
 
   .navbar-menu
     .navbar-start
-      a.navbar-item(href="/users") Usuarios
-      a.navbar-item(href="/commerces") Comercios
-      a.navbar-item(href="/orders") Ordenes
-      a.navbar-item(href="/subscriptions") Suscripciones
-      a.navbar-item(href="/stores/view") Tiendas
-      a.navbar-item(href="/transactions") Transacciones
+      each module in navigationModules
+        a.navbar-item(href=module.href)= module.label
 
     .navbar-end
       .navbar-item
         .buttons
-          a.button.is-light(href="#") Log in
+          if simulatedUser.isPlatformAdmin
+            span.button.is-light.is-static Admin Plataforma
+          else if simulatedUser.isCommerceAdmin
+            span.button.is-light.is-static Admin Comercio
+          else
+            span.button.is-light.is-static Sin perfil
+
+          if simulatedUser.role !== 'guest'
+            a.button.is-danger.is-light(href="/simulation/logout") Salir
