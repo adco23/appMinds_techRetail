@@ -1,50 +1,50 @@
 [
   {
     "id": 1,
-    "receiptId": "REC-001",
-    "grossAmount": 5000,
-    "feeAmount": 100,
-    "netAmount": 4900,
-    "date": "2026-04-21T15:00:00Z",
+    "receiptId": "REC-0001",
+    "grossAmount": 11500,
+    "feeAmount": 230,
+    "netAmount": 11270,
+    "date": "2026-04-18T14:35:00.000Z",
     "status": "approved",
     "paymentMethod": "Credit Card",
-    "gatewayReference": "REF12345",
-    "saleId": 501
+    "gatewayReference": "PAY-1001",
+    "saleId": 1
   },
   {
-    "id": 5,
-    "receiptId": "TK-88291",
-    "grossAmount": 12500.50,
-    "feeAmount": 250.01,
-    "netAmount": 12250.49,
-    "date": "2026-04-20T10:30:00Z",
-    "status": "approved",
-    "paymentMethod": "Debito",
-    "gatewayReference": "PAY-99221",
-    "saleId": 1005
-  },
-  {
-    "id": 6,
-    "receiptId": "TK-88292",
-    "grossAmount": 3200.00,
-    "feeAmount": 64.00,
-    "netAmount": 3136.00,
-    "date": "2026-04-21T09:15:00Z",
+    "id": 2,
+    "receiptId": "REC-0002",
+    "grossAmount": 14600,
+    "feeAmount": 292,
+    "netAmount": 14308,
+    "date": "2026-04-19T10:20:00.000Z",
     "status": "pending",
-    "paymentMethod": "Transferencia",
-    "gatewayReference": "TRF-44102",
-    "saleId": 1006
+    "paymentMethod": "Transfer",
+    "gatewayReference": "PAY-1002",
+    "saleId": 2
   },
   {
-    "id": 7,
-    "receiptId": "TK-88293",
-    "grossAmount": 8500.00,
-    "feeAmount": 170.00,
-    "netAmount": 8330.00,
-    "date": "2026-04-21T14:45:00Z",
+    "id": 3,
+    "receiptId": "REC-0003",
+    "grossAmount": 16300,
+    "feeAmount": 326,
+    "netAmount": 15974,
+    "date": "2026-04-20T09:10:00.000Z",
+    "status": "approved",
+    "paymentMethod": "Debit Card",
+    "gatewayReference": "PAY-1003",
+    "saleId": 3
+  },
+  {
+    "id": 4,
+    "receiptId": "REC-0004",
+    "grossAmount": 7300,
+    "feeAmount": 146,
+    "netAmount": 7154,
+    "date": "2026-04-21T12:05:00.000Z",
     "status": "rejected",
-    "paymentMethod": "Credito",
-    "gatewayReference": "ERR-55210",
-    "saleId": 1007
+    "paymentMethod": "Cash",
+    "gatewayReference": "PAY-1004",
+    "saleId": 4
   }
 ]

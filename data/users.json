@@ -1,22 +1,52 @@
 [
   {
     "id": 1,
-    "firstName": "Pedro",
-    "lastName": "Picapiedra",
-    "email": "ppicapiedra@hanna-barbera.com",
-    "password": "pebbles",
+    "firstName": "Lucia",
+    "lastName": "Fernandez",
+    "email": "lucia.fernandez@techretail.test",
+    "password": "admin123",
     "role": "admin",
-    "commerceId": 10000,
+    "commerceId": 1,
     "status": "active"
   },
   {
     "id": 2,
-    "firstName": "Pablo",
-    "lastName": "Marmol",
-    "email": "pmarmol@hanna-barbera.com",
-    "password": "bambam",
+    "firstName": "Marcos",
+    "lastName": "Lopez",
+    "email": "marcos.lopez@techretail.test",
+    "password": "ventas123",
     "role": "vendedor",
-    "commerceId": 10000,
+    "commerceId": 1,
+    "status": "active"
+  },
+  {
+    "id": 3,
+    "firstName": "Carla",
+    "lastName": "Suarez",
+    "email": "carla.suarez@techretail.test",
+    "password": "admin123",
+    "role": "admin",
+    "commerceId": 2,
+    "status": "active"
+  },
+  {
+    "id": 4,
+    "firstName": "Diego",
+    "lastName": "Martinez",
+    "email": "diego.martinez@techretail.test",
+    "password": "ventas123",
+    "role": "vendedor",
+    "commerceId": 2,
+    "status": "inactive"
+  },
+  {
+    "id": 5,
+    "firstName": "Sofia",
+    "lastName": "Gimenez",
+    "email": "sofia.gimenez@techretail.test",
+    "password": "admin123",
+    "role": "admin",
+    "commerceId": 3,
     "status": "active"
   }
 ]

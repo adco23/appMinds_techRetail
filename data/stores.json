@@ -1,20 +1,38 @@
 [
   {
-    "id": 3,
-    "name": "Moda de trabajo",
-    "category": "Indumentaria",
-    "subdomain": "ropaLaboral",
+    "id": 1,
+    "name": "La Estrella Centro",
+    "category": "Supermercado",
+    "subdomain": "laestrella-centro",
     "status": "active",
-    "commerceId": 102,
-    "createdAt": "2026-06-16"
+    "commerceId": 1,
+    "createdAt": "2026-02-01"
   },
   {
-    "id": 1,
-    "name": "Moda Urbana",
-    "category": "Indumentaria",
-    "subdomain": "modaurbana",
+    "id": 2,
+    "name": "La Estrella Barrio Norte",
+    "category": "Supermercado",
+    "subdomain": "laestrella-norte",
     "status": "active",
-    "commerceId": 102,
-    "createdAt": "2026-04-20"
+    "commerceId": 1,
+    "createdAt": "2026-02-05"
+  },
+  {
+    "id": 3,
+    "name": "Farmacia Central Caballito",
+    "category": "Farmacia",
+    "subdomain": "farmacia-central",
+    "status": "active",
+    "commerceId": 2,
+    "createdAt": "2026-02-10"
+  },
+  {
+    "id": 4,
+    "name": "Horizonte Microcentro",
+    "category": "Libreria",
+    "subdomain": "horizonte-microcentro",
+    "status": "inactive",
+    "commerceId": 3,
+    "createdAt": "2026-02-18"
   }
 ]
