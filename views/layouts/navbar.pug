@@ -10,14 +10,94 @@ nav.navbar.is-primary(role="navigation", aria-label="main navigation")
 
   .navbar-menu
     .navbar-start
-      a.navbar-item(href="/users") Usuarios
-      a.navbar-item(href="/commerces") Comercios
-      a.navbar-item(href="/orders") Ordenes
-      a.navbar-item(href="/subscriptions") Suscripciones
-      a.navbar-item(href="/stores/view") Tiendas
-      a.navbar-item(href="/transactions") Transacciones
+      a.navbar-item(data-role="admin", href="/users") Usuarios
+      a.navbar-item(data-role="admin", href="/commerces") Comercios
+      a.navbar-item(data-role="cliente", href="/orders") Ordenes
+      a.navbar-item(data-role="cliente", href="/subscriptions") Suscripciones
+      a.navbar-item(data-role="cliente", href="/stores/view") Tiendas
+      a.navbar-item(data-role="cliente", href="/transactions") Transacciones
 
     .navbar-end
       .navbar-item
         .buttons
-          a.button.is-light(href="#") Log in
+          span.navbar-item.has-text-weight-semibold#sessionLabel Invitado
+          a.button.is-light#loginButton(href="#") Simular login
+          a.button.is-light.is-hidden#logoutButton(href="#") Cerrar sesión
+
+script.
+  (() => {
+    const STORAGE_KEY = 'techRetailDemoRole';
+    const validRoles = ['cliente', 'admin'];
+    const defaultLabel = 'Invitado';
+    const roleLabels = {
+      cliente: 'Cliente',
+      admin: 'Admin'
+    };
+
+    const burger = document.querySelector('.navbar-burger');
+    const menu = document.querySelector('.navbar-menu');
+    const navItems = document.querySelectorAll('.navbar-item[data-role]');
+    const loginButton = document.getElementById('loginButton');
+    const logoutButton = document.getElementById('logoutButton');
+    const sessionLabel = document.getElementById('sessionLabel');
+
+    const getStoredRole = () => {
+      const role = localStorage.getItem(STORAGE_KEY);
+      return validRoles.includes(role) ? role : null;
+    };
+
+    const setStoredRole = role => {
+      if (validRoles.includes(role)) {
+        localStorage.setItem(STORAGE_KEY, role);
+        return;
+      }
+
+      localStorage.removeItem(STORAGE_KEY);
+    };
+
+    const updateNavbar = () => {
+      const currentRole = getStoredRole();
+
+      navItems.forEach(item => {
+        item.classList.toggle('is-hidden', item.dataset.role !== currentRole);
+      });
+
+      sessionLabel.textContent = currentRole ? `Rol: ${roleLabels[currentRole]}` : defaultLabel;
+      loginButton.textContent = currentRole ? 'Cambiar rol' : 'Simular login';
+      logoutButton.classList.toggle('is-hidden', !currentRole);
+    };
+
+    burger?.addEventListener('click', () => {
+      burger.classList.toggle('is-active');
+      menu.classList.toggle('is-active');
+    });
+
+    loginButton?.addEventListener('click', event => {
+      event.preventDefault();
+
+      const typedRole = window.prompt(
+        'Ingresá un rol para simular la sesión: "cliente" o "admin"',
+        getStoredRole() || 'cliente'
+      );
+
+      if (typedRole === null) return;
+
+      const normalizedRole = typedRole.trim().toLowerCase();
+
+      if (!validRoles.includes(normalizedRole)) {
+        window.alert('Rol inválido. Usá "cliente" o "admin".');
+        return;
+      }
+
+      setStoredRole(normalizedRole);
+      updateNavbar();
+    });
+
+    logoutButton?.addEventListener('click', event => {
+      event.preventDefault();
+      setStoredRole(null);
+      updateNavbar();
+    });
+
+    updateNavbar();
+  })();
