@@ -8,6 +8,7 @@ const {
 
 const router = Router();
 
+router.get('/', getCommerce);
 router.get('/:cuit', getCommerce);
 router.post('/', createCommerce);
 router.put('/:cuit', updateCommerce);
