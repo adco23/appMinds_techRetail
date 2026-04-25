@@ -1,54 +1,53 @@
 extends ../layouts/main
 
 block content
-  h1.title Suscripción disponibles
+  h1.title Suscripciones disponibles
 
   if sim.isCommerceAdmin
-    p.mt-3 Antes de acceder a ordenes, tiendas, productos y transacciones, tenes que pasar por acá.
+    p.mt-3 Antes de acceder a ordenes, tiendas, productos y transacciones, tenes que crear una suscripcion.
 
-    section.section
-      .container
-        //- h1.title.has-text-centered Nuestros Planes
-        .columns.is-centered.is-variable.is-8
-
-          // Plan Básico
-          .column.is-4
-            .card
-              header.card-header.has-background-light
-                p.card-header-title.is-centered Básico
-              .card-content
-                .content.has-text-centered
-                  p.is-size-1.has-text-weight-bold $10
-                  p.has-text-grey por mes
-              footer.card-footer
-                a.card-footer-item.button.is-light(href="/?role=commerce-admin&subscribed=1") Elegir Plan
-
-          // Plan Pro (Destacado)
-          .column.is-4
-            .card
-              header.card-header.has-background-primary
-                p.card-header-title.is-centered Profesional
-              .card-content
-                .content.has-text-centered
-                  p.is-size-1.has-text-weight-bold $29
-                  p.has-text-grey por mes
-              footer.card-footer
-                a.card-footer-item.button.is-primary(href="/?role=commerce-admin&subscribed=1") Comenzar Ahora
-
-          // Plan Enterprise
-          .column.is-4
-            .card
-              header.card-header.has-background-light
-                p.card-header-title.is-centered Enterprise
-              .card-content
-                .content.has-text-centered
-                  p.is-size-1.has-text-weight-bold $99
-                  p.has-text-grey por mes
-              footer.card-footer
-                a.card-footer-item.button.is-dark(href="/?role=commerce-admin&subscribed=1") Contactar Ventas
+    .columns.is-centered.is-variable.is-6
+      each plan in ['Basico', 'Profesional', 'Enterprise']
+        .column.is-4
+          .card
+            header.card-header.has-background-light
+              p.card-header-title.is-centered= plan
+            .card-content
+              .content.has-text-centered
+                p.is-size-4.has-text-weight-bold Plan demo
+                p.has-text-grey Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            footer.card-footer
+              a.card-footer-item.button.is-primary(href="#" onclick="crearSuscripcionDemo(event)") Elegir plan
 
     .buttons.mt-4
-      //- a.button.is-primary(href="/?role=commerce-admin&subscribed=1") Simular pago
       a.button.is-light(href="/?role=commerce-admin") Volver
+
+    script.
+      async function crearSuscripcionDemo(event) {
+        event.preventDefault();
+
+        const payload = {
+          detail: 'Plan Demo Comercio',
+          amount: 10000,
+          storeId: 101
+        };
+
+        try {
+          const response = await fetch('/api/subscriptions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          if (!response.ok) {
+            alert('No se pudo crear la suscripcion');
+            return;
+          }
+
+          window.location.href = '/?role=commerce-admin&subscribed=1';
+        } catch (error) {
+          alert('Error al crear la suscripcion');
+        }
+      }
   else
     a.button.is-light.mt-3(href="/") Volver al inicio

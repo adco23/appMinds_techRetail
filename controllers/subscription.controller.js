@@ -11,7 +11,7 @@ const getAllSubscriptions = async (req, res) => {
 
 const createSubscription = async (req, res) => {
     try {
-        const newSub = await subscriptionService.create(req.body);
+        const newSub = await subscriptionService.crear(req.body);
         res.status(201).json({
             message: "Subscription created successfully",
             data: newSub
