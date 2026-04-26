@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "name": "Yerba Mate Suave 1kg",
+    "description": "Yerba mate suave de molienda seleccionada",
+    "price": 4200,
+    "stock": 80,
+    "category": "Almacen",
+    "storeId": 1,
+    "status": "active"
+  },
+  {
+    "id": 2,
+    "name": "Aceite de Girasol 900ml",
+    "description": "Aceite comestible para uso diario",
+    "price": 3100,
+    "stock": 65,
+    "category": "Almacen",
+    "storeId": 1,
+    "status": "active"
+  },
+  {
+    "id": 3,
+    "name": "Galletitas de Avena",
+    "description": "Paquete de galletitas integrales de avena",
+    "price": 1800,
+    "stock": 120,
+    "category": "Snack",
+    "storeId": 2,
+    "status": "active"
+  },
+  {
+    "id": 4,
+    "name": "Cafe Molido 500g",
+    "description": "Cafe tostado y molido de intensidad media",
+    "price": 5600,
+    "stock": 40,
+    "category": "Bebidas",
+    "storeId": 2,
+    "status": "active"
+  },
+  {
+    "id": 5,
+    "name": "Ibuprofeno 400mg",
+    "description": "Caja por 20 comprimidos recubiertos",
+    "price": 6900,
+    "stock": 35,
+    "category": "Medicamentos",
+    "storeId": 3,
+    "status": "active"
+  },
+  {
+    "id": 6,
+    "name": "Alcohol en Gel 250ml",
+    "description": "Antibacterial para higiene de manos",
+    "price": 2500,
+    "stock": 90,
+    "category": "Cuidado Personal",
+    "storeId": 3,
+    "status": "active"
+  },
+  {
+    "id": 7,
+    "name": "Cuaderno A4 Rayado",
+    "description": "Cuaderno escolar de 84 hojas",
+    "price": 3200,
+    "stock": 55,
+    "category": "Papeleria",
+    "storeId": 4,
+    "status": "active"
+  },
+  {
+    "id": 8,
+    "name": "Lapicera Azul",
+    "description": "Lapicera de tinta azul punta media",
+    "price": 900,
+    "stock": 200,
+    "category": "Papeleria",
+    "storeId": 4,
+    "status": "inactive"
+  }
+]

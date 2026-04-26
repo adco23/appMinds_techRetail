@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "clientId": 1,
+    "storeId": 1,
+    "paymentMethod": "Credit Card",
+    "totalAmount": 11500,
+    "detailsId": 1,
+    "date": "2026-04-18T14:30:00.000Z",
+    "status": 1,
+    "paymentId": 1001,
+    "logisticsId": 5001
+  },
+  {
+    "id": 2,
+    "clientId": 2,
+    "storeId": 2,
+    "paymentMethod": "Transfer",
+    "totalAmount": 14600,
+    "detailsId": 2,
+    "date": "2026-04-19T10:15:00.000Z",
+    "status": 0,
+    "paymentId": null,
+    "logisticsId": null
+  },
+  {
+    "id": 3,
+    "clientId": 3,
+    "storeId": 3,
+    "paymentMethod": "Debit Card",
+    "totalAmount": 16300,
+    "detailsId": 3,
+    "date": "2026-04-20T09:00:00.000Z",
+    "status": 1,
+    "paymentId": 1002,
+    "logisticsId": 5002
+  },
+  {
+    "id": 4,
+    "clientId": 5,
+    "storeId": 4,
+    "paymentMethod": "Cash",
+    "totalAmount": 7300,
+    "detailsId": 4,
+    "date": "2026-04-21T12:00:00.000Z",
+    "status": 2,
+    "paymentId": null,
+    "logisticsId": null
+  }
+]

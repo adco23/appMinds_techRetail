@@ -1,0 +1,27 @@
+div
+  .card
+    .card-content
+      .media
+        .media-left
+          i.fas.fa-box.fa-2x
+        .media-content
+          p.title.is-4 #{stats.totalOrders}
+          p.subtitle Total ganado
+
+  .card
+    .card-content
+      .media
+        .media-left
+          i.fas.fa-check-circle.fa-2x
+        .media-content
+          p.title.is-4 #{stats.completed}
+          p.subtitle Órdenes completadas
+
+  .card
+    .card-content
+      .media
+        .media-left
+          i.fas.fa-times-circle.fa-2x
+        .media-content
+          p.title.is-4 #{stats.cancelled}
+          p.subtitle Órdenes canceladas

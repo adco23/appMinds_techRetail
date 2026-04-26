@@ -1,0 +1,54 @@
+.box
+  h2.subtitle Listado de Comercios
+
+  table.table.is-fullwidth.is-striped
+    thead
+      tr
+        th
+        th Razón Social
+        th CUIT
+        th Email
+        th Teléfono
+        th Dirección
+        th
+    tbody
+      each commerce in commerces
+        tr
+          td
+            if commerce.status === 1
+              span.tag.is-rounded.is-success
+            else if commerce.status === 0
+              span.tag.is-rounded.is-danger
+            else
+              span.tag.is-rounded.is-warning
+          td= commerce.name
+          td= commerce.cuit
+          td= commerce.email
+          td= commerce.phone
+          td= commerce.address
+          td
+            //- button.button.is-small.mr-1(href="/commerces/" + commerce.cuit) Editar
+            if commerce.status === 1
+              button.button.is-small.is-danger(onclick=`deleteCommerce(${commerce.cuit})`) Desactivar
+            else
+              button.button.is-small(onclick=`deleteCommerce(${commerce.cuit})`, disabled=true) Desactivar
+
+  script.
+    async function deleteCommerce(cuit) {
+      if (!confirm('¿Está seguro de desactivar este comercio?')) return;
+
+      try {
+        const response = await fetch(`/api/commerces/${cuit}`, { method: 'DELETE' });
+        console.log(response);
+        if (response.ok) {
+          alert(response.message || 'Comercio desactivado exitosamente.');
+          location.reload();
+        } else {
+          const errorData = await response.json();
+          alert('Error al desactivar el comercio: ' + errorData.error);
+        }
+      } catch (error) {
+        alert('Error de red al desactivar el comercio.');
+      }
+    }
+

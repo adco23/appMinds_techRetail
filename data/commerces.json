@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "Supermercado La Estrella",
+    "cuit": "30712345671",
+    "email": "contacto@laestrella.test",
+    "phone": "+54 11 4300-1001",
+    "address": "Av. Belgrano 123, Buenos Aires",
+    "status": 1,
+    "createdAt": "2026-01-10T10:00:00Z"
+  },
+  {
+    "id": 2,
+    "name": "Farmacia Central",
+    "cuit": "30712345672",
+    "email": "info@farmaciacentral.test",
+    "phone": "+54 11 4300-1002",
+    "address": "Calle Libertad 456, Buenos Aires",
+    "status": 1,
+    "createdAt": "2026-01-15T11:30:00Z"
+  },
+  {
+    "id": 3,
+    "name": "Libreria Horizonte",
+    "cuit": "30712345673",
+    "email": "ventas@libreriahorizonte.test",
+    "phone": "+54 11 4300-1003",
+    "address": "Av. Corrientes 789, Buenos Aires",
+    "status": 1,
+    "createdAt": "2026-01-20T09:15:00Z"
+  }
+]

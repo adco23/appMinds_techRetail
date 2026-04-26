@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "detail": "Plan Basico",
+    "amount": 15000,
+    "startDate": "2026-03-01",
+    "expDate": "2026-03-31",
+    "status": "cancelled",
+    "storeId": 1
+  },
+  {
+    "id": 2,
+    "detail": "Plan Premium",
+    "amount": 30000,
+    "startDate": "2026-04-01",
+    "expDate": "2026-05-01",
+    "status": "active",
+    "storeId": 1
+  },
+  {
+    "id": 3,
+    "detail": "Plan Profesional",
+    "amount": 22000,
+    "startDate": "2026-04-05",
+    "expDate": "2026-05-05",
+    "status": "active",
+    "storeId": 2
+  },
+  {
+    "id": 4,
+    "detail": "Plan Basico",
+    "amount": 15000,
+    "startDate": "2026-04-10",
+    "expDate": "2026-05-10",
+    "status": "active",
+    "storeId": 3
+  },
+  {
+    "id": 5,
+    "detail": "Plan Basico",
+    "amount": 15000,
+    "startDate": "2026-02-20",
+    "expDate": "2026-03-22",
+    "status": "cancelled",
+    "storeId": 4
+  },
+  {
+    "id": 6,
+    "detail": "Plan Demo Comercio",
+    "amount": 10000,
+    "startDate": "2026-04-25",
+    "expDate": "2026-05-25",
+    "status": "active",
+    "storeId": 101
+  }
+]

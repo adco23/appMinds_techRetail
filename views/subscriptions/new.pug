@@ -1,0 +1,27 @@
+extends ../layouts/main.pug
+
+block content
+  .column.is-6.is-offset-3
+    .box
+      h1.title Nueva Suscripción
+      form(action=`/subscriptions/create${sim.query}` method="POST")
+        .field
+          label.label Detalle del Plan
+          .control
+            input.input(type="text" name="detail" placeholder="Ej: Premium" required)
+
+        .field
+          label.label Monto
+          .control
+            input.input(type="number" name="amount" placeholder="50.000" required)
+
+        .field
+          label.label Tienda ID
+          .control
+            input.input(type="number" name="storeId" placeholder="101" required)
+
+        .buttons
+          button.button.is-primary(type="submit") Guardar
+          a.button.is-light(href=`/subscriptions${sim.query}`) Cancelar
+
+

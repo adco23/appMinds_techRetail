@@ -1,19 +1,24 @@
 nav.navbar.is-primary(role="navigation", aria-label="main navigation")
   .navbar-brand
-    a.navbar-item(href="/")
+    a.navbar-item(href=`/${sim && sim.query ? sim.query : ''}`)
       strong TechRetail Solutions
-
-    a.navbar-burger(role="button", aria-label="menu", aria-expanded="false")
-      span(aria-hidden="true")
-      span(aria-hidden="true")
-      span(aria-hidden="true")
 
   .navbar-menu
     .navbar-start
-      a.navbar-item(href="/users") Usuarios
-      a.navbar-item(href="/stores") Tiendas
+      if sim && sim.isPlatformAdmin
+        a.navbar-item(href=`/users${sim.query}`) Usuarios
+        a.navbar-item(href=`/commerces${sim.query}`) Comercios
+        a.navbar-item(href=`/subscriptions${sim.query}`) Suscripciones
+      else if sim && sim.isCommerceAdmin
+        if sim.subscribed
+          a.navbar-item(href=`/orders${sim.query}`) Ordenes
+          a.navbar-item(href=`/stores/view${sim.query}`) Tiendas
+          a.navbar-item(href=`/products/view${sim.query}`) Productos
+          a.navbar-item(href=`/transactions${sim.query}`) Transacciones
+        else
+          a.navbar-item(href=`/commerce-admin/subscription${sim.query}`) Suscripcion
 
     .navbar-end
       .navbar-item
-        .buttons
-          a.button.is-light(href="#") Log in
+        if sim && sim.role
+          a.button.is-light(href="/") Salir simulación

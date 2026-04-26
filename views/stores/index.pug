@@ -1,5 +1,47 @@
 extends ../layouts/main
 
 block content
-  h1 Lista de tiendas
-  p Vista en construcción
+  .level
+    .level-left
+      .level-item
+        div
+          h1.title Lista de tiendas
+          p.subtitle Visualizacion del modulo Store
+
+    .level-right
+      .level-item
+        a.button.is-primary(href=`/stores/view/new${sim.query}`) Nueva tienda
+
+  if stores && stores.length > 0
+    .table-container
+      table.table.is-striped.is-hoverable.is-fullwidth
+        thead
+          tr
+            th ID
+            th Nombre
+            th Rubro
+            th Subdominio
+            th Estado
+            th Comercio ID
+            th Fecha de creacion
+            th Acciones
+        tbody
+          each store in stores
+            tr
+              td= store.id
+              td= store.name
+              td= store.category
+              td= store.subdomain
+              td= store.status
+              td= store.commerceId
+              td= store.createdAt
+              td
+                .buttons.are-small
+                  a.button.is-info(href=`/stores/view/${store.id}${sim.query}`) Ver
+                  a.button.is-warning(href=`/stores/edit/${store.id}${sim.query}`) Editar
+                  form(method="POST", action=`/stores/delete/${store.id}${sim.query}`, style="display:inline;")
+                    button.button.is-danger(type="submit", onclick="return confirm('Eliminar esta tienda?')") Eliminar
+  else
+    article.message.is-warning
+      .message-body
+        | No hay tiendas cargadas para mostrar.

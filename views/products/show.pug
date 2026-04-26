@@ -1,0 +1,35 @@
+extends ../layouts/main
+
+block content
+  h1.title Detalle de producto
+  p.subtitle Informacion general del modulo Product
+
+  .box
+    p
+      strong ID:
+      |  #{product.id}
+    p
+      strong Nombre:
+      |  #{product.name}
+    p
+      strong Descripcion:
+      |  #{product.description}
+    p
+      strong Precio:
+      |  #{product.price}
+    p
+      strong Stock:
+      |  #{product.stock}
+    p
+      strong Categoria:
+      |  #{product.category}
+    p
+      strong Store ID:
+      |  #{product.storeId}
+    p
+      strong Estado:
+      |  #{product.status}
+
+  .buttons
+    a.button.is-link(href=`/products/view${sim.query}`) Volver al listado
+    a.button.is-warning(href=`/products/edit/${product.id}${sim.query}`) Editar producto

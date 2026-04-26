@@ -1,0 +1,49 @@
+extends ../layouts/main
+
+block content
+  .level
+    .level-left
+      .level-item
+        div
+          h1.title Lista de productos
+          p.subtitle Visualizacion del modulo Product
+
+    .level-right
+      .level-item
+        a.button.is-primary(href=`/products/view/new${sim.query}`) Nuevo producto
+
+  if products && products.length > 0
+    .table-container
+      table.table.is-striped.is-hoverable.is-fullwidth
+        thead
+          tr
+            th ID
+            th Nombre
+            th Descripcion
+            th Precio
+            th Stock
+            th Categoria
+            th Store ID
+            th Estado
+            th Acciones
+        tbody
+          each product in products
+            tr
+              td= product.id
+              td= product.name
+              td= product.description
+              td= product.price
+              td= product.stock
+              td= product.category
+              td= product.storeId
+              td= product.status
+              td
+                .buttons.are-small
+                  a.button.is-info(href=`/products/view/${product.id}${sim.query}`) Ver
+                  a.button.is-warning(href=`/products/edit/${product.id}${sim.query}`) Editar
+                  form(method="POST", action=`/products/delete/${product.id}${sim.query}`, style="display:inline;")
+                    button.button.is-danger(type="submit", onclick="return confirm('Eliminar este producto?')") Eliminar
+  else
+    article.message.is-warning
+      .message-body
+        | No hay productos cargados para mostrar.

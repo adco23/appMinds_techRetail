@@ -1,0 +1,54 @@
+.box
+  h2.subtitle Solicitud de Orden
+
+  form(autocomplete='off', id="addOrderForm")
+    .field
+      label.label Fecha
+      .control
+        input.input(type="date", name="date", placeholder="Seleccione fecha", required)
+
+    .field
+      label.label CUIT
+      .control
+        input.input(type="number", name="cuit", placeholder="Ingrese CUIT", required)
+
+    .field
+      label.label Email
+      .control
+        input.input(type="email", name="email", placeholder="Ingrese email", required)
+
+    .field
+      label.label Teléfono
+      .control
+        input.input(type="tel", name="phone", placeholder="Ingrese teléfono")
+
+    .field
+      label.label Dirección
+      .control
+        input.input(type="text", name="address", placeholder="Ingrese dirección")
+
+    .field.is-grouped
+      .control
+        button.button.is-primary(type="submit") Guardar
+      .control
+        a.button.is-light(href="/orders") Cancelar
+
+script.
+  document.getElementById('addOrderForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    fetch('/api/orders', {
+      method: 'POST',
+      body: new FormData(this)
+    })
+    .then(response => {
+      if (response.ok) {
+        alert('Datos enviados correctamente');
+        window.location.href = '/commerces/list';
+      } else {
+        alert('Error al enviar los datos');
+      }
+    })
+    .catch(() => alert('Error de conexión'));
+  });
+

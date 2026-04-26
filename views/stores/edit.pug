@@ -1,0 +1,46 @@
+extends ../layouts/main
+
+block content
+  h1.title Editar tienda
+
+  form(method="POST", action=`/stores/edit/${store.id}${sim.query}`)
+    .field
+      label.label ID
+      .control
+        input.input(type="number", name="id", value=store.id, readonly)
+
+    .field
+      label.label Nombre
+      .control
+        input.input(type="text", name="name", value=store.name, required)
+
+    .field
+      label.label Rubro
+      .control
+        input.input(type="text", name="category", value=store.category, required)
+
+    .field
+      label.label Subdominio
+      .control
+        input.input(type="text", name="subdomain", value=store.subdomain, required)
+
+    .field
+      label.label Estado
+      .control
+        input.input(type="text", name="status", value=store.status, required)
+
+    .field
+      label.label Comercio ID
+      .control
+        input.input(type="number", name="commerceId", value=store.commerceId, required)
+
+    .field
+      label.label Fecha de creacion
+      .control
+        input.input(type="date", name="createdAt", value=store.createdAt, required)
+
+    .field.is-grouped
+      .control
+        button.button.is-primary(type="submit") Guardar cambios
+      .control
+        a.button.is-light(href=`/stores/view${sim.query}`) Cancelar

@@ -1,0 +1,13 @@
+extends ../layouts/main
+
+block content
+  h1.title Gestion de Ordenes
+
+  .buttons
+    //- a.button(href=`/orders?view=list&role=${sim.role}&subscribed=1`) Listado
+
+  if view === 'form'
+    include create
+  //- else if view === 'list'
+  else
+    include list

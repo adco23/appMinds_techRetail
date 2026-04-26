@@ -1,0 +1,46 @@
+extends ../layouts/main
+
+block content
+  h1.title Nueva tienda
+
+  form(method="POST", action=`/stores/view${sim.query}`)
+    .field
+      label.label ID
+      .control
+        input.input(type="number", name="id", required)
+
+    .field
+      label.label Nombre
+      .control
+        input.input(type="text", name="name", required)
+
+    .field
+      label.label Rubro
+      .control
+        input.input(type="text", name="category", required)
+
+    .field
+      label.label Subdominio
+      .control
+        input.input(type="text", name="subdomain", required)
+
+    .field
+      label.label Estado
+      .control
+        input.input(type="text", name="status", value="active", required)
+
+    .field
+      label.label Comercio ID
+      .control
+        input.input(type="number", name="commerceId", required)
+
+    .field
+      label.label Fecha de creacion
+      .control
+        input.input(type="date", name="createdAt", required)
+
+    .field.is-grouped
+      .control
+        button.button.is-primary(type="submit") Guardar
+      .control
+        a.button.is-light(href=`/stores/view${sim.query}`) Cancelar

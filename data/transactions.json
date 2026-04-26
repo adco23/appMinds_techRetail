@@ -1,34 +1,50 @@
 [
   {
     "id": 1,
-    "amount": 15000,
+    "receiptId": "REC-0001",
+    "grossAmount": 11500,
+    "feeAmount": 230,
+    "netAmount": 11270,
+    "date": "2026-04-18T14:35:00.000Z",
     "status": "approved",
-    "paymentMethod": "credit_card",
-    "createdAt": "2026-04-12T14:20:00Z",
-    "storeId": 1
+    "paymentMethod": "Credit Card",
+    "gatewayReference": "PAY-1001",
+    "saleId": 1
   },
   {
     "id": 2,
-    "amount": 8200,
+    "receiptId": "REC-0002",
+    "grossAmount": 14600,
+    "feeAmount": 292,
+    "netAmount": 14308,
+    "date": "2026-04-19T10:20:00.000Z",
     "status": "pending",
-    "paymentMethod": "debit_card",
-    "createdAt": "2026-04-13T09:45:00Z",
-    "storeId": 2
+    "paymentMethod": "Transfer",
+    "gatewayReference": "PAY-1002",
+    "saleId": 2
   },
   {
     "id": 3,
-    "amount": 23000,
-    "status": "rejected",
-    "paymentMethod": "credit_card",
-    "createdAt": "2026-04-14T18:10:00Z",
-    "storeId": 1
+    "receiptId": "REC-0003",
+    "grossAmount": 16300,
+    "feeAmount": 326,
+    "netAmount": 15974,
+    "date": "2026-04-20T09:10:00.000Z",
+    "status": "approved",
+    "paymentMethod": "Debit Card",
+    "gatewayReference": "PAY-1003",
+    "saleId": 3
   },
   {
     "id": 4,
-    "amount": 5600,
-    "status": "approved",
-    "paymentMethod": "cash",
-    "createdAt": "2026-04-15T11:05:00Z",
-    "storeId": 3
+    "receiptId": "REC-0004",
+    "grossAmount": 7300,
+    "feeAmount": 146,
+    "netAmount": 7154,
+    "date": "2026-04-21T12:05:00.000Z",
+    "status": "rejected",
+    "paymentMethod": "Cash",
+    "gatewayReference": "PAY-1004",
+    "saleId": 4
   }
 ]
