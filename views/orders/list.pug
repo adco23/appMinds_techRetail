@@ -12,7 +12,7 @@ include ./partials/_statusTag
     tbody
       each order in orders
         tr
-          td= order.id
+          td= order._id
           td= order.date
           td
             +orderStatusTag(order.status)
@@ -20,12 +20,12 @@ include ./partials/_statusTag
           td
             .buttons
               button.button.is-small.js-open-order-modal(
-                type="button"
-                data-order-id=order.id
-              ) Ver
+              type="button"
+              data-order-id=order._id
+            ) Ver
               if order.status === 0
-                button.button.is-small(type="button", onclick=`updateOrder(${order.id}, "cancelar")`) Cancelar
-                button.button.is-small(type="button", onclick=`updateOrder(${order.id}, "pagar")`) Confirmar
+                button.button.is-small(type="button", onclick=`updateOrder('${order._id}', "cancelar")`) Cancelar
+                button.button.is-small(type="button", onclick=`updateOrder('${order._id}', "pagar")`) Confirmar
 
   each order in orders
     template(id=`order-detail-template-${order.id}`)
@@ -46,7 +46,7 @@ include ./partials/_statusTag
     async function updateOrder(id, action) {
       if (!confirm(`Esta seguro de ${action} este pedido?`)) return;
 
-      let status = action === 'confirmar' ? 1 : action === 'cancelar' ? 2 : null;
+      let status = action === 'pagar' ? 1 : action === 'cancelar' ? 2 : null;
 
       try {
         const response = await fetch(`/api/orders/${id}?status=${status}`, { method: 'PUT' });

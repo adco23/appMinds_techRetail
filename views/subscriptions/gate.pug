@@ -26,13 +26,21 @@ block content
       async function crearSuscripcionDemo(event) {
         event.preventDefault();
 
-        const payload = {
-          detail: 'Plan Demo Comercio',
-          amount: 10000,
-          storeId: 1
-        };
-
         try {
+          const storesRes = await fetch('/api/stores');
+          const stores = await storesRes.json();
+
+          if (!stores || stores.length === 0) {
+            alert('No hay tiendas disponibles');
+            return;
+          }
+
+          const payload = {
+            detail: 'Plan Demo Comercio',
+            amount: 10000,
+            storeId: stores[0]._id
+          };
+
           const response = await fetch('/api/subscriptions', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

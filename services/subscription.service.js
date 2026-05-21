@@ -1,5 +1,4 @@
 const Subscription   = require('../models/subscription.model');
-const commerceService = require('./commerce.service');
 
 const getAll = async () => {
   return await Subscription.find();
@@ -8,21 +7,18 @@ const getAll = async () => {
 const crear = async data => {
   const hoy = new Date();
   const startDate = hoy.toISOString().split('T')[0];
-
   const vencimiento = new Date();
   vencimiento.setDate(hoy.getDate() + 30);
   const expDate = vencimiento.toISOString().split('T')[0];
 
   const nuevaSub = new Subscription({
-    detail:    data.detail,
-    amount:    Number(data.amount),
+    detail:  data.detail,
+    amount:  Number(data.amount),
     startDate,
     expDate,
-    status:    'active',
-    storeId:   data.storeId,
+    status:  'active',
+    storeId: data.storeId,
   });
-
-  await commerceService.activateCommerce(data.commerceId);
 
   return await nuevaSub.save();
 };

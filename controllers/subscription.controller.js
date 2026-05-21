@@ -5,7 +5,7 @@ const getAllSubscriptions = async (req, res) => {
     const data = await subscriptionService.getAll();
     res.status(200).json(data);
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching subscriptions' });
+    res.status(500).json({ message: 'Error obteniendo suscripciones', error: error.message });
   }
 };
 
@@ -17,7 +17,8 @@ const createSubscription = async (req, res) => {
       data: newSub,
     });
   } catch (error) {
-    res.status(500).json({ message: 'Error creating subscription' });
+    console.error(error);
+    res.status(500).json({ message: 'Error creando suscripción', error: error.message });
   }
 };
 

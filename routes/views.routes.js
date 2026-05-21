@@ -114,7 +114,8 @@ router.post('/subscriptions/create', async (req, res) => {
     await subscriptionService.crear(req.body);
     res.redirect('/subscriptions?role=platform-admin');
   } catch (error) {
-    res.status(500).send('Error al crear la suscripcion');
+    console.error(error);
+    res.status(500).send(`Error al crear la suscripcion: ${error.message}`);
   }
 });
 
