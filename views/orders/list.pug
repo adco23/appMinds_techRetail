@@ -12,7 +12,7 @@ include ./partials/_statusTag
     tbody
       each order in orders
         tr
-          td= order._id
+          td= order._id.toString().slice(-6)
           td= order.date
           td
             +orderStatusTag(order.status)
@@ -20,15 +20,15 @@ include ./partials/_statusTag
           td
             .buttons
               button.button.is-small.js-open-order-modal(
-              type="button"
-              data-order-id=order._id
-            ) Ver
+                type="button"
+                data-order-id=`${order._id}`
+              ) Ver
               if order.status === 0
                 button.button.is-small(type="button", onclick=`updateOrder('${order._id}', "cancelar")`) Cancelar
                 button.button.is-small(type="button", onclick=`updateOrder('${order._id}', "pagar")`) Confirmar
 
   each order in orders
-    template(id=`order-detail-template-${order.id}`)
+    template(id=`order-detail-template-${order._id}`)
       include ./partials/_detailContent
 
   #order-detail-modal.modal
