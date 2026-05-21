@@ -6,7 +6,7 @@ const commerceSchema = new mongoose.Schema({
   email:     { type: String, required: true, unique: true },
   phone:     { type: String, default: null },
   address:   { type: String, default: null },
-  status:    { type: Number, default: 0 }, // 1 = active, 0 = inactive
+  status:    { type: Number, default: 1 }, // 1 = activo, 0 = inactivo
   createdAt: { type: Date,   default: Date.now },
 });
 
