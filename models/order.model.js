@@ -7,7 +7,7 @@ const orderSchema = new mongoose.Schema({
   totalAmount:   { type: Number, default: null },
   detailsId:     [{ type: mongoose.Schema.Types.ObjectId, ref: 'SaleDetail' }],
   date:          { type: Date,   default: Date.now },
-  status:        { type: Number, default: 0 }, // 0 = pending, 1 = completed, 2 = cancelled
+  status:        { type: Number, default: 0 }, // 0 = pendiente, 1 = completo, 2 = cancelado
   paymentId:     { type: String, default: null },
   logisticsId:   { type: String, default: null },
 });

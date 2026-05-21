@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
   password:   { type: String, required: true },
   role:       { type: String, required: true },
   commerceId: { type: mongoose.Schema.Types.ObjectId, ref: 'Commerce', default: null },
-  status:     { type: String, default: 'active', enum: ['active', 'inactive'] },
+  status:     { type: String, default: 'Activo', enum: ['Activo', 'Inactivo'] },
 });
 
 module.exports = mongoose.model('User', userSchema);

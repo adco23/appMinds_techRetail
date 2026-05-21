@@ -5,7 +5,7 @@ const subscriptionSchema = new mongoose.Schema({
   amount:    { type: Number, required: true },
   startDate: { type: String, required: true },
   expDate:   { type: String, required: true },
-  status:    { type: String, default: 'active', enum: ['active', 'cancelled'] },
+  status:    { type: String, default: 'Activa', enum: ['Activa', 'Cancelled'] },
   storeId:   { type: mongoose.Schema.Types.ObjectId, ref: 'Store', required: true },
 });
 
