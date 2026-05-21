@@ -16,7 +16,7 @@ const crear = async data => {
     amount:  Number(data.amount),
     startDate,
     expDate,
-    status:  'active',
+    status:  'Activa',
     storeId: data.storeId,
   });
 
@@ -31,9 +31,7 @@ const renovar = async id => {
   currentExp.setDate(currentExp.getDate() + 30);
 
   sub.expDate = currentExp.toISOString().split('T')[0];
-  sub.status  = 'active';
-
-  await commerceService.activateCommerce(sub.storeId);
+  sub.status  = 'Activa';
 
   return await sub.save();
 };
@@ -42,7 +40,7 @@ const cancelar = async id => {
   const sub = await Subscription.findById(id);
   if (!sub) throw new Error('Suscripción no encontrada');
 
-  sub.status = 'cancelled';
+  sub.status = 'Cancelada';
   return await sub.save();
 };
 
