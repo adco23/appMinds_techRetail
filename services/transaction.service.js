@@ -1,32 +1,20 @@
-const fileHandler = require('../utils/fileHandler');
-const FILE_PATH = 'transactions.json';
+const Transaction = require('../models/transaction.model');
 
 const getAll = async () => {
-  return await fileHandler.readFile(FILE_PATH);
+  return await Transaction.find();
 };
 
 const createTransaction = async data => {
-  const transactions = await fileHandler.readFile(FILE_PATH);
+  const newTransaction = new Transaction({
+    receiptId:     data.receiptId,
+    grossAmount:   data.grossAmount,
+    status:        data.status,
+    paymentMethod: data.paymentMethod,
+    gatewayRef:    data.gatewayRef,
+    saleId:        data.saleId,
+  });
 
-  // Cálculo de comisión (2%) y neto
-  const fee = data.grossAmount * 0.02;
-  const net = data.grossAmount - fee;
-
-  const newTransaction = {
-    id: transactions.length > 0 ? transactions[transactions.length - 1].id + 1 : 1,
-    ...data,
-    feeAmount: fee,
-    netAmount: net,
-    date: new Date().toISOString(),
-  };
-
-  transactions.push(newTransaction);
-  await fileHandler.writeFile(FILE_PATH, transactions);
-  return newTransaction;
+  return await newTransaction.save(); // pre('save') calcula feeAmount y netAmount
 };
 
-// EXPORTAR AMBAS
-module.exports = {
-  getAll,
-  createTransaction,
-};
+module.exports = { getAll, createTransaction };

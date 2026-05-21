@@ -1,136 +1,115 @@
-const storeService = require('../services/store.service');
+const storeService   = require('../services/store.service');
 const productService = require('../services/product.service');
 
 const getSimQuery = req => {
   const role = req.query.role || '';
   const subscribed = req.query.subscribed === '1';
-
   if (!role) return '';
-
   return `?role=${role}${subscribed ? '&subscribed=1' : ''}`;
 };
 
-const getStores = (req, res, next) => {
+const getStores = async (req, res, next) => {
   try {
-    const stores = storeService.getAllStores();
+    const stores = await storeService.getAllStores();
     res.json(stores);
   } catch (error) {
     next(error);
   }
 };
 
-const getStoresView = (req, res, next) => {
+const getStoresView = async (req, res, next) => {
   try {
-    const stores = storeService.getAllStores();
-    res.render('stores/index', {
-      title: 'Tiendas',
-      stores,
-    });
+    const stores = await storeService.getAllStores();
+    res.render('stores/index', { title: 'Tiendas', stores });
   } catch (error) {
     next(error);
   }
 };
 
-const getStoreNewView = (req, res, next) => {
+const getStoreNewView = async (req, res, next) => {
   try {
-    res.render('stores/new', {
-      title: 'Nueva tienda',
-    });
+    res.render('stores/new', { title: 'Nueva tienda' });
   } catch (error) {
     next(error);
   }
 };
 
-const getStoreDetailView = (req, res, next) => {
+const getStoreDetailView = async (req, res, next) => {
   try {
-    const store = storeService.getStoreById(req.params.id);
-    const products = productService.getProductsByStoreId(req.params.id);
-
-    res.render('stores/show', {
-      title: 'Detalle de tienda',
-      store,
-      products,
-    });
+    const store    = await storeService.getStoreById(req.params.id);
+    const products = await productService.getProductsByStoreId(req.params.id);
+    res.render('stores/show', { title: 'Detalle de tienda', store, products });
   } catch (error) {
     next(error);
   }
 };
 
-const getStoreEditView = (req, res, next) => {
+const getStoreEditView = async (req, res, next) => {
   try {
-    const store = storeService.getStoreById(req.params.id);
-    res.render('stores/edit', {
-      title: 'Editar tienda',
-      store,
-    });
+    const store = await storeService.getStoreById(req.params.id);
+    res.render('stores/edit', { title: 'Editar tienda', store });
   } catch (error) {
     next(error);
   }
 };
 
-const getStoreById = (req, res, next) => {
+const getStoreById = async (req, res, next) => {
   try {
-    const store = storeService.getStoreById(req.params.id);
+    const store = await storeService.getStoreById(req.params.id);
     res.json(store);
   } catch (error) {
     next(error);
   }
 };
 
-const createStore = (req, res, next) => {
+const createStore = async (req, res, next) => {
   try {
-    const newStore = storeService.createStore(req.body);
-    res.status(201).json({
-      message: 'Store created successfully',
-      store: newStore,
-    });
+    const newStore = await storeService.createStore(req.body);
+    res.status(201).json({ message: 'Store created successfully', store: newStore });
   } catch (error) {
     next(error);
   }
 };
 
-const createStoreFromView = (req, res, next) => {
+const createStoreFromView = async (req, res, next) => {
   try {
-    storeService.createStore(req.body);
+    await storeService.createStore(req.body);
     res.redirect(`/stores/view${getSimQuery(req)}`);
   } catch (error) {
     next(error);
   }
 };
 
-const updateStore = (req, res, next) => {
+const updateStore = async (req, res, next) => {
   try {
-    const updatedStore = storeService.updateStore(req.params.id, req.body);
-    res.json({
-      message: 'Store updated successfully',
-      store: updatedStore,
-    });
+    const updatedStore = await storeService.updateStore(req.params.id, req.body);
+    res.json({ message: 'Store updated successfully', store: updatedStore });
   } catch (error) {
     next(error);
   }
 };
 
-const updateStoreFromView = (req, res, next) => {
+const updateStoreFromView = async (req, res, next) => {
   try {
-    storeService.updateStore(req.params.id, req.body);
+    await storeService.updateStore(req.params.id, req.body);
     res.redirect(`/stores/view${getSimQuery(req)}`);
   } catch (error) {
     next(error);
   }
 };
 
-const deleteStore = (req, res, next) => {
+const deleteStore = async (req, res, next) => {
   try {
-    const result = storeService.deleteStore(req.params.id);
+    const result = await storeService.deleteStore(req.params.id);
     res.json(result);
   } catch (error) {
     next(error);
   }
 };
 
-const deleteStoreFromView = (req, res, next) => {
+const deleteStoreFromView = async (req, res, next) => {
   try {
-    storeService.deleteStore(req.params.id);
+    await storeService.deleteStore(req.params.id);
     res.redirect(`/stores/view${getSimQuery(req)}`);
   } catch (error) {
     next(error);

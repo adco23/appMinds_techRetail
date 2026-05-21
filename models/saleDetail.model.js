@@ -1,16 +1,17 @@
-class SaleDetail {
-  constructor(id, cantidad, precioUnitario, ventaId, productoId) {
-    this.id = id;
-    this.cantidad = Number(cantidad);
-    this.precioUnitario = Number(precioUnitario);
-    this.ventaId = ventaId;
-    this.productoId = productoId;
-    this.subtotal = this.calculateSubtotal();
-  }
+const mongoose = require('mongoose');
 
-  calculateSubtotal() {
-    return this.cantidad * this.precioUnitario;
-  }
-}
+const saleDetailSchema = new mongoose.Schema({
+  cantidad:       { type: Number, required: true },
+  precioUnitario: { type: Number, required: true },
+  subtotal:       { type: Number },
+  ventaId:        { type: mongoose.Schema.Types.ObjectId, ref: 'Order',   required: true },
+  productoId:     { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
+});
 
-module.exports = SaleDetail;
+// Equivalente a calculateSubtotal() — se calcula antes de guardar
+saleDetailSchema.pre('save', function (next) {
+  this.subtotal = this.cantidad * this.precioUnitario;
+  next();
+});
+
+module.exports = mongoose.model('SaleDetail', saleDetailSchema);

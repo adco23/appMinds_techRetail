@@ -6,8 +6,13 @@ const saleDetailRoutes = require('./saleDetail.routes');
 const userRoutes = require('./user.routes.js');
 const subscriptionRoutes = require('./subscription.routes.js');
 const transactionRoutes = require('./transaction.routes.js');
+const storeRoutes = require('./store.routes.js');
+const productRoutes = require('./product.routes.js');
+
+
 
 const router = Router();
+
 
 // Vistas
 router.use('/', viewRoutes);
@@ -19,5 +24,7 @@ router.use('/api/sale-details', saleDetailRoutes);
 router.use('/api/users', userRoutes);
 router.use('/api/subscriptions', subscriptionRoutes);
 router.use('/api/transactions', transactionRoutes);
+router.use('/api/stores', storeRoutes);
+router.use('/api/products', productRoutes);
 
 module.exports = router;

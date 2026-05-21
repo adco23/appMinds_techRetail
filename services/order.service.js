@@ -1,69 +1,69 @@
-const fileHandler = require('../utils/fileHandler');
 const Order = require('../models/order.model');
 
-const JSON_FILE = 'orders.json';
-const orders = fileHandler.readFile(JSON_FILE);
+const getOrders = async () => {
+  const orders = await Order.find();
 
-const save = data => {
-  try {
-    fileHandler.writeFile(JSON_FILE, data);
-    return true;
-  } catch (error) {
-    console.error('Error saving orders:', error);
-    return false;
-  }
-};
+  // Equivalente a dateOnlyFormat() y currencyFormat() de la clase
+  return orders.map(order => {
+    const obj = order.toObject();
 
-const getOrders = () => {
-  return orders.map(sale => {
-    const obj = Object.assign(new Order(), sale);
-    obj.dateOnlyFormat();
-    obj.currencyFormat();
+    const d = new Date(obj.date);
+    const day   = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const year  = d.getFullYear();
+    obj.date = `${day}/${month}/${year}`;
+
+    obj.totalAmount = '$' + (obj.totalAmount ? obj.totalAmount : '0.00');
 
     return obj;
   });
 };
 
-const findById = id => {
-  return orders.find(order => order.id == id);
+const findById = async id => {
+  return await Order.findById(id);
 };
 
-const exists = id => {
-  return orders.some(order => order.id == id);
+const exists = async id => {
+  const order = await Order.findById(id);
+  return !!order;
 };
 
-const createOrder = ({ clientId, storeId, paymentMethod, detailsId }) => {
-  let newOrder = new Order(orders.length + 1, clientId, storeId, paymentMethod, detailsId);
-
-  return save([...orders, newOrder]);
+const createOrder = async ({ clientId, storeId, paymentMethod, detailsId }) => {
+  const newOrder = new Order({ clientId, storeId, paymentMethod, detailsId });
+  return await newOrder.save();
 };
 
-const updateOrder = (id, status) => {
-  const data = orders.find(o => o.id === id);
+// Equivalente a order.cancel()
+const cancelOrder = async id => {
+  const order = await Order.findById(id);
+  if (!order) throw new Error('Order not found');
 
-  const order = Object.assign(new Order(), data);
-
-  if (status == 2) {
-    order.cancel();
-  }
-
-  const list = orders.map(o => (o.id === id ? order : o));
-
-  return save(list);
+  order.status = 2;
+  return await order.save();
 };
 
-// const updateSale = (id, { name, email, phone, address }) => {
-//   const sale = findById(id);
+// Equivalente a order.complete()
+const completeOrder = async (id, paymentId, logisticsId) => {
+  const order = await Order.findById(id);
+  if (!order) throw new Error('Order not found');
 
-//   if (!sale) return false;
+  order.status      = 1;
+  order.paymentId   = paymentId;
+  order.logisticsId = logisticsId;
+  return await order.save();
+};
 
-//   sale.name = name || sale.name;
-//   sale.email = email || sale.email;
-//   sale.phone = phone || sale.phone;
-//   sale.address = address || sale.address;
+const updateOrder = async (id, status) => {
+  if (status == 2) return await cancelOrder(id);
+  return await Order.findByIdAndUpdate(id, { status }, { new: true });
+};
 
-//   fileHandler.writeFile(JSON_FILE, sales);
-//   return true;
-// }
-
-module.exports = { exists, findById, updateOrder, getOrders, createOrder };
+module.exports = {
+  getOrders,
+  findById,
+  exists,
+  createOrder,
+  cancelOrder,
+  completeOrder,
+  updateOrder,
+};

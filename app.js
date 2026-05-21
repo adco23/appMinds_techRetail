@@ -50,12 +50,6 @@ app.use((req, res, next) => {
 // Rutas generales del proyecto
 app.use('/', routes);
 
-// API y vistas del módulo Store
-app.use('/stores', storeRoutes);
-
-// API y vistas del módulo Product
-app.use('/products', productRoutes);
-
 app.use(errorHandler);
 
 module.exports = app;
