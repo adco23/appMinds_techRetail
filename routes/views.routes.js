@@ -6,6 +6,7 @@ import transactionService from "../services/transaction.service.js";
 import subscriptionService from '../services/subscription.service.js';
 import * as storeService from '../services/store.service.js';
 
+
 const router = Router();
 
 const getSimulationData = req => {
@@ -57,6 +58,25 @@ router.get('/orders', commerceNeedsSubscription, async (req, res) => {
   const view = req.query.view || 'index';
   const orders = await orderService.getOrders();
   res.render('orders/index', { view, orders, sim: req.simulation });
+});
+
+router.get('/orders/new', commerceNeedsSubscription, async (req, res) => {
+  try {
+    const users = await userService.getUsers();
+    const stores = await storeService.getAllStores();
+    res.render('orders/new', { users, stores, sim: req.simulation });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+router.post('/orders/create', commerceNeedsSubscription, async (req, res) => {
+  try {
+    await orderService.createOrder(req.body);
+    res.redirect(`/orders${req.simulation.query}`);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 });
 
 router.get('/orders/:id', commerceNeedsSubscription, async (req, res) => {
@@ -155,5 +175,7 @@ router.get('/subscriptions/delete/:id', onlyPlatformAdmin, async (req, res) => {
     res.status(500).send(`Error al eliminar: ${error.message}`);
   }
 });
+
+
 
 export default router;

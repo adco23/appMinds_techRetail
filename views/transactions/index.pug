@@ -2,30 +2,31 @@ extends ../layouts/main.pug
 
 block content
   h1.title Transacciones
-  p.subtitle
+  p.subtitle Registro de pagos procesados
 
   table.table.is-striped.is-fullwidth.is-hoverable
     thead
       tr
-        //th ID
+        th #
         th Comprobante
+        th Orden
         th Monto Bruto
         th Comisión (2%)
         th Monto Neto
         th Fecha
         th Estado
     tbody
-      each tx in transactions
+      each tx, index in transactions
         tr
-          //td= tx.id
+          td= index + 1
           td= tx.receiptId
+          td= tx.saleId ? tx.saleId.toString().slice(-6).toUpperCase() : 'N/A'
           td $#{tx.grossAmount}
-          td.has-text-danger $#{tx.feeAmount}
-          td.has-text-success $#{tx.netAmount}
+          td.has-text-danger $#{tx.feeAmount ? tx.feeAmount.toFixed(2) : '0.00'}
+          td.has-text-success $#{tx.netAmount ? tx.netAmount.toFixed(2) : '0.00'}
           td= tx.date ? new Date(tx.date).toISOString().split('T')[0] : 'No date'
           td
             span.tag(class=tx.status === 'approved' ? 'is-success' : 'is-warning')= tx.status
       else
         tr
-          td.has-text-centered(colspan="7") No hay transacciones registradas.
-
+          td.has-text-centered(colspan="8") No hay transacciones registradas.

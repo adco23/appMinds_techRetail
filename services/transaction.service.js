@@ -1,5 +1,6 @@
 import Transaction from "../models/transaction.model.js";
 
+
 const getAll = async () => {
   return await Transaction.find();
 };

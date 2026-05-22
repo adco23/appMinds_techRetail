@@ -1,0 +1,54 @@
+extends ../layouts/main
+
+block content
+  h1.title Nueva Orden
+
+  .box
+    form(action=`/orders/create${sim.query}` method="POST")
+
+      .field
+        label.label Cliente
+        .control
+          div.select.is-fullwidth
+            select(name="clientId" required)
+              option(value="") Seleccioná un cliente
+              each user in users
+                option(value=`${user._id}`)= `${user.firstName} ${user.lastName}`
+
+      .field
+        label.label Tienda
+        .control
+          div.select.is-fullwidth
+            select(name="storeId" required)
+              option(value="") Seleccioná una tienda
+              each store in stores
+                option(value=`${store._id}`)= store.name
+
+      .field
+        label.label Método de Pago
+        .control
+          div.select.is-fullwidth
+            select(name="paymentMethod" required)
+              option(value="") Seleccioná un método
+              option(value="efectivo") Efectivo
+              option(value="tarjeta") Tarjeta
+              option(value="cuenta corriente") Cuenta Corriente
+
+      .field
+        label.label Monto Total
+        .control
+          input.input(type="number" name="totalAmount" placeholder="0" min="0" required)
+
+      .field
+        label.label ID de Pago
+        .control
+          input.input(type="text" placeholder="Generado automáticamente" disabled style="background-color: #f5f5f5; color: #aaa; cursor: not-allowed;")
+
+      .field
+        label.label ID de Logística
+        .control
+          input.input(type="text" placeholder="Generado automáticamente" disabled style="background-color: #f5f5f5; color: #aaa; cursor: not-allowed;")
+
+      .buttons.mt-4
+        button.button.is-primary(type="submit") Crear Orden
+        a.button.is-light(href=`/orders${sim.query}`) Cancelar

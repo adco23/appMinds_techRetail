@@ -1,4 +1,5 @@
 import Order from "../models/order.model.js";
+import transactionService from './transaction.service.js';
 
 export const getOrders = async () => {
   const orders = await Order.find();
@@ -28,8 +29,16 @@ export const exists = async id => {
   return !!order;
 };
 
-export const createOrder = async ({ clientId, storeId, paymentMethod, detailsId }) => {
-  const newOrder = new Order({ clientId, storeId, paymentMethod, detailsId });
+export const createOrder = async ({ clientId, storeId, paymentMethod, detailsId, totalAmount }) => {
+  const newOrder = new Order({
+    clientId,
+    storeId,
+    paymentMethod,
+    detailsId: detailsId || [],
+    totalAmount,
+    paymentId:   `PAY-${Date.now()}`,
+    logisticsId: `LOG-${Date.now()}`,
+  });
   return await newOrder.save();
 };
 
@@ -55,5 +64,19 @@ export const completeOrder = async (id, paymentId, logisticsId) => {
 
 export const updateOrder = async (id, status) => {
   if (status == 2) return await cancelOrder(id);
-  return await Order.findByIdAndUpdate(id, { status }, { new: true });
+
+  const order = await Order.findByIdAndUpdate(id, { status }, { new: true });
+
+  if (status == 1 && order) {
+    await transactionService.createTransaction({
+      receiptId:     `REC-${order._id.toString().slice(-6).toUpperCase()}`,
+      grossAmount:   order.totalAmount || 0,
+      status:        'approved',
+      paymentMethod: order.paymentMethod,
+      gatewayRef:    `GW-${Date.now()}`,
+      saleId:        order._id,
+    });
+  }
+
+  return order;
 };

@@ -4,10 +4,9 @@ block content
   h1.title Gestion de Ordenes
 
   .buttons
-    //- a.button(href=`/orders?view=list&role=${sim.role}&subscribed=1`) Listado
+    a.button.is-primary(href=`/orders/new${sim.query}`) Nueva Orden
 
   if view === 'form'
     include create
-  //- else if view === 'list'
   else
     include list

@@ -17,7 +17,7 @@ export const getOrders = async (req, res, next) => {
 
 export const createOrder = async (req, res, next) => {
   try {
-    const { clientId, storeId, paymentMethod, detailsId } = req.body;
+    const { clientId, storeId, paymentMethod, detailsId, totalAmount } = req.body;
 
     const validations = [
       { condition: !clientId,      message: 'El ID del cliente es obligatorio.' },
@@ -28,7 +28,7 @@ export const createOrder = async (req, res, next) => {
 
     if (!validate(validations, res)) return;
 
-    const statusCreated = await service.createOrder({ clientId, storeId, paymentMethod, detailsId });
+    const statusCreated = await service.createOrder({ clientId, storeId, paymentMethod, detailsId, totalAmount });
     if (!statusCreated) return res.status(500).json({ error: 'Error al registrar la Orden.' });
     res.status(201).json({ message: 'Orden (pendiente) registrada exitosamente.' });
   } catch (error) {

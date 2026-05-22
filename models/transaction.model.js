@@ -12,11 +12,10 @@ const transactionSchema = new mongoose.Schema({
   saleId:        { type: mongoose.Schema.Types.ObjectId, ref: 'Order', required: true },
 });
 
-// Calcula fee y net antes de guardar
-transactionSchema.pre('save', function (next) {
+// Calcula comision y neto antes de guardar
+transactionSchema.pre('save', async function() {
   this.feeAmount = this.grossAmount * 0.02;
   this.netAmount = this.grossAmount - this.feeAmount;
-  next();
 });
 
 export default mongoose.model('Transaction', transactionSchema);
