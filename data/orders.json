@@ -1,50 +1,72 @@
-[
-  {
-    "id": 1,
-    "clientId": 1,
-    "storeId": 1,
-    "paymentMethod": "Credit Card",
-    "totalAmount": 11500,
-    "detailsId": 1,
-    "date": "2026-04-18T14:30:00.000Z",
-    "status": 1,
-    "paymentId": 1001,
-    "logisticsId": 5001
+[{
+  "_id": {
+    "$oid": "6a0f698d66dd57268361b533"
   },
-  {
-    "id": 2,
-    "clientId": 2,
-    "storeId": 2,
-    "paymentMethod": "Transfer",
-    "totalAmount": 14600,
-    "detailsId": 2,
-    "date": "2026-04-19T10:15:00.000Z",
-    "status": 0,
-    "paymentId": null,
-    "logisticsId": null
+  "clientId": {
+    "$oid": "6a0f695a66dd57268361b52f"
   },
-  {
-    "id": 3,
-    "clientId": 3,
-    "storeId": 3,
-    "paymentMethod": "Debit Card",
-    "totalAmount": 16300,
-    "detailsId": 3,
-    "date": "2026-04-20T09:00:00.000Z",
-    "status": 1,
-    "paymentId": 1002,
-    "logisticsId": 5002
+  "storeId": {
+    "$oid": "6a0f69b066dd57268361b54b"
   },
-  {
-    "id": 4,
-    "clientId": 5,
-    "storeId": 4,
-    "paymentMethod": "Cash",
-    "totalAmount": 7300,
-    "detailsId": 4,
-    "date": "2026-04-21T12:00:00.000Z",
-    "status": 2,
-    "paymentId": null,
-    "logisticsId": null
-  }
-]
+  "paymentMethod": "Credit Card",
+  "totalAmount": 11500,
+  "detailsId": 1,
+  "date": "2026-04-18T14:30:00.000Z",
+  "status": 1,
+  "paymentId": 1001,
+  "logisticsId": 5001
+},
+{
+  "_id": {
+    "$oid": "6a0f698d66dd57268361b534"
+  },
+  "clientId": {
+    "$oid": "6a0f695a66dd57268361b52f"
+  },
+  "storeId": {
+    "$oid": "6a106b9166dd57268361b592"
+  },
+  "paymentMethod": "Transfer",
+  "totalAmount": 14600,
+  "detailsId": 2,
+  "date": "2026-04-19T10:15:00.000Z",
+  "status": 1,
+  "paymentId": null,
+  "logisticsId": null
+},
+{
+  "_id": {
+    "$oid": "6a0f698d66dd57268361b535"
+  },
+  "clientId": {
+    "$oid": "6a0f695a66dd57268361b530"
+  },
+  "storeId": {
+    "$oid": "6a0f69b066dd57268361b54d"
+  },
+  "paymentMethod": "Debit Card",
+  "totalAmount": 16300,
+  "detailsId": 3,
+  "date": "2026-04-20T09:00:00.000Z",
+  "status": 1,
+  "paymentId": 1002,
+  "logisticsId": 5002
+},
+{
+  "_id": {
+    "$oid": "6a0f698d66dd57268361b536"
+  },
+  "clientId": {
+    "$oid": "6a0f695a66dd57268361b531"
+  },
+  "storeId": {
+    "$oid": "6a0f69b066dd57268361b54e"
+  },
+  "paymentMethod": "Cash",
+  "totalAmount": 7300,
+  "detailsId": 4,
+  "date": "2026-04-21T12:00:00.000Z",
+  "status": 2,
+  "paymentId": null,
+  "logisticsId": null
+}]
