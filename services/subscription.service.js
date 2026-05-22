@@ -1,4 +1,4 @@
-const Subscription   = require('../models/subscription.model');
+import Subscription from "../models/subscription.model.js";
 
 const getAll = async () => {
   return await Subscription.find();
@@ -46,4 +46,4 @@ const cancelar = async id => {
   return await sub.save();
 };
 
-module.exports = { getAll, crear, renovar, cancelar };
+export default { getAll, crear, renovar, cancelar };

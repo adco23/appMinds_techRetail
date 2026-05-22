@@ -1,4 +1,4 @@
-const User = require('../models/user.model');
+import User from "../models/user.model.js";
 
 const getUsers = async () => {
   return await User.find();
@@ -72,7 +72,7 @@ const validateCredentials = async (email, password) => {
   return user.password === password;
 };
 
-module.exports = {
+export default {
   getUsers,
   findByEmail,
   existsByEmail,

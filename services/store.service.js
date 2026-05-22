@@ -1,4 +1,4 @@
-const Store = require('../models/store.model');
+import Store from "../models/store.model.js";
 
 const getAllStores = async () => {
   return await Store.find();
@@ -47,4 +47,4 @@ const deleteStore = async id => {
   return { message: 'Store deleted successfully' };
 };
 
-module.exports = { getAllStores, getStoreById, createStore, updateStore, deleteStore };
+export default { getAllStores, getStoreById, createStore, updateStore, deleteStore };

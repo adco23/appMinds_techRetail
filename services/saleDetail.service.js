@@ -1,4 +1,4 @@
-const SaleDetail = require('../models/saleDetail.model');
+import SaleDetail from "../models/saleDetail.model.js";
 
 const getDetails = async () => {
   return await SaleDetail.find();
@@ -25,7 +25,7 @@ const deleteDetail = async id => {
   return true;
 };
 
-module.exports = {
+export default {
   getDetails,
   getDetailsBySaleId,
   createDetail,

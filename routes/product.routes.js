@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
-const {
+import {
   getProducts,
   getProductsView,
   getProductDetailView,
@@ -14,7 +14,7 @@ const {
   updateProductFromView,
   deleteProduct,
   deleteProductFromView,
-} = require('../controllers/product.controller');
+} from '../controllers/product.controller.js';
 
 router.get('/', getProducts);
 router.get('/view', getProductsView);
@@ -33,4 +33,4 @@ router.post('/delete/:id', deleteProductFromView);
 router.put('/:id', updateProduct);
 router.delete('/:id', deleteProduct);
 
-module.exports = router;
+export default router;

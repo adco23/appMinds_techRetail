@@ -1,13 +1,13 @@
-const productService = require('../services/product.service');
+import productService from "../services/product.service.js";
 
-const getSimQuery = req => {
+export const getSimQuery = req => {
   const role = req.query.role || '';
   const subscribed = req.query.subscribed === '1';
   if (!role) return '';
   return `?role=${role}${subscribed ? '&subscribed=1' : ''}`;
 };
 
-const getProducts = async (req, res, next) => {
+export const getProducts = async (req, res, next) => {
   try {
     const products = await productService.getAllProducts();
     res.json(products);
@@ -16,7 +16,7 @@ const getProducts = async (req, res, next) => {
   }
 };
 
-const getProductsView = async (req, res, next) => {
+export const getProductsView = async (req, res, next) => {
   try {
     const products = await productService.getAllProducts();
     res.render('products/index', { title: 'Productos', products });
@@ -25,7 +25,7 @@ const getProductsView = async (req, res, next) => {
   }
 };
 
-const getProductDetailView = async (req, res, next) => {
+export const getProductDetailView = async (req, res, next) => {
   try {
     const product = await productService.getProductById(req.params.id);
     res.render('products/show', { title: 'Detalle de producto', product });
@@ -34,7 +34,7 @@ const getProductDetailView = async (req, res, next) => {
   }
 };
 
-const getProductEditView = async (req, res, next) => {
+export const getProductEditView = async (req, res, next) => {
   try {
     const product = await productService.getProductById(req.params.id);
     res.render('products/edit', { title: 'Editar producto', product });
@@ -43,7 +43,7 @@ const getProductEditView = async (req, res, next) => {
   }
 };
 
-const getProductNewView = async (req, res, next) => {
+export const getProductNewView = async (req, res, next) => {
   try {
     const storeId = req.params.storeId || '';
     res.render('products/new', { title: 'Nuevo producto', storeId });
@@ -52,7 +52,7 @@ const getProductNewView = async (req, res, next) => {
   }
 };
 
-const getProductById = async (req, res, next) => {
+export const getProductById = async (req, res, next) => {
   try {
     const product = await productService.getProductById(req.params.id);
     res.json(product);
@@ -61,7 +61,7 @@ const getProductById = async (req, res, next) => {
   }
 };
 
-const createProduct = async (req, res, next) => {
+export const createProduct = async (req, res, next) => {
   try {
     const newProduct = await productService.createProduct(req.body);
     res.status(201).json({ message: 'Product created successfully', product: newProduct });
@@ -70,7 +70,7 @@ const createProduct = async (req, res, next) => {
   }
 };
 
-const createProductFromView = async (req, res, next) => {
+export const createProductFromView = async (req, res, next) => {
   try {
     const newProduct = await productService.createProduct(req.body);
     res.redirect(`/stores/view/${newProduct.storeId}${getSimQuery(req)}`);
@@ -79,7 +79,7 @@ const createProductFromView = async (req, res, next) => {
   }
 };
 
-const updateProduct = async (req, res, next) => {
+export const updateProduct = async (req, res, next) => {
   try {
     const updatedProduct = await productService.updateProduct(req.params.id, req.body);
     res.json({ message: 'Product updated successfully', product: updatedProduct });
@@ -88,7 +88,7 @@ const updateProduct = async (req, res, next) => {
   }
 };
 
-const updateProductFromView = async (req, res, next) => {
+export const updateProductFromView = async (req, res, next) => {
   try {
     const updatedProduct = await productService.updateProduct(req.params.id, req.body);
     res.redirect(`/stores/view/${updatedProduct.storeId}${getSimQuery(req)}`);
@@ -97,7 +97,7 @@ const updateProductFromView = async (req, res, next) => {
   }
 };
 
-const deleteProduct = async (req, res, next) => {
+export const deleteProduct = async (req, res, next) => {
   try {
     const result = await productService.deleteProduct(req.params.id);
     res.json(result);
@@ -106,7 +106,7 @@ const deleteProduct = async (req, res, next) => {
   }
 };
 
-const deleteProductFromView = async (req, res, next) => {
+export const deleteProductFromView = async (req, res, next) => {
   try {
     const product = await productService.getProductById(req.params.id);
     await productService.deleteProduct(req.params.id);
@@ -114,19 +114,4 @@ const deleteProductFromView = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
-
-module.exports = {
-  getProducts,
-  getProductsView,
-  getProductDetailView,
-  getProductEditView,
-  getProductNewView,
-  getProductById,
-  createProduct,
-  createProductFromView,
-  updateProduct,
-  updateProductFromView,
-  deleteProduct,
-  deleteProductFromView,
 };

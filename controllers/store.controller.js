@@ -1,14 +1,14 @@
-const storeService   = require('../services/store.service');
-const productService = require('../services/product.service');
+import storeService from "../services/store.service.js";
+import productService from "../services/product.service.js";
 
-const getSimQuery = req => {
+export const getSimQuery = req => {
   const role = req.query.role || '';
   const subscribed = req.query.subscribed === '1';
   if (!role) return '';
   return `?role=${role}${subscribed ? '&subscribed=1' : ''}`;
 };
 
-const getStores = async (req, res, next) => {
+export const getStores = async (req, res, next) => {
   try {
     const stores = await storeService.getAllStores();
     res.json(stores);
@@ -17,7 +17,7 @@ const getStores = async (req, res, next) => {
   }
 };
 
-const getStoresView = async (req, res, next) => {
+export const getStoresView = async (req, res, next) => {
   try {
     const stores = await storeService.getAllStores();
     res.render('stores/index', { title: 'Tiendas', stores });
@@ -26,7 +26,7 @@ const getStoresView = async (req, res, next) => {
   }
 };
 
-const getStoreNewView = async (req, res, next) => {
+export const getStoreNewView = async (req, res, next) => {
   try {
     res.render('stores/new', { title: 'Nueva tienda' });
   } catch (error) {
@@ -34,7 +34,7 @@ const getStoreNewView = async (req, res, next) => {
   }
 };
 
-const getStoreDetailView = async (req, res, next) => {
+export const getStoreDetailView = async (req, res, next) => {
   try {
     const store    = await storeService.getStoreById(req.params.id);
     const products = await productService.getProductsByStoreId(req.params.id);
@@ -44,7 +44,7 @@ const getStoreDetailView = async (req, res, next) => {
   }
 };
 
-const getStoreEditView = async (req, res, next) => {
+export const getStoreEditView = async (req, res, next) => {
   try {
     const store = await storeService.getStoreById(req.params.id);
     res.render('stores/edit', { title: 'Editar tienda', store });
@@ -53,7 +53,7 @@ const getStoreEditView = async (req, res, next) => {
   }
 };
 
-const getStoreById = async (req, res, next) => {
+export const getStoreById = async (req, res, next) => {
   try {
     const store = await storeService.getStoreById(req.params.id);
     res.json(store);
@@ -62,7 +62,7 @@ const getStoreById = async (req, res, next) => {
   }
 };
 
-const createStore = async (req, res, next) => {
+export const createStore = async (req, res, next) => {
   try {
     const newStore = await storeService.createStore(req.body);
     res.status(201).json({ message: 'Store created successfully', store: newStore });
@@ -71,7 +71,7 @@ const createStore = async (req, res, next) => {
   }
 };
 
-const createStoreFromView = async (req, res, next) => {
+export const createStoreFromView = async (req, res, next) => {
   try {
     await storeService.createStore(req.body);
     res.redirect(`/stores/view${getSimQuery(req)}`);
@@ -80,7 +80,7 @@ const createStoreFromView = async (req, res, next) => {
   }
 };
 
-const updateStore = async (req, res, next) => {
+export const updateStore = async (req, res, next) => {
   try {
     const updatedStore = await storeService.updateStore(req.params.id, req.body);
     res.json({ message: 'Store updated successfully', store: updatedStore });
@@ -89,7 +89,7 @@ const updateStore = async (req, res, next) => {
   }
 };
 
-const updateStoreFromView = async (req, res, next) => {
+export const updateStoreFromView = async (req, res, next) => {
   try {
     await storeService.updateStore(req.params.id, req.body);
     res.redirect(`/stores/view${getSimQuery(req)}`);
@@ -98,7 +98,7 @@ const updateStoreFromView = async (req, res, next) => {
   }
 };
 
-const deleteStore = async (req, res, next) => {
+export const deleteStore = async (req, res, next) => {
   try {
     const result = await storeService.deleteStore(req.params.id);
     res.json(result);
@@ -107,26 +107,11 @@ const deleteStore = async (req, res, next) => {
   }
 };
 
-const deleteStoreFromView = async (req, res, next) => {
+export const deleteStoreFromView = async (req, res, next) => {
   try {
     await storeService.deleteStore(req.params.id);
     res.redirect(`/stores/view${getSimQuery(req)}`);
   } catch (error) {
     next(error);
   }
-};
-
-module.exports = {
-  getStores,
-  getStoresView,
-  getStoreNewView,
-  getStoreDetailView,
-  getStoreEditView,
-  getStoreById,
-  createStore,
-  createStoreFromView,
-  updateStore,
-  updateStoreFromView,
-  deleteStore,
-  deleteStoreFromView,
 };

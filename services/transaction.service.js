@@ -1,4 +1,4 @@
-const Transaction = require('../models/transaction.model');
+import Transaction from "../models/transaction.model.js";
 
 const getAll = async () => {
   return await Transaction.find();
@@ -17,4 +17,4 @@ const createTransaction = async data => {
   return await newTransaction.save(); // pre('save') calcula feeAmount y netAmount
 };
 
-module.exports = { getAll, createTransaction };
+export default { getAll, createTransaction };

@@ -1,7 +1,7 @@
-const service = require('../services/order.service.js');
-const { validate } = require('../utils/validations.js');
+import * as service from "../services/order.service.js";
+import {  validate  } from "../utils/validations.js";
 
-const getOrders = async (req, res, next) => {
+export const getOrders = async (req, res, next) => {
   try {
     const { id } = req.query;
     if (id) {
@@ -15,7 +15,7 @@ const getOrders = async (req, res, next) => {
   }
 };
 
-const createOrder = async (req, res, next) => {
+export const createOrder = async (req, res, next) => {
   try {
     const { clientId, storeId, paymentMethod, detailsId } = req.body;
 
@@ -36,7 +36,7 @@ const createOrder = async (req, res, next) => {
   }
 };
 
-const updateOrder = async (req, res, next) => {
+export const updateOrder = async (req, res, next) => {
   try {
     let { id } = req.params;
     let { status } = req.query;
@@ -57,5 +57,3 @@ const updateOrder = async (req, res, next) => {
     next(error);
   }
 };
-
-module.exports = { getOrders, createOrder, updateOrder };

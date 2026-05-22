@@ -1,5 +1,5 @@
-const Product = require('../models/product.model');
-const Store   = require('../models/store.model');
+import Product from "../models/product.model.js";
+import Store from "../models/store.model.js";
 
 const getAllProducts = async () => {
   return await Product.find();
@@ -104,7 +104,7 @@ const deactivateProduct = async id => {
   return await product.save();
 };
 
-module.exports = {
+export default {
   getAllProducts,
   getProductById,
   getProductsByStoreId,

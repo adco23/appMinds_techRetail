@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const subscriptionSchema = new mongoose.Schema({
   detail:    { type: String, required: true },
@@ -9,4 +9,4 @@ const subscriptionSchema = new mongoose.Schema({
   storeId:   { type: mongoose.Schema.Types.ObjectId, ref: 'Store', required: true },
 });
 
-module.exports = mongoose.model('Subscription', subscriptionSchema);
+export default mongoose.model('Subscription', subscriptionSchema);

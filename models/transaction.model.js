@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const transactionSchema = new mongoose.Schema({
   receiptId:     { type: String, required: true },
@@ -19,4 +19,4 @@ transactionSchema.pre('save', function (next) {
   next();
 });
 
-module.exports = mongoose.model('Transaction', transactionSchema);
+export default mongoose.model('Transaction', transactionSchema);

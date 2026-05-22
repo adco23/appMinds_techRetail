@@ -1,19 +1,19 @@
-const Commerce = require('../models/commerce.model');
+import Commerce from "../models/commerce.model.js";
 
-const getCommerce = async () => {
+export const getCommerce = async () => {
   return await Commerce.find();
 };
 
-const findByCuit = async cuit => {
+export const findByCuit = async cuit => {
   return await Commerce.findOne({ cuit });
 };
 
-const existsByCuit = async cuit => {
+export const existsByCuit = async cuit => {
   const commerce = await findByCuit(cuit);
   return !!commerce;
 };
 
-const createCommerce = async ({ name, cuit, email, phone, address }) => {
+export const createCommerce = async ({ name, cuit, email, phone, address }) => {
   const existing = await existsByCuit(cuit);
   if (existing) throw new Error('CUIT already exists');
 
@@ -22,7 +22,7 @@ const createCommerce = async ({ name, cuit, email, phone, address }) => {
 };
 
 // Equivalente a commerce.deactivate() — deleteCommerce desactiva en vez de eliminar
-const deleteCommerce = async cuit => {
+export const deleteCommerce = async cuit => {
   const commerce = await findByCuit(cuit);
   if (!commerce) return false;
 
@@ -31,7 +31,7 @@ const deleteCommerce = async cuit => {
   return true;
 };
 
-const updateCommerce = async (cuit, { name, email, phone, address }) => {
+export const updateCommerce = async (cuit, { name, email, phone, address }) => {
   const commerce = await findByCuit(cuit);
   if (!commerce) return false;
 
@@ -45,7 +45,7 @@ const updateCommerce = async (cuit, { name, email, phone, address }) => {
 };
 
 // Equivalente a commerce.activate()
-const activateCommerce = async id => {
+export const activateCommerce = async id => {
   const commerce = await Commerce.findById(id);
   if (!commerce) throw new Error('Commerce not found');
 
@@ -53,21 +53,10 @@ const activateCommerce = async id => {
   return await commerce.save();
 };
 
-const deactivateCommerce = async id => {
+export const deactivateCommerce = async id => {
   const commerce = await Commerce.findById(id);
   if (!commerce) throw new Error('Commerce not found');
 
   commerce.status = 0;
   return await commerce.save();
-};
-
-module.exports = {
-  getCommerce,
-  findByCuit,
-  existsByCuit,
-  createCommerce,
-  deleteCommerce,
-  updateCommerce,
-  activateCommerce,
-  deactivateCommerce,
 };
