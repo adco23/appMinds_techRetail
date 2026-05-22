@@ -28,12 +28,12 @@ block content
         tbody
           each store in stores
             tr
-              td= store.id
+              td= store._id.toString().slice(-6)
               td= store.name
               td= store.category
               td= store.subdomain
               td= store.status
-              td= store.commerceId
+              td= store.commerceId && store.commerceId.name ? store.commerceId.name : (store.commerceId ? store.commerceId.toString().slice(-6) : 'Sin tienda')
               td= store.createdAt
               td
                 .buttons.are-small

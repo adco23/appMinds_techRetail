@@ -29,8 +29,14 @@ block content
       strong Estado:
       |  #{store.status}
     p
-      strong Comercio ID:
-      |  #{store.commerceId}
+      strong Comercio:
+        if store.commerceId && store.commerceId.name
+          | #{store.commerceId.name}
+          span.tag.is-light.is-small (CUIT: #{store.commerceId.cuit})
+        else if store.commerceId
+          | #{store.commerceId.toString().slice(-6)}
+        else
+          | Sin comercio asignado
     p
       strong Fecha de creacion:
       |  #{store.createdAt}

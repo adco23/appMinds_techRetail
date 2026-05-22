@@ -1,4 +1,5 @@
 import productService from "../services/product.service.js";
+import Store from "../models/store.model.js";
 
 export const getSimQuery = req => {
   const role = req.query.role || '';
@@ -37,7 +38,15 @@ export const getProductDetailView = async (req, res, next) => {
 export const getProductEditView = async (req, res, next) => {
   try {
     const product = await productService.getProductById(req.params.id);
-    res.render('products/edit', { title: 'Editar producto', product });
+    const stores = await Store.find();
+    const storeId = product.storeId && product.storeId._id ? product.storeId._id : product.storeId;
+
+    res.render('products/edit', {
+      title: 'Editar producto',
+      product,
+      stores,
+      storeId
+    });
   } catch (error) {
     next(error);
   }
@@ -46,7 +55,9 @@ export const getProductEditView = async (req, res, next) => {
 export const getProductNewView = async (req, res, next) => {
   try {
     const storeId = req.params.storeId || '';
-    res.render('products/new', { title: 'Nuevo producto', storeId });
+    const stores = await Store.find();
+
+    res.render('products/new', { title: 'Nuevo producto', storeId, stores });
   } catch (error) {
     next(error);
   }
@@ -73,12 +84,12 @@ export const createProduct = async (req, res, next) => {
 export const createProductFromView = async (req, res, next) => {
   try {
     const newProduct = await productService.createProduct(req.body);
-    res.redirect(`/stores/view/${newProduct.storeId}${getSimQuery(req)}`);
+    const storeId = newProduct.storeId._id || newProduct.storeId;
+    res.redirect(`/stores/view/${storeId}${getSimQuery(req)}`);
   } catch (error) {
     next(error);
   }
 };
-
 export const updateProduct = async (req, res, next) => {
   try {
     const updatedProduct = await productService.updateProduct(req.params.id, req.body);
@@ -91,7 +102,8 @@ export const updateProduct = async (req, res, next) => {
 export const updateProductFromView = async (req, res, next) => {
   try {
     const updatedProduct = await productService.updateProduct(req.params.id, req.body);
-    res.redirect(`/stores/view/${updatedProduct.storeId}${getSimQuery(req)}`);
+    const storeId = updatedProduct.storeId._id || updatedProduct.storeId;
+    res.redirect(`/stores/view/${storeId}${getSimQuery(req)}`);
   } catch (error) {
     next(error);
   }
@@ -110,7 +122,10 @@ export const deleteProductFromView = async (req, res, next) => {
   try {
     const product = await productService.getProductById(req.params.id);
     await productService.deleteProduct(req.params.id);
-    res.redirect(`/stores/view/${product.storeId}${getSimQuery(req)}`);
+
+    const storeId = product.storeId && product.storeId._id ? product.storeId._id : product.storeId;
+
+    res.redirect(`/stores/view/${storeId}${getSimQuery(req)}`);
   } catch (error) {
     next(error);
   }

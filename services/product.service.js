@@ -2,17 +2,17 @@ import Product from "../models/product.model.js";
 import Store from "../models/store.model.js";
 
 const getAllProducts = async () => {
-  return await Product.find();
+  return await Product.find().populate('storeId');
 };
 
 const getProductById = async id => {
-  const product = await Product.findById(id);
+  const product = await Product.findById(id).populate('storeId');
   if (!product) throw new Error('Product not found');
   return product;
 };
 
 const getProductsByStoreId = async storeId => {
-  return await Product.find({ storeId });
+  return await Product.find({ storeId }).populate('storeId');
 };
 
 const createProduct = async data => {

@@ -5,11 +5,6 @@ block content
 
   form(method="POST", action=`/products/view${sim.query}`)
     .field
-      label.label ID
-      .control
-        input.input(type="number", name="id", required)
-
-    .field
       label.label Nombre
       .control
         input.input(type="text", name="name", required)
@@ -35,9 +30,13 @@ block content
         input.input(type="text", name="category", required)
 
     .field
-      label.label Store ID
+      label.label Tienda
       .control
-        input.input(type="number", name="storeId", value=storeId, required)
+        .select.is-fullwidth
+          select(name="storeId", required)
+            option(value="", disabled, selected=!storeId) Selecciona una tienda...
+            each store in stores
+              option(value=store._id, selected=storeId && store._id.toString() === storeId.toString())= store.name
 
     .field
       label.label Estado

@@ -23,19 +23,19 @@ block content
             th Precio
             th Stock
             th Categoria
-            th Store ID
+            th Tienda
             th Estado
             th Acciones
         tbody
           each product in products
             tr
-              td= product.id
+              td= product._id.toString().slice(-6)
               td= product.name
               td= product.description
               td= product.price
               td= product.stock
               td= product.category
-              td= product.storeId
+              td= product.storeId && product.storeId.name ? product.storeId.name : (product.storeId ? product.storeId.toString().slice(-6) : 'Sin tienda')
               td= product.status
               td
                 .buttons.are-small

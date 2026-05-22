@@ -1,11 +1,11 @@
 import Store from '../models/store.model.js';
 
 const getAllStores = async () => {
-  return await Store.find();
+  return await Store.find().populate('commerceId');
 };
 
 const getStoreById = async id => {
-  const store = await Store.findById(id);
+  const store = await Store.findById(id).populate('commerceId');
   if (!store) throw new Error('Store not found');
   return store;
 };
