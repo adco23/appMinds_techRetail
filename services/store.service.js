@@ -1,4 +1,4 @@
-import Store from "../models/store.model.js";
+import Store from '../models/store.model.js';
 
 const getAllStores = async () => {
   return await Store.find();
@@ -47,4 +47,4 @@ const deleteStore = async id => {
   return { message: 'Store deleted successfully' };
 };
 
-export default { getAllStores, getStoreById, createStore, updateStore, deleteStore };
+export { getAllStores, getStoreById, createStore, updateStore, deleteStore };

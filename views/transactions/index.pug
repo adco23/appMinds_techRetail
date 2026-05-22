@@ -7,7 +7,7 @@ block content
   table.table.is-striped.is-fullwidth.is-hoverable
     thead
       tr
-        th ID
+        //th ID
         th Comprobante
         th Monto Bruto
         th Comisión (2%)
@@ -17,12 +17,12 @@ block content
     tbody
       each tx in transactions
         tr
-          td= tx.id
+          //td= tx.id
           td= tx.receiptId
           td $#{tx.grossAmount}
           td.has-text-danger $#{tx.feeAmount}
           td.has-text-success $#{tx.netAmount}
-          td= tx.date ? tx.date.split('T')[0] : 'No date'
+          td= tx.date ? new Date(tx.date).toISOString().split('T')[0] : 'No date'
           td
             span.tag(class=tx.status === 'approved' ? 'is-success' : 'is-warning')= tx.status
       else

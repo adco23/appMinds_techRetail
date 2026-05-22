@@ -1,7 +1,7 @@
 import User from "../models/user.model.js";
 
 const getUsers = async () => {
-  return await User.find();
+  return await User.find().populate('commerceId');
 };
 
 const findByEmail = async email => {
@@ -31,7 +31,7 @@ const activateUser = async email => {
   const user = await findByEmail(email);
   if (!user) return false;
 
-  user.status = 'active';
+  user.status = 'Activo';
   await user.save();
   return true;
 };
@@ -41,7 +41,7 @@ const deactivateUser = async email => {
   const user = await findByEmail(email);
   if (!user) return false;
 
-  user.status = 'inactive';
+  user.status = 'Inactivo';
   await user.save();
   return true;
 };
@@ -60,6 +60,10 @@ const updateUser = async (email, newData) => {
   user.password   = newData.password   || user.password;
   user.role       = newData.role       || user.role;
   user.commerceId = newData.commerceId || user.commerceId;
+
+  // Normalizar status de datos viejos del JSON
+  if (user.status === 'active')   user.status = 'Activo';
+  if (user.status === 'inactive') user.status = 'Inactivo';
 
   await user.save();
   return true;

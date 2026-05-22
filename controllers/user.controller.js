@@ -35,6 +35,7 @@ const updateUser = async (req, res) => {
     if (success) return res.status(200).json({ message: 'Usuario actualizado correctamente' });
     res.status(404).json({ error: 'Usuario no encontrado' });
   } catch (error) {
+    console.error(error); // agregá esto
     res.status(500).json({ error: 'Error al actualizar usuario' });
   }
 };

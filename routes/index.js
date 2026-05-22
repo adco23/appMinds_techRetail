@@ -14,6 +14,8 @@ const router = Router();
 
 // Vistas
 router.use('/', viewRoutes);
+router.use('/stores', storeRoutes);
+router.use('/products', productRoutes);
 
 // API
 router.use('/api/commerces', commerceRoutes);

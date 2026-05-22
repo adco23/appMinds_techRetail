@@ -16,9 +16,13 @@ block content
             input.input(type="number" name="amount" placeholder="50.000" required)
 
         .field
-          label.label Tienda ID
+          label.label Tienda
           .control
-            input.input(type="text" name="storeId" placeholder="Ingresá el _id de la tienda" required)
+            div.select.is-fullwidth
+              select(name="storeId")
+                option(value="") Seleccioná una tienda
+                each store in stores
+                  option(value=`${store._id}`)= store.name
 
         .buttons
           button.button.is-primary(type="submit") Guardar

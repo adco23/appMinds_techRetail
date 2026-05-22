@@ -1,7 +1,7 @@
 import Subscription from "../models/subscription.model.js";
 
-const getAll = async () => {
-  return await Subscription.find();
+export const getAll = async () => {
+  return await Subscription.find().populate('storeId');
 };
 
 const crear = async data => {
@@ -44,4 +44,10 @@ const cancelar = async id => {
   return await sub.save();
 };
 
-export default { getAll, crear, renovar, cancelar };
+export const eliminar = async id => {
+  const sub = await Subscription.findByIdAndDelete(id);
+  if (!sub) throw new Error('Suscripción no encontrada');
+  return { message: 'Suscripción eliminada' };
+};
+
+export default { getAll, crear, renovar, cancelar, eliminar };

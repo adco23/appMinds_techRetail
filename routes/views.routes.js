@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { getCommerce } from "../services/commerce.service.js";
-import { getOrders } from "../services/order.service.js";
+import * as commerceService from "../services/commerce.service.js";
+import * as orderService from "../services/order.service.js";
 import userService from "../services/user.service.js";
 import transactionService from "../services/transaction.service.js";
-import subscriptionService from "../services/subscription.service.js";
+import subscriptionService from '../services/subscription.service.js';
+import * as storeService from '../services/store.service.js';
 
 const router = Router();
 
@@ -48,18 +49,18 @@ router.get('/commerce-admin/subscription', (req, res) => {
 
 router.get('/commerces', onlyPlatformAdmin, async (req, res) => {
   const view = req.query.view || 'index';
-  const commerces = await getCommerce();
+  const commerces = await commerceService.getCommerce();
   res.render('commerces/index', { view, commerces, sim: req.simulation });
 });
 
 router.get('/orders', commerceNeedsSubscription, async (req, res) => {
   const view = req.query.view || 'index';
-  const orders = await getOrders();
+  const orders = await orderService.getOrders();
   res.render('orders/index', { view, orders, sim: req.simulation });
 });
 
 router.get('/orders/:id', commerceNeedsSubscription, async (req, res) => {
-  const orders = await getOrders();
+  const orders = await orderService.getOrders();
   const order = orders.find(o => o._id.toString() === req.params.id);
   res.render('orders/detail', { order, sim: req.simulation });
 });
@@ -73,14 +74,17 @@ router.get('/users', onlyPlatformAdmin, async (req, res) => {
   res.render('users/list', { users, sim: req.simulation });
 });
 
-router.get('/users/add', onlyPlatformAdmin, (req, res) => {
-  res.render('users/add', { sim: req.simulation });
+router.get('/users/add', onlyPlatformAdmin, async (req, res) => {
+  const commerces = await commerceService.getCommerce();
+  res.render('users/add', { commerces, sim: req.simulation });
 });
 
 router.get('/users/edit/:email', onlyPlatformAdmin, async (req, res) => {
   const user = await userService.findByEmail(req.params.email);
   if (!user) return res.redirect(`/users${req.simulation.query}`);
-  res.render('users/edit', { user, sim: req.simulation });
+
+  const commerces = await commerceService.getCommerce();
+  res.render('users/edit', { user, commerces, sim: req.simulation });
 });
 
 router.get('/transactions', commerceNeedsSubscription, async (req, res) => {
@@ -105,8 +109,14 @@ router.get('/subscriptions', onlyPlatformAdmin, async (req, res) => {
   }
 });
 
-router.get('/subscriptions/new', onlyPlatformAdmin, (req, res) => {
-  res.render('subscriptions/new', { title: 'Nueva Suscripcion', sim: req.simulation });
+router.get('/subscriptions/new', onlyPlatformAdmin, async (req, res) => {
+  try {
+    const stores = await storeService.getAllStores();
+    res.render('subscriptions/new', { title: 'Nueva Suscripcion', stores, sim: req.simulation });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
 });
 
 router.post('/subscriptions/create', async (req, res) => {
@@ -134,6 +144,15 @@ router.get('/subscriptions/cancel/:id', onlyPlatformAdmin, async (req, res) => {
     res.redirect('/subscriptions?role=platform-admin');
   } catch (error) {
     res.status(500).send(`Error al cancelar: ${error.message}`);
+  }
+});
+
+router.get('/subscriptions/delete/:id', onlyPlatformAdmin, async (req, res) => {
+  try {
+    await subscriptionService.eliminar(req.params.id);
+    res.redirect('/subscriptions?role=platform-admin');
+  } catch (error) {
+    res.status(500).send(`Error al eliminar: ${error.message}`);
   }
 });
 

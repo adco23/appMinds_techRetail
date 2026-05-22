@@ -6,7 +6,7 @@ const subscriptionSchema = new mongoose.Schema({
   startDate: { type: String, required: true },
   expDate:   { type: String, required: true },
   status:    { type: String, default: 'Activa', enum: ['Activa', 'Cancelada'] },
-  storeId:   { type: mongoose.Schema.Types.Mixed, required: true },
+  storeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Store', required: true },
 });
 
 export default mongoose.model('Subscription', subscriptionSchema);

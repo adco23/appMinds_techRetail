@@ -1,4 +1,4 @@
-import storeService from "../services/store.service.js";
+import * as storeService from "../services/store.service.js";
 import productService from "../services/product.service.js";
 
 export const getSimQuery = req => {
