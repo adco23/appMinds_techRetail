@@ -6,9 +6,15 @@ block content
       h1.title Nueva Suscripción
       form(action=`/subscriptions/create${sim.query}` method="POST")
         .field
-          label.label Detalle del Plan
+          label.label Plan
           .control
-            input.input(type="text" name="detail" placeholder="Ej: Premium" required)
+            .select.is-fullwidth
+              select(name="detail" required)
+                option(value="" disabled selected) Seleccioná un plan
+                option(value="Basico") Básico
+                option(value="Profesional") Profesional
+                option(value="Enterprise") Enterprise
+                option(value="Demo Comercio") Demo Comercio
 
         .field
           label.label Monto

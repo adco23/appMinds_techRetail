@@ -4,7 +4,7 @@ block content
   h1.title Suscripciones disponibles
 
   if sim.isCommerceAdmin
-    p.mt-3 Antes de acceder a ordenes, tiendas, productos y transacciones, tenes que crear una suscripcion.
+    p.mt-3.mb-5 Antes de acceder a ordenes, tiendas, productos y transacciones, tenes que crear una suscripcion.
 
     .columns.is-centered.is-variable.is-6
       each plan in ['Basico', 'Profesional', 'Enterprise']
@@ -15,7 +15,7 @@ block content
             .card-content
               .content.has-text-centered
                 p.is-size-4.has-text-weight-bold Plan demo
-                p.has-text-grey Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                p.has-text-grey Acceso a todas las funcionalidades por 7 dias
             footer.card-footer
               a.card-footer-item.button.is-primary(href="#" onclick="crearSuscripcionDemo(event)") Elegir plan
 
