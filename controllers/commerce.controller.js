@@ -1,5 +1,5 @@
-const service = require('../services/commerce.service.js');
-const { validate } = require('../utils/validations.js');
+import * as service from '../services/commerce.service.js';
+import { validate } from '../utils/validations.js';
 
 const getCommerce = async (req, res, next) => {
   try {
@@ -78,4 +78,4 @@ const updateCommerce = async (req, res, next) => {
   }
 };
 
-module.exports = { getCommerce, createCommerce, deleteCommerce, updateCommerce };
+export { getCommerce, createCommerce, deleteCommerce, updateCommerce };

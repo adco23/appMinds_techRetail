@@ -1,4 +1,4 @@
-const saleDetailService = require('../services/saleDetail.service');
+import saleDetailService from "../services/saleDetail.service.js";
 
 const getDetails = async (req, res) => {
   try {
@@ -45,4 +45,4 @@ const deleteDetail = async (req, res) => {
   }
 };
 
-module.exports = { getDetails, getDetailsBySale, createDetail, deleteDetail };
+export default { getDetails, getDetailsBySale, createDetail, deleteDetail };

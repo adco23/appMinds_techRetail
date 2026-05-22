@@ -1,6 +1,6 @@
-const Order = require('../models/order.model');
+import Order from "../models/order.model.js";
 
-const getOrders = async () => {
+export const getOrders = async () => {
   const orders = await Order.find();
 
   // Equivalente a dateOnlyFormat() y currencyFormat() de la clase
@@ -19,22 +19,22 @@ const getOrders = async () => {
   });
 };
 
-const findById = async id => {
+export const findById = async id => {
   return await Order.findById(id);
 };
 
-const exists = async id => {
+export const exists = async id => {
   const order = await Order.findById(id);
   return !!order;
 };
 
-const createOrder = async ({ clientId, storeId, paymentMethod, detailsId }) => {
+export const createOrder = async ({ clientId, storeId, paymentMethod, detailsId }) => {
   const newOrder = new Order({ clientId, storeId, paymentMethod, detailsId });
   return await newOrder.save();
 };
 
 // Equivalente a order.cancel()
-const cancelOrder = async id => {
+export const cancelOrder = async id => {
   const order = await Order.findById(id);
   if (!order) throw new Error('Order not found');
 
@@ -43,7 +43,7 @@ const cancelOrder = async id => {
 };
 
 // Equivalente a order.complete()
-const completeOrder = async (id, paymentId, logisticsId) => {
+export const completeOrder = async (id, paymentId, logisticsId) => {
   const order = await Order.findById(id);
   if (!order) throw new Error('Order not found');
 
@@ -53,17 +53,7 @@ const completeOrder = async (id, paymentId, logisticsId) => {
   return await order.save();
 };
 
-const updateOrder = async (id, status) => {
+export const updateOrder = async (id, status) => {
   if (status == 2) return await cancelOrder(id);
   return await Order.findByIdAndUpdate(id, { status }, { new: true });
-};
-
-module.exports = {
-  getOrders,
-  findById,
-  exists,
-  createOrder,
-  cancelOrder,
-  completeOrder,
-  updateOrder,
 };

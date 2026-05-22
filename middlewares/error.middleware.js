@@ -1,4 +1,4 @@
-const errorHandler = (err, req, res, next) => {
+export const errorHandler = (err, req, res, next) => {
   console.error(err);
 
   if (err.message === 'Store not found') {
@@ -17,5 +17,3 @@ const errorHandler = (err, req, res, next) => {
     message: err.message || 'Internal server error',
   });
 };
-
-module.exports = { errorHandler };

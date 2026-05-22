@@ -1,4 +1,4 @@
-const transactionService = require('../services/transaction.service');
+import transactionService from "../services/transaction.service.js";
 
 const getAll = async (req, res) => {
   try {
@@ -21,7 +21,7 @@ const create = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   getAll,
   create,
 };

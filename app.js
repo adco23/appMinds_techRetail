@@ -1,13 +1,17 @@
-const express = require('express');
-const morgan = require('morgan');
-const cors = require('cors');
-const dotenv = require('dotenv');
-const path = require('path');
+import express from 'express';
+import morgan from 'morgan';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from "url";
 
-const routes = require('./routes/index.js');
-const storeRoutes = require('./routes/store.routes.js');
-const productRoutes = require('./routes/product.routes.js');
-const { errorHandler } = require('./middlewares/error.middleware.js');
+import routes from './routes/index.js';
+import storeRoutes from './routes/store.routes.js';
+import productRoutes from './routes/product.routes.js';
+import { errorHandler } from './middlewares/error.middleware.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
@@ -52,4 +56,4 @@ app.use('/', routes);
 
 app.use(errorHandler);
 
-module.exports = app;
+export default app;

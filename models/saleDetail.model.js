@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const saleDetailSchema = new mongoose.Schema({
   cantidad:       { type: Number, required: true },
@@ -14,4 +14,4 @@ saleDetailSchema.pre('save', function (next) {
   next();
 });
 
-module.exports = mongoose.model('SaleDetail', saleDetailSchema);
+export default mongoose.model('SaleDetail', saleDetailSchema);

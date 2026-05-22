@@ -1,5 +1,5 @@
-const app = require('./app.js');
-const connectDB = require('./utils/db.js');
+import app from './app.js';
+import connectDB from './utils/db.js';
 const PORT = process.env.PORT || 3000;
 
 connectDB().then(() => {

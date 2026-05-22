@@ -1,9 +1,9 @@
-const { Router } = require('express');
-const { getCommerce } = require('../services/commerce.service.js');
-const { getOrders } = require('../services/order.service.js');
-const userService = require('../services/user.service.js');
-const transactionService = require('../services/transaction.service.js');
-const subscriptionService = require('../services/subscription.service.js');
+import { Router } from "express";
+import { getCommerce } from "../services/commerce.service.js";
+import { getOrders } from "../services/order.service.js";
+import userService from "../services/user.service.js";
+import transactionService from "../services/transaction.service.js";
+import subscriptionService from "../services/subscription.service.js";
 
 const router = Router();
 
@@ -137,4 +137,4 @@ router.get('/subscriptions/cancel/:id', onlyPlatformAdmin, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

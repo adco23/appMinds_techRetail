@@ -1,15 +1,13 @@
-const { Router } = require('express');
-const viewRoutes = require('./views.routes.js');
-const commerceRoutes = require('./commerce.routes.js');
-const orderRoutes = require('./order.routes.js');
-const saleDetailRoutes = require('./saleDetail.routes');
-const userRoutes = require('./user.routes.js');
-const subscriptionRoutes = require('./subscription.routes.js');
-const transactionRoutes = require('./transaction.routes.js');
-const storeRoutes = require('./store.routes.js');
-const productRoutes = require('./product.routes.js');
-
-
+import {  Router  } from "express";
+import viewRoutes from "./views.routes.js";
+import commerceRoutes from "./commerce.routes.js";
+import orderRoutes from "./order.routes.js";
+import saleDetailRoutes from "./saleDetail.routes.js";
+import userRoutes from "./user.routes.js";
+import subscriptionRoutes from "./subscription.routes.js";
+import transactionRoutes from "./transaction.routes.js";
+import storeRoutes from "./store.routes.js";
+import productRoutes from "./product.routes.js";
 
 const router = Router();
 
@@ -27,4 +25,4 @@ router.use('/api/transactions', transactionRoutes);
 router.use('/api/stores', storeRoutes);
 router.use('/api/products', productRoutes);
 
-module.exports = router;
+export default router;

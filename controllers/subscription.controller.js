@@ -1,4 +1,4 @@
-const subscriptionService = require('../services/subscription.service');
+import subscriptionService from "../services/subscription.service.js";
 
 const getAllSubscriptions = async (req, res) => {
   try {
@@ -22,7 +22,7 @@ const createSubscription = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   getAllSubscriptions,
   createSubscription,
 };
