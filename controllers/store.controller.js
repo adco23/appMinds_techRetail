@@ -1,5 +1,6 @@
 import * as storeService from "../services/store.service.js";
 import productService from "../services/product.service.js";
+import * as commerceService from '../services/commerce.service.js';
 
 export const getSimQuery = req => {
   const role = req.query.role || '';
@@ -28,7 +29,8 @@ export const getStoresView = async (req, res, next) => {
 
 export const getStoreNewView = async (req, res, next) => {
   try {
-    res.render('stores/new', { title: 'Nueva tienda' });
+    const commerces = await commerceService.getCommerce();
+    res.render('stores/new', { title: 'Nueva tienda', commerces, sim: res.locals.sim });
   } catch (error) {
     next(error);
   }
