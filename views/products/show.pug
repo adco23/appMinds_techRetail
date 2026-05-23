@@ -7,7 +7,7 @@ block content
   .box
     p
       strong ID:
-      |  #{product.id}
+      |  #{product._id.toString().slice(-6)}
     p
       strong Nombre:
       |  #{product.name}
@@ -24,12 +24,12 @@ block content
       strong Categoria:
       |  #{product.category}
     p
-      strong Store ID:
-      |  #{product.storeId}
+      strong Tienda:
+      |  #{product.storeId && product.storeId.name ? product.storeId.name : 'Sin tienda'}
     p
       strong Estado:
       |  #{product.status}
 
   .buttons
     a.button.is-link(href=`/products/view${sim.query}`) Volver al listado
-    a.button.is-warning(href=`/products/edit/${product.id}${sim.query}`) Editar producto
+    a.button.is-warning(href=`/products/edit/${product._id}${sim.query}`) Editar producto
