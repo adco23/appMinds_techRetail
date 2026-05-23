@@ -12,10 +12,10 @@
       .control
         input.input(type="number", name="cuit", placeholder="Ingrese CUIT", required)
 
-    .field
-      label.label Email
-      .control
-        input.input(type="email", name="email", placeholder="Ingrese email", required)
+    //- .field
+    //-   label.label Email
+    //-   .control
+    //-     input.input(type="email", name="email", placeholder="Ingrese email", required)
 
     .field
       label.label Teléfono
@@ -42,7 +42,7 @@ script.
       body: JSON.stringify({
         name: this.name.value,
         cuit: this.cuit.value,
-        email: this.email.value,
+        //- email: this.email.value,
         phone: this.phone.value,
         address: this.address.value
       }),

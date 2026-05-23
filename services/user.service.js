@@ -69,11 +69,21 @@ const updateUser = async (email, newData) => {
   return true;
 };
 
+const assignCommerceToUser = async (email, commerceId) => {
+  const user = await findByEmail(email);
+  if (!user) return false;
+
+  user.commerceId = commerceId;
+  await user.save();
+  return user;
+};
+
 // Equivalente a user.validateCredentials()
 const validateCredentials = async (email, password) => {
   const user = await findByEmail(email);
   if (!user) return false;
-  return user.password === password;
+  if (user.status !== 'Activo') return false;
+  return user.password === password ? user : false;
 };
 
 export default {
@@ -85,5 +95,6 @@ export default {
   deactivateUser,
   deleteUser,
   updateUser,
+  assignCommerceToUser,
   validateCredentials,
 };

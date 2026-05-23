@@ -9,10 +9,12 @@ html(lang="es", data-theme="light")
     link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css")
 
   body
-    // Navbar reutilizable
     include ./navbar
 
-    // Contenido dinámico de cada vista
     section.section
       .container
+        if error
+          .notification.is-danger= error
+        if success
+          .notification.is-success= success
         block content

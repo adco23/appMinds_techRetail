@@ -20,5 +20,15 @@ nav.navbar.is-primary(role="navigation", aria-label="main navigation")
 
     .navbar-end
       .navbar-item
-        if sim && sim.role
-          a.button.is-light(href="/") Salir simulación
+        if currentUser
+          .buttons
+            span.button.is-static= `${currentUser.firstName} ${currentUser.lastName}`
+            form(method="POST", action="/auth/logout")
+              button.button.is-light(type="submit") Cerrar sesion
+        else
+          .buttons
+            a.button.is-light(href="/auth/login") Ingresar
+            a.button.is-warning(href="/auth/register") Registrarse
+      if sim && sim.role
+        .navbar-item
+          a.button.is-light(href="/") Salir simulacion

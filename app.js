@@ -7,6 +7,7 @@ import { fileURLToPath } from "url";
 
 import routes from './routes/index.js';
 import { errorHandler } from './middlewares/error.middleware.js';
+import { loadAuthUser } from './middlewares/auth.mittleware.js';
 import { loadSimulation } from './middlewares/simulation.middleware.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -25,6 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(morgan('dev'));
+app.use(loadAuthUser);
 app.use(loadSimulation);
 
 // Rutas generales del proyecto

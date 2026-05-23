@@ -1,0 +1,36 @@
+extends ../layouts/main
+
+block content
+  .columns.is-centered
+    .column.is-7
+      .box
+        h1.title.is-3 Crear mi comercio
+        p.mb-5 Necesitas registrar tu comercio antes de continuar con los modulos del panel comercial.
+
+        .notification.is-info.is-light
+          | La cuenta quedara asociada al comercio que crees con el email #{user.email}.
+
+        form(method="POST", action="/commerce-admin/create", autocomplete="off")
+          .field
+            label.label Razon social
+            .control
+              input.input(type="text", name="name", placeholder="Ingresa la razon social", value=formData && formData.name ? formData.name : '', required)
+
+          .field
+            label.label CUIT
+            .control
+              input.input(type="text", name="cuit", placeholder="Ingresa el CUIT", value=formData && formData.cuit ? formData.cuit : '', required)
+
+          .field
+            label.label Telefono
+            .control
+              input.input(type="tel", name="phone", placeholder="Ingresa un telefono de contacto", value=formData && formData.phone ? formData.phone : '')
+
+          .field
+            label.label Direccion
+            .control
+              input.input(type="text", name="address", placeholder="Ingresa la direccion", value=formData && formData.address ? formData.address : '')
+
+          .buttons.mt-5
+            button.button.is-primary(type="submit") Crear comercio
+            a.button.is-light(href="/") Volver

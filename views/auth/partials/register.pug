@@ -1,0 +1,29 @@
+.box
+
+  form(method="POST", action="/auth/register")
+    input(type="hidden", name="redirectTo", value=redirectTo || '/')
+    .columns
+      .column
+        .field
+          label.label Nombre
+          .control
+            input.input(type="text", name="firstName", placeholder="Tu nombre", autocomplete="off", value=formData && formData.firstName ? formData.firstName : '',required)
+      .column
+        .field
+          label.label Apellido
+          .control
+            input.input(type="text", name="lastName", placeholder="Tu apellido", autocomplete="off", value=formData && formData.lastName ? formData.lastName : '',required)
+
+    .field
+      label.label Correo
+      .control
+        input.input(type="email", name="email", placeholder="nombre@correo.com", autocomplete="off", value=formData && formData.email ? formData.email : '',required)
+
+    .field
+      label.label Contraseña
+      .control
+        input.input(type="password", name="password", placeholder="Minimo 6 caracteres", minlength="6", autocomplete="off", required)
+
+    .buttons.mt-4
+      button.button.is-primary(type="submit") Crear cuenta
+      a.button.is-text(href=`/auth/login${redirectTo ? `?redirect=${encodeURIComponent(redirectTo)}` : ''}`) Ya tengo cuenta

@@ -1,0 +1,20 @@
+extends ../layouts/main
+
+block content
+  .columns.is-centered
+    .column.is-10
+      .box
+        .columns.is-variable.is-6
+          .column.is-5
+            h1.title.is-3= mode === 'register' ? 'Crear cuenta' : 'Iniciar sesion'
+            p.has-text-grey Usa tu cuenta para acceder a la gestion interna de TechRetail.
+            .tabs.is-boxed.mt-5
+              ul
+                li(class=mode === 'login' ? 'is-active' : '')
+                  a(href=`/auth/login${redirectTo ? `?redirect=${encodeURIComponent(redirectTo)}` : ''}`) Login
+                li(class=mode === 'register' ? 'is-active' : '')
+                  a(href=`/auth/register${redirectTo ? `?redirect=${encodeURIComponent(redirectTo)}` : ''}`) Registro
+            if mode === 'register'
+              include ./partials/register
+            else
+              include ./partials/login
