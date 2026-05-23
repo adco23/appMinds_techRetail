@@ -6,9 +6,8 @@ import path from 'path';
 import { fileURLToPath } from "url";
 
 import routes from './routes/index.js';
-import storeRoutes from './routes/store.routes.js';
-import productRoutes from './routes/product.routes.js';
 import { errorHandler } from './middlewares/error.middleware.js';
+import { loadSimulation } from './middlewares/simulation.middleware.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -26,30 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(morgan('dev'));
-
-app.use((req, res, next) => {
-  const role = req.query.role || '';
-  const subscribed = req.query.subscribed === '1';
-  const query = role ? `?role=${role}${subscribed ? '&subscribed=1' : ''}` : '';
-
-  res.locals.sim = {
-    role,
-    subscribed,
-    isPlatformAdmin: role === 'platform-admin',
-    isCommerceAdmin: role === 'commerce-admin',
-    query,
-  };
-
-  if (
-    (req.path.startsWith('/stores') || req.path.startsWith('/products')) &&
-    role === 'commerce-admin' &&
-    !subscribed
-  ) {
-    return res.redirect('/commerce-admin/subscription?role=commerce-admin');
-  }
-
-  next();
-});
+app.use(loadSimulation);
 
 // Rutas generales del proyecto
 app.use('/', routes);

@@ -16,16 +16,18 @@ block content
     .notification.is-info
       | Simulacion de admin de plataforma activa.
 
-  .box
-    h2.title.is-5 Simulacion simple
-    p Elegi un tipo de usuario para probar la vista.
+  //- .box
+  //-   h2.title.is-5 Simulacion simple
+  //-   p Elegi un tipo de usuario para probar la vista.
 
-    .buttons.mt-4
-      a.button.is-primary(href="/?role=platform-admin") Admin plataforma
-      a.button.is-link(href="/?role=commerce-admin") Admin comercio
+  //-   .buttons.mt-4
+  //-     a.button.is-primary(href="/?role=platform-admin") Admin plataforma
+  //-     a.button.is-link(href="/?role=commerce-admin") Admin comercio
 
-    //- if sim.isCommerceAdmin && !sim.subscribed
+  //-   //- if sim.isCommerceAdmin && !sim.subscribed
 
 
-    if sim.isCommerceAdmin && sim.subscribed
-      a.button.is-success.mt-3(href="/orders?role=commerce-admin&subscribed=1") Ir a modulos del comercio
+  //-   if sim.isCommerceAdmin && sim.subscribed
+  //-     a.button.is-success.mt-3(href="/orders?role=commerce-admin&subscribed=1") Ir a modulos del comercio
+
+  include ../auth/partials/login

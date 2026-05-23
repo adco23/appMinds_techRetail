@@ -5,40 +5,9 @@ import userService from "../services/user.service.js";
 import transactionService from "../services/transaction.service.js";
 import subscriptionService from '../services/subscription.service.js';
 import * as storeService from '../services/store.service.js';
-
+import { commerceNeedsSubscription, onlyPlatformAdmin } from '../middlewares/simulation.middleware.js';
 
 const router = Router();
-
-const getSimulationData = req => {
-  if (req.res && req.res.locals && req.res.locals.sim) {
-    return req.res.locals.sim;
-  }
-  const role = req.query.role || '';
-  const subscribed = req.query.subscribed === '1';
-  return {
-    role,
-    subscribed,
-    isPlatformAdmin: role === 'platform-admin',
-    isCommerceAdmin: role === 'commerce-admin',
-    query: role ? `?role=${role}${subscribed ? '&subscribed=1' : ''}` : '',
-  };
-};
-
-const onlyPlatformAdmin = (req, res, next) => {
-  const sim = getSimulationData(req);
-  if (!sim.isPlatformAdmin) return res.redirect('/');
-  req.simulation = sim;
-  next();
-};
-
-const commerceNeedsSubscription = (req, res, next) => {
-  const sim = getSimulationData(req);
-  if (sim.isCommerceAdmin && !sim.subscribed) {
-    return res.redirect('/commerce-admin/subscription?role=commerce-admin');
-  }
-  req.simulation = sim;
-  next();
-};
 
 router.get('/', (req, res) => {
   res.render('home/index', { title: 'TechRetail', sim: res.locals.sim });
