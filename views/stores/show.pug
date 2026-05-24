@@ -14,9 +14,6 @@ block content
 
   .box
     p
-      strong ID:
-      |  #{store.id}
-    p
       strong Nombre:
       |  #{store.name}
     p
@@ -30,16 +27,12 @@ block content
       |  #{store.status}
     p
       strong Comercio:
-        if store.commerceId && store.commerceId.name
-          | #{store.commerceId.name}
-          span.tag.is-light.is-small (CUIT: #{store.commerceId.cuit})
-        else if store.commerceId
-          | #{store.commerceId.toString().slice(-6)}
-        else
-          | Sin comercio asignado
+      |  #{store.commerceId && store.commerceId.name ? store.commerceId.name : 'Sin comercio asignado'}
+      if store.commerceId && store.commerceId.cuit
+      span.tag.is-light.is-small(style="margin-left: 0.5rem;") CUIT: #{store.commerceId.cuit}
     p
       strong Fecha de creacion:
-      |  #{store.createdAt}
+      |  #{store.createdAt ? new Date(store.createdAt).toLocaleDateString('es-AR') : ''}
 
   h2.title.is-4 Productos de esta tienda
 

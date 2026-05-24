@@ -34,7 +34,7 @@ block content
               td= store.subdomain
               td= store.status
               td= store.commerceId && store.commerceId.name ? store.commerceId.name : (store.commerceId ? store.commerceId.toString().slice(-6) : 'Sin tienda')
-              td= store.createdAt
+              td= store.createdAt ? new Date(store.createdAt).toLocaleDateString('es-AR') : ''
               td
                 div(style="display:flex; gap:0.5rem; align-items:center; flex-wrap:nowrap;")
                   a.button.is-info.is-small(href=`/stores/view/${store.id}${sim.query}`) Ver
