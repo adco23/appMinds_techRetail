@@ -7,7 +7,7 @@ import { fileURLToPath } from "url";
 
 import routes from './routes/index.js';
 import { errorHandler } from './middlewares/error.middleware.js';
-import { loadAuthUser } from './middlewares/auth.mittleware.js';
+import { loadAuthUser } from './middlewares/auth.middleware.js';
 import { loadSimulation } from './middlewares/simulation.middleware.js';
 
 const __filename = fileURLToPath(import.meta.url);

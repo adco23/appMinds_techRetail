@@ -11,7 +11,7 @@ import {
   ensureAuthenticated,
   ensureGuest,
   setAuthenticatedUser,
-} from '../middlewares/auth.mittleware.js';
+} from '../middlewares/auth.middleware.js';
 
 const router = Router();
 

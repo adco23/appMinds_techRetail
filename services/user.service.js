@@ -78,7 +78,7 @@ const assignCommerceToUser = async (email, commerceId) => {
   return user;
 };
 
-// Equivalente a user.validateCredentials()
+
 const validateCredentials = async (email, password) => {
   const user = await findByEmail(email);
   if (!user) return false;

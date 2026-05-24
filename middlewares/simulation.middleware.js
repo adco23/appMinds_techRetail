@@ -1,5 +1,16 @@
-const buildSimulationData = (req, res) => {
-  const role = req.query.role || '';
+const normalizeRole = role => {
+  if (role === 'platform-admin' || role === 'commerce-admin') return role;
+  if (role === 'admin') return 'platform-admin';
+  if (role === 'vendedor') return 'commerce-admin';
+  return '';
+};
+
+const buildSimulationData = req => {
+  const authenticatedUser = req.session?.user || null;
+  const userRole = normalizeRole(authenticatedUser?.role || '');
+  const queryRole = normalizeRole(req.query.role || '');
+  const role = queryRole || userRole;
+
   const subscribed = req.query.subscribed === '1';
 
   return {
@@ -29,7 +40,7 @@ export const loadSimulation = (req, res, next) => {
 };
 
 export const getSimulationData = req => {
-  return req.simulation || buildSimulationData(req, req.res);
+  return req.simulation || buildSimulationData(req);
 };
 
 export const onlyPlatformAdmin = (req, res, next) => {
