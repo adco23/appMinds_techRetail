@@ -12,8 +12,6 @@ const storeSchema = new mongoose.Schema({
   commerceId: { type: mongoose.Schema.Types.ObjectId,
     ref: 'Commerce',
     required: [true, 'El ID del comercio es obligatorio'] },
-  createdAt: { type: String,
-    required: [true, 'La fecha de creación es obligatoria'] },
 },
 { timestamps: true }
 );

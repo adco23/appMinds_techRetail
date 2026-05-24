@@ -26,19 +26,25 @@ const createStore = async data => {
   return await new Store({ name, category, subdomain, status, commerceId, createdAt }).save();
 };
 
-const updateStore = async (id, data) => {
-  const store = await Store.findById(id);
-  if (!store) throw new Error('Store not found');
+export const updateStore = async (id, data) => {
+  const allowedUpdates = {
+    name: data.name,
+    category: data.category,
+    subdomain: data.subdomain,
+    status: data.status,
+    commerceId: data.commerceId
+  };
 
-  if (data.subdomain && data.subdomain !== store.subdomain) {
-    const repeated = await Store.findOne({
-      subdomain: { $regex: new RegExp(`^${data.subdomain}$`, 'i') },
-      _id: { $ne: id }
-    });
-    if (repeated) throw new Error('Subdomain already exists');
+  const updatedStore = await Store.findByIdAndUpdate(id, allowedUpdates, {
+    new: true,
+    runValidators: true
+  }).populate('commerceId');
+
+  if (!updatedStore) {
+    throw new Error('Store not found');
   }
 
-  return await Store.findByIdAndUpdate(id, data, { new: true });
+  return updatedStore;
 };
 
 const deleteStore = async id => {
@@ -47,4 +53,4 @@ const deleteStore = async id => {
   return { message: 'Store deleted successfully' };
 };
 
-export { getAllStores, getStoreById, createStore, updateStore, deleteStore };
+export { getAllStores, getStoreById, createStore, deleteStore };
