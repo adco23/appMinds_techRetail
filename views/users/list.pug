@@ -30,7 +30,7 @@ block content
               td= user.commerceId ? user.commerceId.name : 'Sin comercio'
               td= user.role
               td(id=`text-${emailSuffix}`)
-                = user.status === 'active' ? 'Activo' : 'Inactivo'
+                = user.status === 'Activo' ? 'Activo' : 'Inactivo'
               td
                 .buttons
                   a.button.is-small.is-warning(href=`/users/edit/${user.email}${sim.query}`) Editar
@@ -38,10 +38,10 @@ block content
 
                   button.button.is-small.is-outlined(
                     id=`btn-${emailSuffix}`
-                    class=user.status === 'active' ? 'is-danger' : 'is-info'
-                    onclick=`handleStatus('${user.email}', '${user.status === 'active' ? 'deactivate' : 'activate'}')`
+                    class=user.status === 'Activo' ? 'is-danger' : 'is-info'
+                    onclick=`handleStatus('${user.email}', '${user.status === 'Activo' ? 'deactivate' : 'activate'}')`
                   )
-                    = user.status === 'active' ? 'Desactivar' : 'Activar'
+                    = user.status === 'Activo' ? 'Desactivar' : 'Activar'
         else
           tr
             td.has-text-centered(colspan="8") No hay usuarios para mostrar.
