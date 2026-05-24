@@ -27,7 +27,7 @@ El proyecto migró además a ES Modules (`import/export`) de forma completa, uni
 
 ## Estructura del proyecto
 
-
+```
 ├── config/              # Configuración general
 ├── controllers/         # Lógica de negocio por módulo
 │   ├── commerce.controller.js
@@ -86,7 +86,7 @@ El proyecto migró además a ES Modules (`import/export`) de forma completa, uni
 ├── app.js               # Configuración de Express
 ├── server.js            # Punto de entrada
 └── package.json         # Dependencias del proyecto
-
+```
 
 ---
 
@@ -99,31 +99,31 @@ El proyecto migró además a ES Modules (`import/export`) de forma completa, uni
 ### Pasos de instalación
 
 1. Clonar el repositorio:
-
+```bash
 git clone <repository-url>
 cd appMinds_techRetail
-
+```
 
 2. Instalar dependencias:
-
+```bash
 npm install
-
+```
 
 3. Crear el archivo `.env` en la raíz del proyecto:
-.env
+```env
 MONGO_URI=mongodb+srv://<usuario>:<password>@<cluster>.mongodb.net/TechRetail?appName=appMinds
 PORT=3001
-
+```
 
 4. Ejecutar en modo desarrollo:
-
+```bash
 npm run dev
-
+```
 
 5. El servidor se iniciará en:
-
+```
 http://localhost:3001
-
+```
 
 ---
 
@@ -131,11 +131,12 @@ http://localhost:3001
 
 En esta entrega se migró completamente la persistencia de archivos JSON a MongoDB, utilizando MongoDB Atlas como servicio en la nube. La conexión se establece mediante Mongoose al iniciar el servidor:
 
-
+```javascript
 const connectDB = async () => {
   await mongoose.connect(process.env.MONGO_URI);
   console.log('MongoDB conectado');
 };
+```
 
 ### Colecciones en MongoDB
 
@@ -179,6 +180,7 @@ Se implementó la generación automática de transacciones al confirmar una orde
 
 Se implementó `populate()` para mostrar datos relacionados en lugar de IDs:
 
+```javascript
 // Usuarios con nombre de comercio
 const getUsers = async () => {
   return await User.find().populate('commerceId');
@@ -188,7 +190,7 @@ const getUsers = async () => {
 const getAll = async () => {
   return await Subscription.find().populate('storeId');
 };
-
+```
 
 ---
 
