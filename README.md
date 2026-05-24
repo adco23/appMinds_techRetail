@@ -27,7 +27,7 @@ El proyecto migró además a ES Modules (`import/export`) de forma completa, uni
 
 ## Estructura del proyecto
 
-```
+```batch
 ├── config/              # Configuración general
 ├── controllers/         # Lógica de negocio por módulo
 │   ├── commerce.controller.js
@@ -99,29 +99,31 @@ El proyecto migró además a ES Modules (`import/export`) de forma completa, uni
 ### Pasos de instalación
 
 1. Clonar el repositorio:
-```bash
+```batch
 git clone <repository-url>
 cd appMinds_techRetail
 ```
 
 2. Instalar dependencias:
-```bash
+```batch
 npm install
 ```
 
 3. Crear el archivo `.env` en la raíz del proyecto:
-```env
-MONGO_URI=mongodb+srv://<usuario>:<password>@<cluster>.mongodb.net/TechRetail?appName=appMinds
-PORT=3001
+
+```batch
+  .env
+  MONGO_URI=mongodb+srv://<usuario>:<password>@<cluster>.mongodb.net/TechRetail?appName=appMinds
+  PORT=3001
 ```
 
-4. Ejecutar en modo desarrollo:
-```bash
+1. Ejecutar en modo desarrollo:
+```batch
 npm run dev
 ```
 
 5. El servidor se iniciará en:
-```
+```batch
 http://localhost:3001
 ```
 
@@ -179,13 +181,13 @@ Se implementó la generación automática de transacciones al confirmar una orde
 ### Populate — Relaciones entre colecciones
 
 Se implementó `populate()` para mostrar datos relacionados en lugar de IDs:
-
 ```javascript
 // Usuarios con nombre de comercio
 const getUsers = async () => {
   return await User.find().populate('commerceId');
 };
-
+```
+```javascript
 // Suscripciones con nombre de tienda
 const getAll = async () => {
   return await Subscription.find().populate('storeId');
