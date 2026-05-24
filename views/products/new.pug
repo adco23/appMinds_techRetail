@@ -10,7 +10,7 @@ block content
         input.input(type="text", name="name", required)
 
     .field
-      label.label Descripcion
+      label.label Descripción
       .control
         textarea.textarea(name="description", required)
 
@@ -25,7 +25,7 @@ block content
         input.input(type="number", name="stock", required)
 
     .field
-      label.label Categoria
+      label.label Categoría
       .control
         input.input(type="text", name="category", required)
 
@@ -34,7 +34,7 @@ block content
       .control
         .select.is-fullwidth
           select(name="storeId", required)
-            option(value="", disabled, selected=!storeId) Selecciona una tienda...
+            option(value="", disabled, selected=!storeId) Seleccioná una tienda...
             each store in stores
               option(value=store._id, selected=storeId && store._id.toString() === storeId.toString())= store.name
 

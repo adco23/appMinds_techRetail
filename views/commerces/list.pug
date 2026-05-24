@@ -35,7 +35,7 @@
 
   script.
     async function deleteCommerce(cuit) {
-      if (!confirm('¿Está seguro de desactivar este comercio?')) return;
+      if (!confirm('¿Estás seguro de desactivar este comercio?')) return;
 
       try {
         const response = await fetch(`/api/commerces/${cuit}`, { method: 'DELETE' });

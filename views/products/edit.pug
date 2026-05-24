@@ -1,7 +1,7 @@
 extends ../layouts/main
 
 block content
-  h1.title Editar producto
+  h1.title Editar Producto
 
   form(method="POST", action=`/products/edit/${product._id}${sim.query}`)
     .field
@@ -10,7 +10,7 @@ block content
         input.input(type="text", name="name", value=product.name, required)
 
     .field
-      label.label Descripcion
+      label.label Descripción
       .control
         textarea.textarea(name="description", required)= product.description
 
@@ -25,7 +25,7 @@ block content
         input.input(type="number", name="stock", value=product.stock, required)
 
     .field
-      label.label Categoria
+      label.label Categoría
       .control
         input.input(type="text", name="category", value=product.category, required)
 
@@ -34,7 +34,7 @@ block content
       .control
         .select.is-fullwidth
           select(name="storeId", required)
-            option(value="", disabled, selected=!storeId) Selecciona una tienda...
+            option(value="", disabled, selected=!storeId) Seleccioná una tienda...
             each store in stores
               option(value=store._id, selected=storeId && store._id.toString() === storeId.toString())= store.name
 

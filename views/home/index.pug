@@ -2,7 +2,7 @@ extends ../layouts/main
 
 block content
   h1.title Bienvenido a TechRetail Solutions SRL
-  p.subtitle Gestiona comercios, ordenes y suscripciones desde una unica plataforma.
+  p.subtitle Gestioná comercios, órdenes y suscripciones desde una plataforma única.
 
   if currentUser
     .notification.is-success.is-light
@@ -10,7 +10,7 @@ block content
 
     if currentUser.role === 'commerce-admin' && currentUser.commerceId === null
       .notification.is-warning
-        | Aun no tienes un comercio asociado.
+        | Aún no tiené un comercio asociado.
         a.is-link.ml-3(href="/commerce-admin/create") Crear comercio
 
   else
@@ -18,7 +18,7 @@ block content
       .column.is-5
         .box
           h2.title.is-4 Acceso a la plataforma
-          p.mb-4 Inicia sesión o crea una cuenta para acceder a las vistas protegidas.
+          p.mb-4 Iniciá la sesión o creá una cuenta para acceder a las vistas protegidas.
           .buttons
             a.button.is-primary(href="/auth/login") Iniciar sesión
             a.button.is-link(href="/auth/register") Crear cuenta
@@ -27,18 +27,18 @@ block content
           h3.title.is-5 Funcionalidades
           ul
             li Gestión de usuarios y comercios
-            li Seguimiento de ordenes y transacciones
+            li Seguimiento de órdenes y transacciones
             li Administración de suscripciones del comercio
 
   if sim.isCommerceAdmin && !sim.subscribed
     .notification.is-warning
-      | El admin de comercio primero debe pagar una suscripcion para tener acceso a las funcionalidades.
-    a.button.is-warning.mt-3(href="/commerce-admin/subscription?role=commerce-admin") Ir a pagar suscripcion
+      | El admin del comercio primero debe pagar una suscripción para tener acceso a las funcionalidades.
+    a.button.is-warning.mt-3(href="/commerce-admin/subscription?role=commerce-admin") Ir a pagar suscripción
 
   if sim.isCommerceAdmin && sim.subscribed
     .notification.is-success
-      | Suscripcion activada. Ya puede entrar a los modulos del comercio.
+      | Suscripción activada. Ya podés entrar a los módulos del comercio.
 
   if sim.isPlatformAdmin
     .notification.is-info
-      | Simulacion de admin de plataforma activa.
+      | Simulación de admin de plataforma activa.

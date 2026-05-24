@@ -39,12 +39,12 @@ include ./partials/_statusTag
         button.delete(type="button", aria-label="Cerrar")
       section#order-detail-modal-content.modal-card-body
       footer.modal-card-foot.is-justify-content-space-between.p-3
-        a#order-detail-link.button(href="#") Ver pagina completa
+        a#order-detail-link.button(href="#") Ver página completa
         button#order-detail-close.button(type="button") Cerrar
 
   script.
     async function updateOrder(id, action) {
-      if (!confirm(`Esta seguro de ${action} este pedido?`)) return;
+      if (!confirm(`¿Esta seguro de ${action} este pedido?`)) return;
 
       let status = action === 'pagar' ? 1 : action === 'cancelar' ? 2 : null;
 
