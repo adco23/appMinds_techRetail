@@ -1,0 +1,26 @@
+extends ../layouts/main.pug
+
+block content
+  h1.title Nuevo Plan
+
+  .box
+    form(action=`/planes/create${sim.query}` method="POST")
+
+      .field
+        label.label Nombre
+        .control
+          input.input(type="text" name="name" placeholder="Ej: Básico" required)
+
+      .field
+        label.label Precio
+        .control
+          input.input(type="number" name="precio" placeholder="50000" required)
+
+      .field
+        label.label Período mínimo
+        .control
+          input.input(type="text" name="minimo" placeholder="Ej: 1 mes" required)
+
+      .buttons.mt-4
+        button.button.is-primary(type="submit") Guardar plan
+        a.button.is-light(href=`/subscriptions${sim.query}`) Cancelar

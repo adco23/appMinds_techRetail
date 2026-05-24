@@ -12,6 +12,8 @@ import {
   ensureGuest,
   setAuthenticatedUser,
 } from '../middlewares/auth.middleware.js';
+import * as planService from '../services/plan.service.js';
+
 
 const router = Router();
 
@@ -26,6 +28,7 @@ const getDefaultRedirectByUser = user => {
 router.get('/', (req, res) => {
   res.render('home/index', { title: 'TechRetail', sim: res.locals.sim });
 });
+
 
 router.get('/auth/login', ensureGuest, async (req, res) => {
   res.render('auth/auth', {
@@ -198,8 +201,36 @@ router.post('/commerce-admin/create', ensureAuthenticated, async (req, res) => {
   }
 });
 
-router.get('/commerce-admin/subscription', ensureAuthenticated, (req, res) => {
-  res.render('subscriptions/gate', { title: 'Suscripcion', sim: res.locals.sim });
+router.get('/commerce-admin/subscription', ensureAuthenticated, async (req, res) => {
+  const planes = await planService.getPlanes();
+  res.render('subscriptions/gate', { title: 'Suscripcion', planes, sim: res.locals.sim });
+});
+
+router.get('/commerce-admin/subscription/tienda', async (req, res) => {
+  const { planId } = req.query;
+  const plan = await planService.getPlanById(planId);
+  if (!plan) return res.redirect('/commerce-admin/subscription?role=commerce-admin');
+
+  const stores = await storeService.getAllStores();
+  res.render('subscriptions/elegir-tienda', { plan, stores, sim: res.locals.sim });
+});
+
+router.post('/commerce-admin/subscription/crear', async (req, res) => {
+  try {
+    const { planId, storeId } = req.body;
+    const plan = await planService.getPlanById(planId);
+    if (!plan) throw new Error('Plan no encontrado');
+
+    await subscriptionService.crear({
+      detail:  plan.name,
+      amount:  Number(plan.precio),
+      storeId,
+    });
+
+    res.redirect('/?role=commerce-admin&subscribed=1');
+  } catch (error) {
+    res.status(500).send(`Error: ${error.message}`);
+  }
 });
 
 router.get('/commerces', ensureAuthenticated, onlyPlatformAdmin, async (req, res) => {
@@ -277,7 +308,8 @@ router.get('/transactions', ensureAuthenticated, commerceNeedsSubscription, asyn
 router.get('/subscriptions', ensureAuthenticated, onlyPlatformAdmin, async (req, res) => {
   try {
     const data = await subscriptionService.getAll();
-    res.render('subscriptions/index', { subscriptions: data || [], sim: req.simulation });
+    const planes = await planService.getPlanes();
+    res.render('subscriptions/index', { subscriptions: data || [], planes, sim: req.simulation });
   } catch (error) {
     res.status(500).send('Error');
   }
@@ -286,9 +318,50 @@ router.get('/subscriptions', ensureAuthenticated, onlyPlatformAdmin, async (req,
 router.get('/subscriptions/new', ensureAuthenticated, onlyPlatformAdmin, async (req, res) => {
   try {
     const stores = await storeService.getAllStores();
-    res.render('subscriptions/new', { title: 'Nueva Suscripcion', stores, sim: req.simulation });
+    const planes = await planService.getPlanes();
+    const planId = req.query.planId || null;
+    res.render('subscriptions/new', { title: 'Nueva Suscripcion', stores, planes, planId, sim: req.simulation });
   } catch (error) {
-    console.error(error);
+    res.status(500).send(error.message);
+  }
+});
+
+router.get('/planes/new', onlyPlatformAdmin, async (req, res) => {
+  res.render('subscriptions/new-plan', { sim: req.simulation });
+});
+
+router.post('/planes/create', onlyPlatformAdmin, async (req, res) => {
+  try {
+    await planService.createPlan(req.body);
+    res.redirect('/subscriptions?role=platform-admin');
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+router.get('/planes/edit/:id', onlyPlatformAdmin, async (req, res) => {
+  try {
+    const plan = await planService.getPlanById(req.params.id);
+    res.render('subscriptions/edit-plan', { plan, sim: req.simulation });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+router.post('/planes/edit/:id', onlyPlatformAdmin, async (req, res) => {
+  try {
+    await planService.updatePlan(req.params.id, req.body);
+    res.redirect('/subscriptions?role=platform-admin');
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+router.get('/planes/delete/:id', onlyPlatformAdmin, async (req, res) => {
+  try {
+    await planService.deletePlan(req.params.id);
+    res.redirect('/subscriptions?role=platform-admin');
+  } catch (error) {
     res.status(500).send(error.message);
   }
 });

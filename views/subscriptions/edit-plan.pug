@@ -1,0 +1,26 @@
+extends ../layouts/main.pug
+
+block content
+  h1.title Editar Plan
+
+  .box
+    form(action=`/planes/edit/${plan._id}${sim.query}` method="POST")
+
+      .field
+        label.label Nombre
+        .control
+          input.input(type="text" name="name" value=plan.name required)
+
+      .field
+        label.label Precio
+        .control
+          input.input(type="number" name="precio" value=plan.precio required)
+
+      .field
+        label.label Período mínimo
+        .control
+          input.input(type="text" name="periodoMinimo" value=plan['perído mínimo'] required)
+
+      .buttons.mt-4
+        button.button.is-primary(type="submit") Guardar cambios
+        a.button.is-light(href=`/subscriptions${sim.query}`) Cancelar

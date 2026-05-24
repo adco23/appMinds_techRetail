@@ -1,61 +1,26 @@
-extends ../layouts/main
+extends ../layouts/main.pug
 
 block content
   h1.title Suscripciones disponibles
 
   if sim.isCommerceAdmin
-    p.mt-3.mb-5 Antes de acceder a ordenes, tiendas, productos y transacciones, tenes que crear una suscripcion.
+    p.mt-3 Antes de acceder a ordenes, tiendas, productos y transacciones, tenes que crear una suscripcion.
 
-    .columns.is-centered.is-variable.is-6
-      each plan in ['Basico', 'Profesional', 'Enterprise']
+    .columns.is-centered.is-variable.is-6.mt-4
+      each plan in planes
         .column.is-4
           .card
             header.card-header.has-background-light
-              p.card-header-title.is-centered= plan
+              p.card-header-title.is-centered= plan.name
             .card-content
               .content.has-text-centered
-                p.is-size-4.has-text-weight-bold Plan demo
-                p.has-text-grey Acceso a todas las funcionalidades por 7 dias
+                p.is-size-3.has-text-weight-bold $#{Number(plan.precio).toLocaleString('es-AR')}
+                p.has-text-grey.is-size-7 Período mínimo: #{plan.minimo}
             footer.card-footer
-              a.card-footer-item.button.is-primary(href="#" onclick="crearSuscripcionDemo(event)") Elegir plan
+              a.card-footer-item.button.is-primary(href=`/commerce-admin/subscription/tienda?planId=${plan._id}&role=commerce-admin`) Elegir plan
 
     .buttons.mt-4
       a.button.is-light(href="/?role=commerce-admin") Volver
 
-    script.
-      async function crearSuscripcionDemo(event) {
-        event.preventDefault();
-
-        try {
-          const storesRes = await fetch('/api/stores');
-          const stores = await storesRes.json();
-
-          if (!stores || stores.length === 0) {
-            alert('No hay tiendas disponibles');
-            return;
-          }
-
-          const payload = {
-            detail: 'Plan Demo Comercio',
-            amount: 10000,
-            storeId: stores[0]._id
-          };
-
-          const response = await fetch('/api/subscriptions', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-          });
-
-          if (!response.ok) {
-            alert('No se pudo crear la suscripcion');
-            return;
-          }
-
-          window.location.href = '/?role=commerce-admin&subscribed=1';
-        } catch (error) {
-          alert('Error al crear la suscripcion');
-        }
-      }
   else
     a.button.is-light.mt-3(href="/") Volver al inicio

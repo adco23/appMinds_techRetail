@@ -1,0 +1,28 @@
+extends ../layouts/main.pug
+
+block content
+  h1.title Elegir tienda
+
+  .box
+    p.mb-4
+      strong Plan seleccionado:
+      |  #{plan.name} — $#{plan.precio}
+    p.mb-4
+      strong Período mínimo:
+      |  #{plan['perído mínimo']}
+
+    form(action=`/commerce-admin/subscription/crear${sim.query}` method="POST")
+      input(type="hidden" name="planId" value=`${plan._id}`)
+
+      .field
+        label.label Tienda
+        .control
+          div.select.is-fullwidth
+            select(name="storeId" required)
+              option(value="") Seleccioná una tienda
+              each store in stores
+                option(value=`${store._id}`)= store.name
+
+      .buttons.mt-4
+        button.button.is-primary(type="submit") Confirmar suscripción
+        a.button.is-light(href=`/commerce-admin/subscription?role=commerce-admin`) Volver
