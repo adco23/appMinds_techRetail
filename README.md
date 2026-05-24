@@ -8,7 +8,7 @@ Esta segunda entrega corresponde a la migración y evolución del sistema desarr
 
 Se mantiene la arquitectura modular basada en Node.js y Express, y se incorporan nuevas funcionalidades como la generación automática de transacciones al confirmar una orden, la visualización de relaciones entre colecciones mediante `populate()`, y mejoras en las interfaces de usuario con Pug.
 
-El proyecto migró además a ES Modules (`import/export`) de forma completa, unificando la sintaxis moderna en todos los archivos del sistema.
+El proyecto migró además a ES Modules (import/export) de forma completa, unificando la sintaxis moderna en todos los archivos del sistema.
 
 ---
 
@@ -146,6 +146,7 @@ const connectDB = async () => {
 |-----------|-------------|
 | `commerces` | Datos de los comercios registrados en la plataforma |
 | `stores` | Tiendas autogestionadas asociadas a cada comercio |
+| `planes` | Datos de los planes para suscripción |
 | `products` | Catálogo de productos de cada tienda |
 | `users` | Perfiles de usuarios administradores de plataforma o comercios |
 | `orders` | Órdenes de compra con estado y monto total |
