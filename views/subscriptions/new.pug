@@ -5,23 +5,47 @@ block content
     .box
       h1.title Nueva Suscripción
       form(action=`/subscriptions/create${sim.query}` method="POST")
+
         .field
-          label.label Detalle del Plan
+          label.label Plan
           .control
-            input.input(type="text" name="detail" placeholder="Ej: Premium" required)
+            .select.is-fullwidth
+              select#planSelect(name="detail" required onchange="actualizarMonto(this)")
+                option(value="" disabled selected) Seleccioná un plan
+                each plan in planes
+                  option(
+                    value=plan.name
+                    data-precio=plan.precio
+                    selected=planId && plan._id.toString() === planId
+                  )= `${plan.name} — $${Number(plan.precio).toLocaleString('es-AR')}`
 
         .field
           label.label Monto
           .control
-            input.input(type="number" name="amount" placeholder="50.000" required)
+            input#montoInput.input(type="number" name="amount" placeholder="Se completa al elegir el plan" readonly)
 
         .field
-          label.label Tienda ID
+          label.label Tienda
           .control
-            input.input(type="number" name="storeId" placeholder="101" required)
+            div.select.is-fullwidth
+              select(name="storeId" required)
+                option(value="") Seleccioná una tienda
+                each store in stores
+                  option(value=`${store._id}`)= store.name
 
         .buttons
           button.button.is-primary(type="submit") Guardar
           a.button.is-light(href=`/subscriptions${sim.query}`) Cancelar
 
+  script.
+    function actualizarMonto(select) {
+      const option = select.options[select.selectedIndex];
+      const precio = option.getAttribute('data-precio');
+      document.getElementById('montoInput').value = precio || '';
+    }
 
+    // Si viene preseleccionado desde "Elegir"
+    window.addEventListener('DOMContentLoaded', () => {
+      const select = document.getElementById('planSelect');
+      if (select.selectedIndex > 0) actualizarMonto(select);
+    });

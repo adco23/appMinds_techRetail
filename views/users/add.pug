@@ -3,7 +3,7 @@ extends ../layouts/main
 block content
   .columns.is-centered
     .column.is-6
-      h1.title.is-3 Agregar Nuevo Usuario
+      h1.title.is-3 Alta de Usuario
       hr
       form(id="addForm")
         .field
@@ -30,8 +30,13 @@ block content
               option(value="vendedor") Vendedor
 
         .field
-          label.label ID Comercio
-          input.input(type="number" name="commerceId" required)
+          label.label Comercio
+          .control
+            div.select.is-fullwidth
+              select(name="commerceId")
+                option(value="") Sin comercio
+                each commerce in commerces
+                  option(value=`${commerce._id}`)= commerce.name
 
         .buttons.is-right
           a.button.is-light(href=`/users${sim.query}`) Cancelar

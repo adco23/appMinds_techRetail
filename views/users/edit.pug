@@ -32,8 +32,13 @@ block content
               option(value="vendedor" selected=user.role === 'vendedor') Vendedor
 
         .field
-          label.label ID Comercio
-          input.input(type="number" name="commerceId" value=user.commerceId required)
+          label.label Comercio
+          .control
+            div.select.is-fullwidth
+              select(name="commerceId")
+                option(value="") Sin comercio
+                each commerce in commerces
+                  option(value=`${commerce._id}`, selected=user.commerceId && user.commerceId.toString() === commerce._id.toString())= commerce.name
 
         .buttons.is-right
           a.button.is-light(href=`/users${sim.query}`) Cancelar

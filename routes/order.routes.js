@@ -1,5 +1,5 @@
-const { Router } = require('express');
-const { getOrders, createOrder, updateOrder } = require('../controllers/order.controller.js');
+import {  Router  } from "express";
+import {  getOrders, createOrder, updateOrder  } from "../controllers/order.controller.js";
 
 const router = Router();
 
@@ -8,4 +8,4 @@ router.post('/', createOrder);
 // router.put('/:cuit', updateCommerce);
 router.put('/:id', updateOrder);
 
-module.exports = router;
+export default router;

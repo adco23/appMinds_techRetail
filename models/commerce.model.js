@@ -1,30 +1,13 @@
-class Commerce {
-  constructor(id, name, cuit, email, phone = null, address = null) {
-    this.id = id;
-    this.name = name;
-    this.cuit = cuit;
-    this.email = email;
-    this.phone = phone;
-    this.address = address;
-    this.status = 0; // 1 = active, 0 =inactive
-    this.createdAt = new Date();
-  }
+import mongoose from "mongoose";
 
-  activate() {
-    this.status = 1;
-  }
+const commerceSchema = new mongoose.Schema({
+  name:      { type: String, required: true },
+  cuit:      { type: String, required: true, unique: true },
+  email:     { type: String, required: true, unique: true },
+  phone:     { type: String, default: null },
+  address:   { type: String, default: null },
+  status:    { type: Number, default: 1 }, // 1 = activo, 0 = inactivo
+  createdAt: { type: Date,   default: Date.now },
+});
 
-  deactivate() {
-    this.status = 0;
-  }
-
-  update(data) {
-    this.name = data.name || this.name;
-    this.cuit = data.cuit || this.cuit;
-    this.email = data.email || this.email;
-    this.phone = data.phone || this.phone;
-    this.address = data.address || this.address;
-  }
-}
-
-module.exports = Commerce;
+export default mongoose.model('Commerce', commerceSchema);

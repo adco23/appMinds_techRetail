@@ -6,7 +6,7 @@ block content
       .level-item
         div
           h1.title Lista de productos
-          p.subtitle Visualizacion del modulo Product
+          p.subtitle Visualización del módulo Producto
 
     .level-right
       .level-item
@@ -19,30 +19,31 @@ block content
           tr
             th ID
             th Nombre
-            th Descripcion
+            th Descripción
             th Precio
             th Stock
-            th Categoria
-            th Store ID
+            th Cat.
+            th Tienda
             th Estado
             th Acciones
         tbody
           each product in products
             tr
-              td= product.id
+              td= product._id.toString().slice(-6)
               td= product.name
-              td= product.description
+              td
+                span(title=product.description)= product.description.length > 30 ? product.description.slice(0, 30) + '...' : product.description
               td= product.price
               td= product.stock
               td= product.category
-              td= product.storeId
+              td= product.storeId && product.storeId.name ? product.storeId.name : (product.storeId ? product.storeId.toString().slice(-6) : 'Sin tienda')
               td= product.status
               td
-                .buttons.are-small
-                  a.button.is-info(href=`/products/view/${product.id}${sim.query}`) Ver
-                  a.button.is-warning(href=`/products/edit/${product.id}${sim.query}`) Editar
-                  form(method="POST", action=`/products/delete/${product.id}${sim.query}`, style="display:inline;")
-                    button.button.is-danger(type="submit", onclick="return confirm('Eliminar este producto?')") Eliminar
+                div(style="display:flex; gap:0.5rem; align-items:center; flex-wrap:nowrap;")
+                  a.button.is-info.is-small(href=`/products/view/${product._id}${sim.query}`) Ver
+                  a.button.is-warning.is-small(href=`/products/edit/${product._id}${sim.query}`) Editar
+                  form(method="POST", action=`/products/delete/${product._id}${sim.query}`, style="margin:0;")
+                    button.button.is-danger.is-small(type="submit", onclick="return confirm('Eliminar este producto?')") Eliminar
   else
     article.message.is-warning
       .message-body

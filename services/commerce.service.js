@@ -1,75 +1,62 @@
-const fileHandler = require('../utils/fileHandler');
-const Commerce = require('../models/commerce.model');
+import Commerce from "../models/commerce.model.js";
 
-const JSON_FILE = 'commerces.json';
-const commerces = fileHandler.readFile(JSON_FILE);
-
-const save = data => {
-  try {
-    fileHandler.writeFile(JSON_FILE, data);
-    return true;
-  } catch (error) {
-    console.error('Error saving commerces:', error);
-    return false;
-  }
+export const getCommerce = async () => {
+  return await Commerce.find();
 };
 
-const getCommerce = () => {
-  return commerces;
+export const findByCuit = async cuit => {
+  return await Commerce.findOne({ cuit });
 };
 
-const findByCuit = cuit => {
-  return commerces.find(commerce => commerce.cuit === cuit);
+export const existsByCuit = async cuit => {
+  const commerce = await findByCuit(cuit);
+  return !!commerce;
 };
 
-const existsByCuit = cuit => {
-  return commerces.some(commerce => commerce.cuit === cuit);
+export const createCommerce = async ({ name, cuit, email, phone, address }) => {
+  const existing = await existsByCuit(cuit);
+  if (existing) throw new Error('CUIT already exists');
+
+  const newCommerce = new Commerce({ name, cuit, email, phone, address });
+  return await newCommerce.save();
 };
 
-const createCommerce = ({ name, cuit, email, phone, address }) => {
-  let newCommerce = new Commerce(commerces.length + 1, name, cuit, email, phone, address);
-
-  return save([...commerces, newCommerce]);
-};
-
-const deleteCommerce = cuit => {
-  const commerce = commerces.find(commerce => commerce.cuit === cuit);
-
+// Equivalente a commerce.deactivate() — deleteCommerce desactiva en vez de eliminar
+export const deleteCommerce = async cuit => {
+  const commerce = await findByCuit(cuit);
   if (!commerce) return false;
 
-  const updated = new Commerce(
-    commerce.id,
-    commerce.name,
-    commerce.cuit,
-    commerce.email,
-    commerce.phone,
-    commerce.address,
-  );
-  updated.deactivate();
-
-  const list = commerces.map(c => (c.cuit === cuit ? updated : c));
-
-  return save(list);
+  commerce.status = 0;
+  await commerce.save();
+  return true;
 };
 
-const updateCommerce = (cuit, { name, email, phone, address }) => {
-  const commerce = findByCuit(cuit);
-
+export const updateCommerce = async (cuit, { name, email, phone, address }) => {
+  const commerce = await findByCuit(cuit);
   if (!commerce) return false;
 
-  commerce.name = name || commerce.name;
-  commerce.email = email || commerce.email;
-  commerce.phone = phone || commerce.phone;
+  commerce.name    = name    || commerce.name;
+  commerce.email   = email   || commerce.email;
+  commerce.phone   = phone   || commerce.phone;
   commerce.address = address || commerce.address;
 
-  return save([...commerces.map(c => (c.cuit === cuit ? commerce : c))]);
+  await commerce.save();
+  return true;
 };
 
-const activate = id => {
-  const commerce = commerces.find(c => c.id == id);
+// Equivalente a commerce.activate()
+export const activateCommerce = async id => {
+  const commerce = await Commerce.findById(id);
+  if (!commerce) throw new Error('Commerce not found');
+
   commerce.status = 1;
-
-  return save([...commerces.map(c => (c.id == id ? commerce : c))]);
+  return await commerce.save();
 };
 
-module.exports = { getCommerce, createCommerce, existsByCuit, findByCuit, deleteCommerce, updateCommerce, activate };
+export const deactivateCommerce = async id => {
+  const commerce = await Commerce.findById(id);
+  if (!commerce) throw new Error('Commerce not found');
+
+  commerce.status = 0;
+  return await commerce.save();
+};

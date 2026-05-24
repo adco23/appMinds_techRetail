@@ -1,80 +1,53 @@
-const Subscription = require('../models/subscription.js');
-const fileHandler = require('../utils/fileHandler');
-const FILE_PATH = 'subscriptions.json';
+import Subscription from "../models/subscription.model.js";
 
-const commerceService = require('./commerce.service.js');
-
-const getAll = async () => {
-  return await fileHandler.readFile(FILE_PATH);
+export const getAll = async () => {
+  return await Subscription.find().populate('storeId');
 };
 
-// 1. NUEVA SUSCRIPCIÓN
-
 const crear = async data => {
-  const subscriptions = await getAll();
-  const nuevoId = subscriptions.length > 0 ? subscriptions[subscriptions.length - 1].id + 1 : 1;
-
   const hoy = new Date();
   const startDate = hoy.toISOString().split('T')[0];
-
   const vencimiento = new Date();
   vencimiento.setDate(hoy.getDate() + 30);
   const expDate = vencimiento.toISOString().split('T')[0];
 
-  const nuevaSub = new Subscription(
-    nuevoId,
-    data.detail,
-    Number(data.amount),
+  const nuevaSub = new Subscription({
+    detail:  data.detail,
+    amount:  Number(data.amount),
     startDate,
     expDate,
-    'active',
-    Number(data.storeId),
-  );
+    status:  'Activa',
+    storeId: data.storeId,
+  });
 
-  commerceService.activate(data.storeId);
-
-  subscriptions.push(nuevaSub);
-  await fileHandler.writeFile(FILE_PATH, subscriptions);
-  return nuevaSub;
+  return await nuevaSub.save();
 };
 
-// 2. RENOVAR
 const renovar = async id => {
-  const subscriptions = await getAll();
-  const index = subscriptions.findIndex(s => s.id === parseInt(id));
+  const sub = await Subscription.findById(id);
+  if (!sub) throw new Error('Suscripción no encontrada');
 
-  if (index !== -1) {
-    // Se renueva por 30 días
-    let currentExp = new Date(subscriptions[index].expDate);
-    currentExp.setDate(currentExp.getDate() + 30);
+  const currentExp = new Date(sub.expDate);
+  currentExp.setDate(currentExp.getDate() + 30);
 
-    subscriptions[index].expDate = currentExp.toISOString().split('T')[0];
-    subscriptions[index].status = 'active';
+  sub.expDate = currentExp.toISOString().split('T')[0];
+  sub.status  = 'Activa';
 
-    commerceService.activate(subscriptions[index].storeId);
-
-    await fileHandler.writeFile(FILE_PATH, subscriptions);
-    return subscriptions[index];
-  }
-  throw new Error('Suscripción no encontrada');
+  return await sub.save();
 };
 
-// 3. CANCELAR
 const cancelar = async id => {
-  const subscriptions = await getAll();
-  const index = subscriptions.findIndex(s => s.id === parseInt(id));
+  const sub = await Subscription.findById(id);
+  if (!sub) throw new Error('Suscripción no encontrada');
 
-  if (index !== -1) {
-    subscriptions[index].status = 'cancelled';
-    await fileHandler.writeFile(FILE_PATH, subscriptions);
-    return subscriptions[index];
-  }
-  throw new Error('Suscripción no encontrada');
+  sub.status = 'Cancelada';
+  return await sub.save();
 };
 
-module.exports = {
-  getAll,
-  crear,
-  renovar,
-  cancelar,
+export const eliminar = async id => {
+  const sub = await Subscription.findByIdAndDelete(id);
+  if (!sub) throw new Error('Suscripción no encontrada');
+  return { message: 'Suscripción eliminada' };
 };
+
+export default { getAll, crear, renovar, cancelar, eliminar };

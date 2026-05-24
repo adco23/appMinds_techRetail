@@ -1,9 +1,9 @@
-const { Router } = require('express');
+import {  Router  } from "express";
 const router = Router();
-const subscriptionController = require('../controllers/subscription.controller.js');
+import subscriptionController from "../controllers/subscription.controller.js";
 
 // Endpoints
 router.get('/', subscriptionController.getAllSubscriptions);
 router.post('/', subscriptionController.createSubscription);
 
-module.exports = router;
+export default router;

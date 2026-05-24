@@ -1,38 +1,52 @@
-[
-  {
-    "id": 1,
-    "name": "La Estrella Centro",
-    "category": "Supermercado",
-    "subdomain": "laestrella-centro",
-    "status": "active",
-    "commerceId": 1,
-    "createdAt": "2026-02-01"
+[{
+  "_id": {
+    "$oid": "6a0f69b066dd57268361b54b"
   },
-  {
-    "id": 2,
-    "name": "La Estrella Barrio Norte",
-    "category": "Supermercado",
-    "subdomain": "laestrella-norte",
-    "status": "active",
-    "commerceId": 1,
-    "createdAt": "2026-02-05"
+  "name": "La Estrella Centro",
+  "category": "Supermercado",
+  "subdomain": "laestrella-centro",
+  "status": "active",
+  "commerceId": {
+    "$oid": "6a0f695a66dd57268361b52f"
   },
-  {
-    "id": 3,
-    "name": "Farmacia Central Caballito",
-    "category": "Farmacia",
-    "subdomain": "farmacia-central",
-    "status": "active",
-    "commerceId": 2,
-    "createdAt": "2026-02-10"
+  "createdAt": "2026-02-01"
+},
+{
+  "_id": {
+    "$oid": "6a0f69b066dd57268361b54c"
   },
-  {
-    "id": 4,
-    "name": "Horizonte Microcentro",
-    "category": "Libreria",
-    "subdomain": "horizonte-microcentro",
-    "status": "inactive",
-    "commerceId": 3,
-    "createdAt": "2026-02-18"
-  }
-]
+  "name": "La Estrella Barrio Norte",
+  "category": "Supermercado",
+  "subdomain": "laestrella-norte",
+  "status": "active",
+  "commerceId": {
+    "$oid": "6a0f695a66dd57268361b52f"
+  },
+  "createdAt": "2026-02-05"
+},
+{
+  "_id": {
+    "$oid": "6a0f69b066dd57268361b54d"
+  },
+  "name": "Farmacia Central Caballito",
+  "category": "Farmacia",
+  "subdomain": "farmacia-central",
+  "status": "active",
+  "commerceId": {
+    "$oid": "6a0f695a66dd57268361b530"
+  },
+  "createdAt": "2026-02-10"
+},
+{
+  "_id": {
+    "$oid": "6a0f69b066dd57268361b54e"
+  },
+  "name": "Horizonte Microcentro",
+  "category": "Libreria",
+  "subdomain": "horizonte-microcentro",
+  "status": "inactive",
+  "commerceId": {
+    "$oid": "6a0f695a66dd57268361b531"
+  },
+  "createdAt": "2026-02-18"
+}]

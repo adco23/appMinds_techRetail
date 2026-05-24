@@ -4,10 +4,6 @@ block content
   h1.title Nueva tienda
 
   form(method="POST", action=`/stores/view${sim.query}`)
-    .field
-      label.label ID
-      .control
-        input.input(type="number", name="id", required)
 
     .field
       label.label Nombre
@@ -27,15 +23,22 @@ block content
     .field
       label.label Estado
       .control
-        input.input(type="text", name="status", value="active", required)
+        div.select.is-fullwidth
+          select(name="status" required)
+            option(value="active") Activa
+            option(value="inactive") Inactiva
 
     .field
-      label.label Comercio ID
+      label.label Comercio
       .control
-        input.input(type="number", name="commerceId", required)
+        div.select.is-fullwidth
+          select(name="commerceId" required)
+            option(value="") Seleccioná un comercio
+            each commerce in commerces
+              option(value=`${commerce._id}`)= commerce.name
 
     .field
-      label.label Fecha de creacion
+      label.label Fecha de creación
       .control
         input.input(type="date", name="createdAt", required)
 

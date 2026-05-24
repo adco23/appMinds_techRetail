@@ -1,32 +1,96 @@
-[
-  {
-    "id": 1,
-    "name": "Supermercado La Estrella",
-    "cuit": "30712345671",
-    "email": "contacto@laestrella.test",
-    "phone": "+54 11 4300-1001",
-    "address": "Av. Belgrano 123, Buenos Aires",
-    "status": 1,
-    "createdAt": "2026-01-10T10:00:00Z"
+[{
+  "_id": {
+    "$oid": "6a0f695a66dd57268361b52f"
   },
-  {
-    "id": 2,
-    "name": "Farmacia Central",
-    "cuit": "30712345672",
-    "email": "info@farmaciacentral.test",
-    "phone": "+54 11 4300-1002",
-    "address": "Calle Libertad 456, Buenos Aires",
-    "status": 1,
-    "createdAt": "2026-01-15T11:30:00Z"
+  "name": "Supermercado La Estrella",
+  "cuit": "30712345671",
+  "email": "contacto@laestrella.test",
+  "phone": "+54 11 4300-1001",
+  "address": "Av. Belgrano 123, Buenos Aires",
+  "status": 1,
+  "createdAt": "2026-01-10T10:00:00Z"
+},
+{
+  "_id": {
+    "$oid": "6a0f695a66dd57268361b530"
   },
-  {
-    "id": 3,
-    "name": "Libreria Horizonte",
-    "cuit": "30712345673",
-    "email": "ventas@libreriahorizonte.test",
-    "phone": "+54 11 4300-1003",
-    "address": "Av. Corrientes 789, Buenos Aires",
-    "status": 1,
-    "createdAt": "2026-01-20T09:15:00Z"
-  }
-]
+  "name": "Farmacia Central",
+  "cuit": "30712345672",
+  "email": "info@farmaciacentral.test",
+  "phone": "+54 11 4300-1002",
+  "address": "Calle Libertad 456, Buenos Aires",
+  "status": 1,
+  "createdAt": "2026-01-15T11:30:00Z"
+},
+{
+  "_id": {
+    "$oid": "6a0f695a66dd57268361b531"
+  },
+  "name": "Libreria Horizonte",
+  "cuit": "30712345673",
+  "email": "ventas@libreriahorizonte.test",
+  "phone": "+54 11 4300-1003",
+  "address": "Av. Corrientes 789, Buenos Aires",
+  "status": 0,
+  "createdAt": "2026-01-20T09:15:00Z"
+},
+{
+  "_id": {
+    "$oid": "6a0f6e28440c49b945abe25c"
+  },
+  "name": "Bahiense",
+  "cuit": "30215468974",
+  "email": "bahia@bahiacom.com.ar",
+  "phone": "114353536464",
+  "address": "Lejos 345",
+  "status": 0,
+  "createdAt": {
+    "$date": "2026-05-21T20:42:16.125Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a0f7a424af11c86c3a27309"
+  },
+  "name": "Bahia",
+  "cuit": "56788989893",
+  "email": "bahia@bahia.com.ar",
+  "phone": "345454989",
+  "address": "Lejos 234",
+  "status": 0,
+  "createdAt": {
+    "$date": "2026-05-21T21:33:54.748Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a0f7ac8ae1f3c646dcc0763"
+  },
+  "name": "Activo",
+  "cuit": "5678890221",
+  "email": "activo@kdjgco.com",
+  "phone": "9138985034",
+  "address": "frio 123",
+  "status": 1,
+  "createdAt": {
+    "$date": "2026-05-21T21:36:08.588Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a108b04c0227618e75d32f9"
+  },
+  "name": "dfd",
+  "cuit": "242232332232",
+  "email": "3232@dgakg.com",
+  "phone": "1154564656",
+  "address": "dadgd 235",
+  "status": 1,
+  "createdAt": {
+    "$date": "2026-05-22T16:57:40.950Z"
+  },
+  "__v": 0
+}]

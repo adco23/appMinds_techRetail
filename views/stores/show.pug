@@ -6,16 +6,13 @@ block content
       .level-item
         div
           h1.title Detalle de tienda
-          p.subtitle Informacion general del modulo Store
+          p.subtitle Información general del módulo Tienda
 
     .level-right
       .level-item
         a.button.is-primary(href=`/products/view/new/${store.id}${sim.query}`) Nuevo producto
 
   .box
-    p
-      strong ID:
-      |  #{store.id}
     p
       strong Nombre:
       |  #{store.name}
@@ -29,11 +26,13 @@ block content
       strong Estado:
       |  #{store.status}
     p
-      strong Comercio ID:
-      |  #{store.commerceId}
+      strong Comercio:
+      |  #{store.commerceId && store.commerceId.name ? store.commerceId.name : 'Sin comercio asignado'}
+      if store.commerceId && store.commerceId.cuit
+      span.tag.is-light.is-small(style="margin-left: 0.5rem;") CUIT: #{store.commerceId.cuit}
     p
-      strong Fecha de creacion:
-      |  #{store.createdAt}
+      strong Fecha de creación:
+      |  #{store.createdAt ? new Date(store.createdAt).toLocaleDateString('es-AR') : ''}
 
   h2.title.is-4 Productos de esta tienda
 
@@ -48,7 +47,7 @@ block content
 
               .content
                 p
-                  strong Descripcion:
+                  strong Descripción:
                   |  #{product.description}
                 p
                   strong Precio:
@@ -68,7 +67,7 @@ block content
   else
     article.message.is-warning
       .message-body
-        | Esta tienda todavia no tiene productos asociados.
+        | Esta tienda no tiene productos asociados.
 
   .buttons.mt-5
     a.button.is-link(href=`/stores/view${sim.query}`) Volver al listado

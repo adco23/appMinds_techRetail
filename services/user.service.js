@@ -1,125 +1,92 @@
-const fileHandler = require('../utils/fileHandler');
-const User = require('../models/user.model');
+import User from "../models/user.model.js";
 
-const JSON_FILE = 'users.json';
-
-const getUsers = () => {
-  try {
-    const data = fileHandler.readFile(JSON_FILE);
-    return Array.isArray(data) ? data : [];
-  } catch (error) {
-    return [];
-  }
+const getUsers = async () => {
+  return await User.find().populate('commerceId');
 };
 
-const findByEmail = email => {
-  const users = getUsers();
-  const searchEmail = email.trim().toLowerCase();
-  return users.find(u => (u.email || '').trim().toLowerCase() === searchEmail);
+const findByEmail = async email => {
+  return await User.findOne({ email: email.trim().toLowerCase() });
 };
 
-const existsByEmail = email => {
-  return !!findByEmail(email);
+const existsByEmail = async email => {
+  const user = await findByEmail(email);
+  return !!user;
 };
 
-const createUser = data => {
-  const users = getUsers();
-  const newUser = new User(
-    users.length + 1,
-    data.firstName,
-    data.lastName,
-    data.email,
-    data.password,
-    data.role,
-    data.commerceId,
-  );
-  users.push(newUser);
-  fileHandler.writeFile(JSON_FILE, users);
-  return newUser;
+const createUser = async data => {
+  const newUser = new User({
+    firstName:  data.firstName,
+    lastName:   data.lastName,
+    email:      data.email.trim().toLowerCase(),
+    password:   data.password,
+    role:       data.role,
+    commerceId: data.commerceId || null,
+  });
+
+  return await newUser.save();
 };
 
-const activateUser = email => {
-  const users = getUsers();
-  const searchEmail = email.trim().toLowerCase();
-  const index = users.findIndex(u => (u.email || '').trim().toLowerCase() === searchEmail);
-  if (index === -1) return false;
+// Equivalente a user.activate()
+const activateUser = async email => {
+  const user = await findByEmail(email);
+  if (!user) return false;
 
-  const user = users[index];
-  const userObj = new User(
-    user.id,
-    user.firstName,
-    user.lastName,
-    user.email,
-    user.password,
-    user.role,
-    user.commerceId,
-    user.status,
-  );
-  userObj.activate();
-  users[index] = userObj;
-
-  fileHandler.writeFile(JSON_FILE, users);
+  user.status = 'Activo';
+  await user.save();
   return true;
 };
 
-const deactivateUser = email => {
-  const users = getUsers();
-  const searchEmail = email.trim().toLowerCase();
-  const index = users.findIndex(u => (u.email || '').trim().toLowerCase() === searchEmail);
-  if (index === -1) return false;
+// Equivalente a user.deactivate()
+const deactivateUser = async email => {
+  const user = await findByEmail(email);
+  if (!user) return false;
 
-  const user = users[index];
-  const userObj = new User(
-    user.id,
-    user.firstName,
-    user.lastName,
-    user.email,
-    user.password,
-    user.role,
-    user.commerceId,
-    user.status,
-  );
-  userObj.deactivate();
-  users[index] = userObj;
-
-  fileHandler.writeFile(JSON_FILE, users);
+  user.status = 'Inactivo';
+  await user.save();
   return true;
 };
 
-const deleteUser = email => {
-  const users = getUsers();
-  const searchEmail = email.trim().toLowerCase();
-  const filteredUsers = users.filter(u => (u.email || '').trim().toLowerCase() !== searchEmail);
+const deleteUser = async email => {
+  const user = await User.findOneAndDelete({ email: email.trim().toLowerCase() });
+  return !!user;
+};
 
-  if (users.length === filteredUsers.length) return false;
+const updateUser = async (email, newData) => {
+  const user = await findByEmail(email);
+  if (!user) return false;
 
-  fileHandler.writeFile(JSON_FILE, filteredUsers);
+  user.firstName  = newData.firstName  || user.firstName;
+  user.lastName   = newData.lastName   || user.lastName;
+  user.password   = newData.password   || user.password;
+  user.role       = newData.role       || user.role;
+  user.commerceId = newData.commerceId || user.commerceId;
+
+  // Normalizar status de datos viejos del JSON
+  if (user.status === 'active')   user.status = 'Activo';
+  if (user.status === 'inactive') user.status = 'Inactivo';
+
+  await user.save();
   return true;
 };
 
-const updateUser = (email, newData) => {
-  const users = getUsers();
-  const index = users.findIndex(u => (u.email || '').trim().toLowerCase() === email.trim().toLowerCase());
+const assignCommerceToUser = async (email, commerceId) => {
+  const user = await findByEmail(email);
+  if (!user) return false;
 
-  if (index === -1) return false;
-
-  const userActual = users[index];
-
-  // Mantenemos el ID y el email original, actualizamos el resto
-  users[index] = {
-    ...userActual,
-    firstName: newData.firstName || userActual.firstName,
-    lastName: newData.lastName || userActual.lastName,
-    password: newData.password || userActual.password,
-    role: newData.role || userActual.role,
-    commerceId: newData.commerceId || userActual.commerceId,
-  };
-
-  fileHandler.writeFile(JSON_FILE, users);
-  return true;
+  user.commerceId = commerceId;
+  await user.save();
+  return user;
 };
 
-module.exports = {
+
+const validateCredentials = async (email, password) => {
+  const user = await findByEmail(email);
+  if (!user) return false;
+  if (user.status !== 'Activo') return false;
+  return user.password === password ? user : false;
+};
+
+export default {
   getUsers,
   findByEmail,
   existsByEmail,
@@ -128,4 +95,6 @@ module.exports = {
   deactivateUser,
   deleteUser,
   updateUser,
+  assignCommerceToUser,
+  validateCredentials,
 };

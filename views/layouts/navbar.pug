@@ -11,14 +11,24 @@ nav.navbar.is-primary(role="navigation", aria-label="main navigation")
         a.navbar-item(href=`/subscriptions${sim.query}`) Suscripciones
       else if sim && sim.isCommerceAdmin
         if sim.subscribed
-          a.navbar-item(href=`/orders${sim.query}`) Ordenes
+          a.navbar-item(href=`/orders${sim.query}`) Órdenes
           a.navbar-item(href=`/stores/view${sim.query}`) Tiendas
           a.navbar-item(href=`/products/view${sim.query}`) Productos
           a.navbar-item(href=`/transactions${sim.query}`) Transacciones
         else
-          a.navbar-item(href=`/commerce-admin/subscription${sim.query}`) Suscripcion
+          a.navbar-item(href=`/commerce-admin/subscription${sim.query}`) Suscripción
 
     .navbar-end
       .navbar-item
-        if sim && sim.role
-          a.button.is-light(href="/") Salir simulación
+        if currentUser
+          .buttons
+            span.button.is-static= `${currentUser.firstName} ${currentUser.lastName}`
+            form(method="POST", action="/auth/logout")
+              button.button.is-light(type="submit") Cerrar sesión
+        else
+          .buttons
+            a.button.is-light(href="/auth/login") Ingresar
+            a.button.is-warning(href="/auth/register") Registrarse
+      //- if sim && sim.role
+      //-   .navbar-item
+      //-     a.button.is-light(href="/") Salir simulación

@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+import fs from "fs";
+import path from "path";
 
 const dataPath = path.join(__dirname, '..', 'data');
 
@@ -29,7 +29,7 @@ const writeFile = (fileName, data) => {
   }
 };
 
-module.exports = {
+export default {
   readFile,
   writeFile,
 };

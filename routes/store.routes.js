@@ -1,7 +1,7 @@
-const express = require('express');
+import express from "express";
 const router = express.Router();
 
-const {
+import {
   getStores,
   getStoresView,
   getStoreDetailView,
@@ -14,7 +14,7 @@ const {
   updateStoreFromView,
   deleteStore,
   deleteStoreFromView,
-} = require('../controllers/store.controller');
+ } from "../controllers/store.controller.js";
 
 router.get('/', getStores);
 router.get('/view', getStoresView);
@@ -32,4 +32,4 @@ router.post('/delete/:id', deleteStoreFromView);
 router.put('/:id', updateStore);
 router.delete('/:id', deleteStore);
 
-module.exports = router;
+export default router;

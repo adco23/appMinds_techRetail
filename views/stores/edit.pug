@@ -5,11 +5,6 @@ block content
 
   form(method="POST", action=`/stores/edit/${store.id}${sim.query}`)
     .field
-      label.label ID
-      .control
-        input.input(type="number", name="id", value=store.id, readonly)
-
-    .field
       label.label Nombre
       .control
         input.input(type="text", name="name", value=store.name, required)
@@ -30,14 +25,27 @@ block content
         input.input(type="text", name="status", value=store.status, required)
 
     .field
-      label.label Comercio ID
+      label.label Comercio
       .control
-        input.input(type="number", name="commerceId", value=store.commerceId, required)
+        input.input(
+          type="text",
+          value=(store.commerceId && store.commerceId.name ? store.commerceId.name : 'Sin comercio asignado'),
+          readonly
+        )
+        input(
+          type="hidden",
+          name="commerceId",
+          value=(store.commerceId && store.commerceId._id ? store.commerceId._id.toString() : store.commerceId)
+        )
 
     .field
-      label.label Fecha de creacion
+      label.label Fecha de creación
       .control
-        input.input(type="date", name="createdAt", value=store.createdAt, required)
+        input.input(
+          type="text",
+          value=(store.createdAt ? new Date(store.createdAt).toLocaleDateString('es-AR') : ''),
+          readonly
+        )
 
     .field.is-grouped
       .control

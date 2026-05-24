@@ -1,49 +1,31 @@
-const fileHandler = require('../utils/fileHandler');
-const SaleDetail = require('../models/saleDetail.model');
+import SaleDetail from "../models/saleDetail.model.js";
 
-const JSON_FILE = 'saleDetail.json';
-
-const getDetails = () => {
-  try {
-    const data = fileHandler.readFile(JSON_FILE);
-    return Array.isArray(data) ? data : [];
-  } catch (error) {
-    return [];
-  }
+const getDetails = async () => {
+  return await SaleDetail.find();
 };
 
-const getDetailsBySaleId = saleId => {
-  const details = getDetails();
-  return details.filter(d => d.ventaId == saleId);
+const getDetailsBySaleId = async saleId => {
+  return await SaleDetail.find({ ventaId: saleId });
 };
 
-const createDetail = data => {
-  const details = getDetails();
+const createDetail = async data => {
+  const newDetail = new SaleDetail({
+    cantidad:       data.cantidad,
+    precioUnitario: data.precioUnitario,
+    ventaId:        data.ventaId,
+    productoId:     data.productoId,
+  });
 
-  const newDetail = new SaleDetail(
-    details.length + 1,
-    data.cantidad,
-    data.precioUnitario,
-    data.ventaId,
-    data.productoId,
-  );
-
-  details.push(newDetail);
-  fileHandler.writeFile(JSON_FILE, details);
-  return newDetail;
+  return await newDetail.save(); // pre('save') calcula subtotal automáticamente
 };
 
-const deleteDetail = id => {
-  const details = getDetails();
-  const filteredDetails = details.filter(d => d.id != id);
-
-  if (details.length === filteredDetails.length) return false;
-
-  fileHandler.writeFile(JSON_FILE, filteredDetails);
+const deleteDetail = async id => {
+  const detail = await SaleDetail.findByIdAndDelete(id);
+  if (!detail) return false;
   return true;
 };
 
-module.exports = {
+export default {
   getDetails,
   getDetailsBySaleId,
   createDetail,

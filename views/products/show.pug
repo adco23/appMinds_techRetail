@@ -2,17 +2,17 @@ extends ../layouts/main
 
 block content
   h1.title Detalle de producto
-  p.subtitle Informacion general del modulo Product
+  p.subtitle Información general del módulo Producto
 
   .box
     p
       strong ID:
-      |  #{product.id}
+      |  #{product._id.toString().slice(-6)}
     p
       strong Nombre:
       |  #{product.name}
     p
-      strong Descripcion:
+      strong Descripción:
       |  #{product.description}
     p
       strong Precio:
@@ -21,15 +21,15 @@ block content
       strong Stock:
       |  #{product.stock}
     p
-      strong Categoria:
+      strong Categoría:
       |  #{product.category}
     p
-      strong Store ID:
-      |  #{product.storeId}
+      strong Tienda:
+      |  #{product.storeId && product.storeId.name ? product.storeId.name : 'Sin tienda'}
     p
       strong Estado:
       |  #{product.status}
 
   .buttons
     a.button.is-link(href=`/products/view${sim.query}`) Volver al listado
-    a.button.is-warning(href=`/products/edit/${product.id}${sim.query}`) Editar producto
+    a.button.is-warning(href=`/products/edit/${product._id}${sim.query}`) Editar producto
