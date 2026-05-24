@@ -295,19 +295,3 @@ El proyecto sigue una arquitectura de capas:
 - Mejoras en vistas con Pug ✔
 
 ---
-
-## Próximas iteraciones
-
-- [ ] Implementación de autenticación y autorización
-- [ ] Validaciones avanzadas de datos
-- [ ] Sistema de logs
-- [ ] Documentación de API (Swagger)
-- [ ] Tests unitarios e integración
-- [ ] Usuarios compradores y flujo de compra
-- [ ] Despliegue a producción
-
----
-
-## Soporte
-
-Para reportar problemas o sugerencias, contactar al equipo de desarrollo.
