@@ -29,7 +29,7 @@ router.get('/', (req, res) => {
 
 router.get('/auth/login', ensureGuest, async (req, res) => {
   res.render('auth/auth', {
-    title: 'Iniciar sesion',
+    title: 'Iniciar sesión',
     mode: 'login',
     redirectTo: req.query.redirect || '/',
     sim: res.locals.sim,
@@ -52,7 +52,7 @@ router.post('/auth/login', ensureGuest, async (req, res) => {
 
     if (!user) {
       return res.status(401).render('auth/auth', {
-        title: 'Iniciar sesion',
+        title: 'Iniciar sesión',
         mode: 'login',
         redirectTo,
         error: 'Credenciales invalidas o usuario inactivo.',

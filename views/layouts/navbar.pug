@@ -24,7 +24,7 @@ nav.navbar.is-primary(role="navigation", aria-label="main navigation")
           .buttons
             span.button.is-static= `${currentUser.firstName} ${currentUser.lastName}`
             form(method="POST", action="/auth/logout")
-              button.button.is-light(type="submit") Cerrar sesion
+              button.button.is-light(type="submit") Cerrar sesión
         else
           .buttons
             a.button.is-light(href="/auth/login") Ingresar
