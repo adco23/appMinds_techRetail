@@ -14,7 +14,7 @@ block content
 
   if products && products.length > 0
     .table-container
-      table.table.is-striped.is-hoverable.is-fullwidth.is-size-7
+      table.table.is-striped.is-hoverable.is-fullwidth
         thead
           tr
             th ID
@@ -39,11 +39,11 @@ block content
               td= product.storeId && product.storeId.name ? product.storeId.name : (product.storeId ? product.storeId.toString().slice(-6) : 'Sin tienda')
               td= product.status
               td
-                .buttons.are-small
-                  a.button.is-info.is-light(href=`/products/view/${product._id}${sim.query}`) Ver
-                  a.button.is-warning.is-light(href=`/products/edit/${product._id}${sim.query}`) Editar
-                  form(method="POST", action=`/products/delete/${product._id}${sim.query}`, style="display:inline;")
-                    button.button.is-danger.is-light(type="submit", onclick="return confirm('Eliminar este producto?')") Eliminar
+                div(style="display:flex; gap:0.5rem; align-items:center; flex-wrap:nowrap;")
+                  a.button.is-info.is-small(href=`/products/view/${product._id}${sim.query}`) Ver
+                  a.button.is-warning.is-small(href=`/products/edit/${product._id}${sim.query}`) Editar
+                  form(method="POST", action=`/products/delete/${product._id}${sim.query}`, style="margin:0;")
+                    button.button.is-danger.is-small(type="submit", onclick="return confirm('Eliminar este producto?')") Eliminar
   else
     article.message.is-warning
       .message-body
