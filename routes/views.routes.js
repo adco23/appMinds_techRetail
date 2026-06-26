@@ -7,7 +7,6 @@ import subscriptionService from '../services/subscription.service.js';
 import * as storeService from '../services/store.service.js';
 import { commerceNeedsSubscription, onlyPlatformAdmin } from '../middlewares/simulation.middleware.js';
 import {
-  clearAuthenticatedUser,
   ensureAuthenticated,
   ensureGuest,
   setAuthenticatedUser,
@@ -65,7 +64,10 @@ router.post('/auth/login', ensureGuest, async (req, res) => {
     }
 
     setAuthenticatedUser(req, user);
-    res.redirect(redirectTo && redirectTo !== '/' ? redirectTo : getDefaultRedirectByUser(user));
+    req.session.save(err => {
+      if (err) return res.status(500).send(err.message);
+      res.redirect(redirectTo && redirectTo !== '/' ? redirectTo : getDefaultRedirectByUser(user));
+    });
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -122,15 +124,20 @@ router.post('/auth/register', ensureGuest, async (req, res) => {
     });
 
     setAuthenticatedUser(req, user);
-    res.redirect(redirectTo && redirectTo !== '/' ? redirectTo : getDefaultRedirectByUser(user));
+    req.session.save(err => {
+      if (err) return res.status(500).send(err.message);
+      res.redirect(redirectTo && redirectTo !== '/' ? redirectTo : getDefaultRedirectByUser(user));
+    });
   } catch (error) {
     res.status(500).send(error.message);
   }
 });
 
 router.post('/auth/logout', (req, res) => {
-  clearAuthenticatedUser(req);
-  res.redirect('/');
+  req.session.destroy(err => {
+    if (err) console.error('Error al destruir sesion:', err);
+    res.redirect('/');
+  });
 });
 
 router.get('/commerce-admin/create', ensureAuthenticated, (req, res) => {
@@ -195,7 +202,10 @@ router.post('/commerce-admin/create', ensureAuthenticated, async (req, res) => {
 
     const updatedUser = await userService.assignCommerceToUser(user.email, commerce._id);
     setAuthenticatedUser(req, updatedUser);
-    res.redirect('/commerce-admin/subscription?role=commerce-admin');
+    req.session.save(err => {
+      if (err) return res.status(500).send(err.message);
+      res.redirect('/commerce-admin/subscription?role=commerce-admin');
+    });
   } catch (error) {
     res.status(500).send(error.message);
   }
