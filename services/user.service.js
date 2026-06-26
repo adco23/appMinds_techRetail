@@ -1,8 +1,8 @@
 import User from "../models/user.model.js";
-import bcrypt from "bcryptjs";
+import bcrypt from "bcrypt";
 
 const getUsers = async () => {
-  return await User.find().populate('commerceId');
+  return await User.find().select('-password').populate('commerceId');
 };
 
 const findByEmail = async email => {
