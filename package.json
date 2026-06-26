@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon --inspect ./server.js",
+    "seed": "node seed.js",
     "format": "prettier --write ."
   },
   "repository": {

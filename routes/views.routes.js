@@ -216,30 +216,74 @@ router.get('/commerce-admin/subscription', ensureAuthenticated, async (req, res)
   res.render('subscriptions/gate', { title: 'Suscripcion', planes, sim: res.locals.sim });
 });
 
-router.get('/commerce-admin/subscription/tienda', async (req, res) => {
+router.get('/commerce-admin/subscription/tienda', ensureAuthenticated, async (req, res) => {
   const { planId } = req.query;
   const plan = await planService.getPlanById(planId);
   if (!plan) return res.redirect('/commerce-admin/subscription?role=commerce-admin');
 
-  const stores = await storeService.getAllStores();
-  res.render('subscriptions/elegir-tienda', { plan, stores, sim: res.locals.sim });
+  const commerceId = req.session.user?.commerceId;
+  const commerce = commerceId ? await commerceService.getCommerceById(commerceId) : null;
+
+  res.render('subscriptions/elegir-tienda', { plan, commerce, sim: res.locals.sim });
 });
 
-router.post('/commerce-admin/subscription/crear', async (req, res) => {
+router.post('/commerce-admin/subscription/crear', ensureAuthenticated, async (req, res) => {
   try {
-    const { planId, storeId } = req.body;
+    const { planId, storeType, storeName, storeCategory, storeSubdomain } = req.body;
+
     const plan = await planService.getPlanById(planId);
     if (!plan) throw new Error('Plan no encontrado');
 
+    const commerceId = req.session.user?.commerceId;
+    if (!commerceId) throw new Error('No hay comercio asociado al usuario');
+
+    const commerce = await commerceService.getCommerceById(commerceId);
+    if (!commerce) throw new Error('Comercio no encontrado');
+
+    let storeData;
+    if (storeType === 'default') {
+      const baseSlug = commerce.name.toLowerCase()
+        .normalize('NFD').replace(/[̀-ͯ]/g, '')
+        .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      storeData = {
+        name: commerce.name,
+        category: 'General',
+        subdomain: `${baseSlug}-${Date.now().toString().slice(-4)}`,
+        status: 'active',
+        commerceId,
+        createdAt: new Date().toISOString().split('T')[0],
+      };
+    } else {
+      storeData = {
+        name: storeName,
+        category: storeCategory,
+        subdomain: storeSubdomain,
+        status: 'active',
+        commerceId,
+        createdAt: new Date().toISOString().split('T')[0],
+      };
+    }
+
+    const newStore = await storeService.createStore(storeData);
+
     await subscriptionService.crear({
-      detail:  plan.name,
-      amount:  Number(plan.precio),
-      storeId,
+      detail: plan.name,
+      amount: Number(plan.precio),
+      storeId: newStore._id,
     });
 
     res.redirect('/?role=commerce-admin&subscribed=1');
   } catch (error) {
-    res.status(500).send(`Error: ${error.message}`);
+    const { planId } = req.body;
+    const plan = planId ? await planService.getPlanById(planId).catch(() => null) : null;
+    const commerceId = req.session.user?.commerceId;
+    const commerce = commerceId ? await commerceService.getCommerceById(commerceId).catch(() => null) : null;
+    res.render('subscriptions/elegir-tienda', {
+      plan,
+      commerce,
+      error: error.message,
+      sim: res.locals.sim,
+    });
   }
 });
 
