@@ -1,7 +1,8 @@
 import Subscription from "../models/subscription.model.js";
 
 export const getAll = async () => {
-  return await Subscription.find().populate('storeId');
+  const subs = await Subscription.find().populate('storeId');
+  return subs.map(s => s.toJSON());
 };
 
 const crear = async data => {

@@ -1,8 +1,14 @@
 import Transaction from "../models/transaction.model.js";
 
-
 const getAll = async () => {
-  return await Transaction.find();
+  const txs = await Transaction.find();
+  return txs.map(tx => {
+    const obj = tx.toJSON();
+    obj.grossAmount = parseFloat(obj.grossAmount || '0');
+    obj.feeAmount   = parseFloat(obj.feeAmount   || '0');
+    obj.netAmount   = parseFloat(obj.netAmount   || '0');
+    return obj;
+  });
 };
 
 const createTransaction = async data => {
@@ -15,7 +21,7 @@ const createTransaction = async data => {
     saleId:        data.saleId,
   });
 
-  return await newTransaction.save(); // pre('save') calcula feeAmount y netAmount
+  return await newTransaction.save();
 };
 
 export default { getAll, createTransaction };

@@ -1,16 +1,24 @@
 import mongoose from "mongoose";
+import Decimal from "decimal.js";
+import { toD128, fromD128, decimal128ToJSON } from "../utils/decimal.helper.js";
 
-const saleDetailSchema = new mongoose.Schema({
-  cantidad:       { type: Number, required: true },
-  precioUnitario: { type: Number, required: true },
-  subtotal:       { type: Number },
-  ventaId:        { type: mongoose.Schema.Types.ObjectId, ref: 'Order',   required: true },
-  productoId:     { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
-});
+const { Decimal128 } = mongoose.Schema.Types;
 
-// Equivalente a calculateSubtotal() — se calcula antes de guardar
+const saleDetailSchema = new mongoose.Schema(
+  {
+    cantidad:       { type: Number,    required: true },
+    precioUnitario: { type: Decimal128, required: true },
+    subtotal:       { type: Decimal128 },
+    ventaId:        { type: mongoose.Schema.Types.ObjectId, ref: 'Order',   required: true },
+    productoId:     { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
+  },
+  decimal128ToJSON
+);
+
 saleDetailSchema.pre('save', function (next) {
-  this.subtotal = this.cantidad * this.precioUnitario;
+  const precio = fromD128(this.precioUnitario);
+  const qty    = new Decimal(this.cantidad);
+  this.subtotal = toD128(precio.mul(qty));
   next();
 });
 

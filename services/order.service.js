@@ -4,9 +4,8 @@ import transactionService from './transaction.service.js';
 export const getOrders = async () => {
   const orders = await Order.find();
 
-  // Equivalente a dateOnlyFormat() y currencyFormat() de la clase
   return orders.map(order => {
-    const obj = order.toObject();
+    const obj = order.toJSON();
 
     const d = new Date(obj.date);
     const day   = String(d.getDate()).padStart(2, '0');
@@ -14,7 +13,7 @@ export const getOrders = async () => {
     const year  = d.getFullYear();
     obj.date = `${day}/${month}/${year}`;
 
-    obj.totalAmount = '$' + (obj.totalAmount ? obj.totalAmount : '0.00');
+    obj.totalAmount = '$' + (obj.totalAmount ? parseFloat(obj.totalAmount).toFixed(2) : '0.00');
 
     return obj;
   });
@@ -42,7 +41,6 @@ export const createOrder = async ({ clientId, storeId, paymentMethod, detailsId,
   return await newOrder.save();
 };
 
-// Equivalente a order.cancel()
 export const cancelOrder = async id => {
   const order = await Order.findById(id);
   if (!order) throw new Error('Order not found');
@@ -51,7 +49,6 @@ export const cancelOrder = async id => {
   return await order.save();
 };
 
-// Equivalente a order.complete()
 export const completeOrder = async (id, paymentId, logisticsId) => {
   const order = await Order.findById(id);
   if (!order) throw new Error('Order not found');
@@ -68,9 +65,10 @@ export const updateOrder = async (id, status) => {
   const order = await Order.findByIdAndUpdate(id, { status }, { new: true });
 
   if (status == 1 && order) {
+    const grossAmount = order.totalAmount ? order.totalAmount.toString() : '0';
     await transactionService.createTransaction({
       receiptId:     `REC-${order._id.toString().slice(-6).toUpperCase()}`,
-      grossAmount:   order.totalAmount || 0,
+      grossAmount,
       status:        'approved',
       paymentMethod: order.paymentMethod,
       gatewayRef:    `GW-${Date.now()}`,

@@ -1,11 +1,13 @@
 import Plan from '../models/plan.model.js';
 
 export const getPlanes = async () => {
-  return await Plan.find({ status: 'active' });
+  const plans = await Plan.find({ status: 'active' });
+  return plans.map(p => p.toJSON());
 };
 
 export const getPlanById = async id => {
-  return await Plan.findById(id);
+  const plan = await Plan.findById(id);
+  return plan ? plan.toJSON() : null;
 };
 
 export const createPlan = async data => {
