@@ -1,4 +1,5 @@
 import User from "../models/user.model.js";
+import bcrypt from "bcryptjs";
 
 const getUsers = async () => {
   return await User.find().populate('commerceId');
@@ -18,7 +19,7 @@ const createUser = async data => {
     firstName:  data.firstName,
     lastName:   data.lastName,
     email:      data.email.trim().toLowerCase(),
-    password:   data.password,
+    password:   await bcrypt.hash(data.password, 10),
     role:       data.role,
     commerceId: data.commerceId || null,
   });
@@ -57,7 +58,11 @@ const updateUser = async (email, newData) => {
 
   user.firstName  = newData.firstName  || user.firstName;
   user.lastName   = newData.lastName   || user.lastName;
-  user.password   = newData.password   || user.password;
+
+  if (newData.password) {
+    user.password = await bcrypt.hash(newData.password, 10);
+  }
+
   user.role       = newData.role       || user.role;
   user.commerceId = newData.commerceId || user.commerceId;
 
@@ -78,12 +83,15 @@ const assignCommerceToUser = async (email, commerceId) => {
   return user;
 };
 
-
 const validateCredentials = async (email, password) => {
   const user = await findByEmail(email);
+
   if (!user) return false;
   if (user.status !== 'Activo') return false;
-  return user.password === password ? user : false;
+
+  const isMatch = await bcrypt.compare(password, user.password);
+
+  return isMatch ? user : false;
 };
 
 export default {
