@@ -9,7 +9,13 @@ block content
   .box
     p.mb-2
       strong Plan seleccionado:
-      |  #{plan.name} — $#{plan.precio}
+      |  #{plan.name} — $#{plan.price}
+    p.mb-2
+      strong Período mínimo:
+      |  #{plan.minimum}
+    p.mb-4
+      strong Comisión por transacción:
+      |  #{plan.commission}%
 
     hr
 

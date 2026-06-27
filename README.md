@@ -146,11 +146,11 @@ const connectDB = async () => {
 |-----------|-------------|
 | `commerces` | Datos de los comercios registrados en la plataforma |
 | `stores` | Tiendas autogestionadas asociadas a cada comercio |
-| `planes` | Datos de los planes para suscripción |
+| `plans` | Datos de los plans para suscripción |
 | `products` | Catálogo de productos de cada tienda |
 | `users` | Perfiles de usuarios administradores de plataforma o comercios |
 | `orders` | Órdenes de compra con estado y monto total |
-| `subscriptions` | Planes de suscripción mensual por tienda |
+| `subscriptions` | plans de suscripción mensual por tienda |
 | `transactions` | Registro de pagos con comisión calculada automáticamente |
 | `saledetails` | Detalle de productos por orden de venta |
 

@@ -10,7 +10,7 @@ block content
         label.label Cliente
         .control
           div.select.is-fullwidth
-            select(name="clientId" required)
+            select(name="clientId" id="clientSelect" required)
               option(value="") Seleccioná un cliente
               each user in users
                 option(value=`${user._id}`)= `${user.firstName} ${user.lastName}`
@@ -19,10 +19,36 @@ block content
         label.label Tienda
         .control
           div.select.is-fullwidth
-            select(name="storeId" required)
+            select(name="storeId" id="storeSelect" required onchange="onStoreChange()")
               option(value="") Seleccioná una tienda
               each store in stores
                 option(value=`${store._id}`)= store.name
+
+      //- Sección Dinámica Multiproducto (Dentro del Formulario)
+      label.label Productos de la Orden
+      div#productos-container.mb-4
+        .producto-fila.box.is-light.mb-2(style="padding: 15px;")
+          .columns.is-vcentered
+            .column.is-6
+              .field
+                label.label Producto
+                div.select.is-fullwidth
+                  select(name="products[0][productId]" class="product-select" required disabled=((products || []).length === 0))
+                    if !(products && products.length)
+                      option(value="") Primero seleccioná una tienda con productos
+                    else
+                      option(value="") Seleccioná un producto
+                      each product in products
+                        option(value=`${product._id}`)= `${product.name} - $${product.price}`
+            .column.is-4
+              .field
+                label.label Cantidad
+                input.input(type="number" name="products[0][quantity]" class="product-quantity" value="1" min="1" required)
+            .column.is-2.has-text-centered
+              label.label &nbsp;
+              button.button.is-danger.is-fullwidth(type="button" onclick="eliminarFila(this)") Eliminar
+
+      button.button.is-info.is-small.mb-5(type="button" id="btn-agregar-producto" disabled=((products || []).length === 0)) + Agregar otro producto
 
       .field
         label.label Método de Pago
@@ -34,21 +60,70 @@ block content
               option(value="tarjeta") Tarjeta
               option(value="cuenta corriente") Cuenta Corriente
 
-      .field
-        label.label Monto Total
-        .control
-          input.input(type="number" name="totalAmount" placeholder="0" min="0" required)
-
-      .field
-        label.label ID de Pago
-        .control
-          input.input(type="text" placeholder="Generado automáticamente" disabled style="background-color: #f5f5f5; color: #aaa; cursor: not-allowed;")
-
-      .field
-        label.label ID de Logística
-        .control
-          input.input(type="text" placeholder="Generado automáticamente" disabled style="background-color: #f5f5f5; color: #aaa; cursor: not-allowed;")
-
       .buttons.mt-4
         button.button.is-primary(type="submit") Crear Orden
         a.button.is-light(href=`/orders${sim.query}`) Cancelar
+
+  script.
+    let filaContador = 1;
+
+    // 1. Al cargar la página, persistimos las selecciones de la URL
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const storeId = urlParams.get('storeId');
+      const clientId = urlParams.get('clientId');
+
+      if (storeId) {
+        document.getElementById('storeSelect').value = storeId;
+      }
+      if (clientId) {
+        document.getElementById('clientSelect').value = clientId;
+      }
+    });
+
+    // 2. Manejo del cambio de tienda para actualizar la URL y recargar productos
+    function onStoreChange() {
+      const storeId = document.getElementById('storeSelect').value;
+      const clientId = document.getElementById('clientSelect').value;
+      const currentUrl = new URL(window.location.href);
+
+      if (storeId) {
+        currentUrl.searchParams.set('storeId', storeId);
+      } else {
+        currentUrl.searchParams.delete('storeId');
+      }
+
+      if (clientId) {
+        currentUrl.searchParams.set('clientId', clientId);
+      }
+
+      window.location.href = currentUrl.toString();
+    }
+
+    // 3. Clonar filas incrementando dinámicamente el índice del array products
+    document.getElementById('btn-agregar-producto').addEventListener('click', () => {
+      const container = document.getElementById('productos-container');
+      const primeraFila = container.querySelector('.producto-fila');
+      const nuevaFila = primeraFila.cloneNode(true);
+
+      // Reseteamos los valores en la fila nueva
+      nuevaFila.querySelector('.product-select').value = "";
+      nuevaFila.querySelector('.product-quantity').value = "1";
+
+      // Asignamos los nuevos nombres indexados para que el Backend mapee el Array a la perfección
+      nuevaFila.querySelector('.product-select').setAttribute('name', `products[${filaContador}][productId]`);
+      nuevaFila.querySelector('.product-quantity').setAttribute('name', `products[${filaContador}][quantity]`);
+
+      container.appendChild(nuevaFila);
+      filaContador++;
+    });
+
+    // 4. Eliminar filas asegurando que quede al menos una
+    function eliminarFila(boton) {
+      const container = document.getElementById('productos-container');
+      if (container.querySelectorAll('.producto-fila').length > 1) {
+        boton.closest('.producto-fila').remove();
+      } else {
+        alert("La orden debe contener al menos un producto.");
+      }
+    }

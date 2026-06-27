@@ -1,5 +1,7 @@
 import * as service from "../services/order.service.js";
-import {  validate  } from "../utils/validations.js";
+import { validate } from "../utils/validations.js";
+import productService from "../services/product.service.js";
+import mongoose from "mongoose"; // Para cargar modelos si hiciese falta
 
 export const getOrders = async (req, res, next) => {
   try {
@@ -17,19 +19,39 @@ export const getOrders = async (req, res, next) => {
 
 export const createOrder = async (req, res, next) => {
   try {
-    const { clientId, storeId, paymentMethod, detailsId, totalAmount } = req.body;
+    // Agregamos productId y quantity que vienen de la nueva vista Pug
+    const { clientId, storeId, paymentMethod, detailsId, totalAmount, productId, quantity } = req.body;
 
     const validations = [
       { condition: !clientId,      message: 'El ID del cliente es obligatorio.' },
       { condition: !storeId,       message: 'El ID de la tienda es obligatorio.' },
       { condition: !paymentMethod, message: 'El método de pago es obligatorio.' },
-      { condition: !detailsId,     message: 'El ID de los detalles de la Orden es obligatorio.' },
+      // Flexibilizamos la validación: u obliga detailsId (JSON/Postman) o requiere productId (Formulario Pug)
+      { condition: !detailsId && !productId, message: 'Debe seleccionar al menos un producto.' },
     ];
 
     if (!validate(validations, res)) return;
 
-    const statusCreated = await service.createOrder({ clientId, storeId, paymentMethod, detailsId, totalAmount });
+    // Pasamos todos los parámetros al servicio
+    const statusCreated = await service.createOrder({
+      clientId,
+      storeId,
+      paymentMethod,
+      detailsId,
+      totalAmount,
+      productId,
+      quantity
+    });
+
     if (!statusCreated) return res.status(500).json({ error: 'Error al registrar la Orden.' });
+
+    // Si la petición viene de un formulario web (HTML), redirigimos a la lista de órdenes
+    if (req.headers['content-type']?.includes('application/x-www-form-urlencoded')) {
+      const simQuery = req.url.includes('?') ? req.url.substring(req.url.indexOf('?')) : '';
+      return res.redirect(`/orders${simQuery}`);
+    }
+
+    // Si es una API/Postman responde JSON
     res.status(201).json({ message: 'Orden (pendiente) registrada exitosamente.' });
   } catch (error) {
     next(error);
@@ -48,6 +70,8 @@ export const updateOrder = async (req, res, next) => {
 
     const order = await service.findById(id);
     if (!order) return res.status(404).json({ error: 'Orden no encontrada.' });
+
+    // Este control ataja el error que vimos en pantalla ("La orden no puede ser modificada")
     if (order.status != 0) return res.status(400).json({ error: 'La orden no puede ser modificada.' });
 
     const result = await service.updateOrder(id, status);

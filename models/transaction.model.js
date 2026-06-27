@@ -18,9 +18,26 @@ const transactionSchema = new mongoose.Schema(
   decimal128ToJSON
 );
 
-transactionSchema.pre('save', function () {
-  const gross = fromD128(this.grossAmount);
-  const fee   = gross.mul('0.02');
+transactionSchema.pre('save', async function () {
+  const Order        = mongoose.model('Order');
+  const Subscription = mongoose.model('Subscription');
+  const Plan         = mongoose.model('Plan');
+
+  let commissionRate = 0.02;
+
+  const order = await Order.findById(this.saleId);
+  if (order && order.storeId) {
+    const sub = await Subscription.findOne({ storeId: order.storeId, status: 'Activa' });
+    if (sub) {
+      const plan = await Plan.findOne({ name: sub.detail });
+      if (plan && plan.commission) {
+        commissionRate = fromD128(plan.commission).div(100).toNumber();
+      }
+    }
+  }
+
+  const gross    = fromD128(this.grossAmount);
+  const fee      = gross.mul(commissionRate.toString());
   this.feeAmount = toD128(fee);
   this.netAmount = toD128(gross.minus(fee));
 });

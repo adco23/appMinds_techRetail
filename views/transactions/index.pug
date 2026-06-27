@@ -11,7 +11,8 @@ block content
         th Comprobante
         th Orden
         th Monto Bruto
-        th Comisión (2%)
+        th % Contratado
+        th Cálculo Comisión
         th Monto Neto
         th Fecha
         th Estado
@@ -20,13 +21,23 @@ block content
         tr
           td= index + 1
           td= tx.receiptId
-          td= tx.saleId ? tx.saleId.toString().slice(-6).toUpperCase() : 'N/A'
+          td= tx.saleId ? tx.saleId._id.toString().slice(-6).toUpperCase() : 'N/A'
           td $#{tx.grossAmount}
+
+          //- Nueva columna para ver qué porcentaje vino del backend o calcular una estimación
+          td.has-text-info
+            if tx.feeAmount && tx.grossAmount
+              | #{((tx.feeAmount / tx.grossAmount) * 100).toFixed(1)}%
+            else
+              | 2.0%
+
+          //- Columna con el desglose de la comisión cobrada
           td.has-text-danger $#{tx.feeAmount ? tx.feeAmount.toFixed(2) : '0.00'}
+
           td.has-text-success $#{tx.netAmount ? tx.netAmount.toFixed(2) : '0.00'}
-          td= tx.date ? new Date(tx.date).toISOString().split('T')[0] : 'No date'
+          td= tx.date || 'No date'
           td
             span.tag(class=tx.status === 'approved' ? 'is-success' : 'is-warning')= tx.status
       else
         tr
-          td.has-text-centered(colspan="8") No hay transacciones registradas.
+          td.has-text-centered(colspan="9") No hay transacciones registradas.

@@ -4,7 +4,7 @@ block content
   h1.title Editar Plan
 
   .box
-    form(action=`/planes/edit/${plan._id}${sim.query}` method="POST")
+    form(action=`/plans/edit/${plan._id}${sim.query}` method="POST")
 
       .field
         label.label Nombre
@@ -14,12 +14,17 @@ block content
       .field
         label.label Precio
         .control
-          input.input(type="number" name="precio" value=plan.precio required)
+          input.input(type="number" name="price" value=plan.price required)
+
+      .field
+        label.label Comisión
+        .control
+          input.input(type="number" name="commission" value=plan.commission required)
 
       .field
         label.label Período mínimo
         .control
-          input.input(type="text" name="periodoMinimo" value=plan['perído mínimo'] required)
+          input.input(type="text" name="minimum" value=plan.minimum required)
 
       .buttons.mt-4
         button.button.is-primary(type="submit") Guardar cambios
