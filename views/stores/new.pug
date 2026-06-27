@@ -28,14 +28,17 @@ block content
             option(value="active") Activa
             option(value="inactive") Inactiva
 
-    .field
-      label.label Comercio
-      .control
-        div.select.is-fullwidth
-          select(name="commerceId" required)
-            option(value="") Seleccioná un comercio
-            each commerce in commerces
-              option(value=`${commerce._id}`)= commerce.name
+    if sim.isPlatformAdmin
+      .field
+        label.label Comercio
+        .control
+          div.select.is-fullwidth
+            select(name="commerceId" required)
+              option(value="") Seleccioná un comercio
+              each commerce in commerces
+                option(value=`${commerce._id}`)= commerce.name
+    else
+      input(type="hidden", name="commerceId", value=user && user.commerceId ? user.commerceId : '')
 
     .field
       label.label Fecha de creación

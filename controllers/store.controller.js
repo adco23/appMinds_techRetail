@@ -42,8 +42,19 @@ export const getStoresView = async (req, res, next) => {
 
 export const getStoreNewView = async (req, res, next) => {
   try {
-    const commerces = await commerceService.getCommerce();
-    res.render('stores/new', { title: 'Nueva tienda', commerces, sim: res.locals.sim });
+    const sim = res.locals.sim;
+    const user = req.session?.user;
+
+    if (sim.isCommerceAdmin && !user?.commerceId) {
+      return res.redirect('/commerce-admin/create');
+    }
+
+    let commerces = [];
+    if (sim.isPlatformAdmin) {
+      commerces = await commerceService.getCommerce();
+    }
+
+    res.render('stores/new', { title: 'Nueva tienda', commerces, sim, user });
   } catch (error) {
     next(error);
   }
@@ -88,7 +99,15 @@ export const createStore = async (req, res, next) => {
 
 export const createStoreFromView = async (req, res, next) => {
   try {
-    await storeService.createStore(req.body);
+    const sim = res.locals.sim;
+    const user = req.session?.user;
+
+    const storeData = { ...req.body };
+    if (sim.isCommerceAdmin && user?.commerceId) {
+      storeData.commerceId = user.commerceId;
+    }
+
+    await storeService.createStore(storeData);
     res.redirect(`/stores/view${getSimQuery(req)}`);
   } catch (error) {
     next(error);

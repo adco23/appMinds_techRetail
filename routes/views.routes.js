@@ -326,11 +326,10 @@ router.get('/orders/new', ensureAuthenticated, commerceNeedsSubscription, async 
     const { storeId, clientId } = req.query;
 
     const users = await userService.getUsers();
-    const stores = await storeService.getAllStores();
+    const stores = await storeService.getStoresByCommerceId(req.session.user.commerceId);
 
     let products = [];
     if (storeId) {
-      // Usamos tu servicio con .getProductsByStoreId pasándole el String limpio
       products = await productService.getProductsByStoreId(storeId);
     }
 

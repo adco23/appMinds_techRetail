@@ -1,17 +1,15 @@
-.box
+form(method="POST", action="/auth/login")
+  input(type="hidden", name="redirectTo", value=redirectTo || '/')
+  .field
+    label.label Correo
+    .control
+      input.input(type="email", placeholder="Ingresá tu correo", name="email", autocomplete="off", value=formData && formData.email ? formData.email : '', required)
 
-  form(method="POST", action="/auth/login")
-    input(type="hidden", name="redirectTo", value=redirectTo || '/')
-    .field
-      label.label Correo
-      .control
-        input.input(type="email", placeholder="Ingresá tu correo", name="email", autocomplete="off", value=formData && formData.email ? formData.email : '', required)
+  .field
+    label.label Contraseña
+    .control
+      input.input(type="password", placeholder="Ingresá tu contraseña", name="password", autocomplete="off", required)
 
-    .field
-      label.label Contraseña
-      .control
-        input.input(type="password", placeholder="Ingresá tu contraseña", name="password", autocomplete="off", required)
-
-    .buttons.mt-4
-      button.button.is-primary(type="submit") Iniciar sesión
-      a.button.is-text(href=`/auth/register${redirectTo ? `?redirect=${encodeURIComponent(redirectTo)}` : ''}`) Registrarse
+  .buttons.mt-4
+    button.button.is-primary(type="submit") Iniciar sesión
+    a.button.is-text(href=`/auth/register${redirectTo ? `?redirect=${encodeURIComponent(redirectTo)}` : ''}`) Registrarse
