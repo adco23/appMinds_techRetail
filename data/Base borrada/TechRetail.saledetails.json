@@ -1,0 +1,306 @@
+[{
+  "_id": {
+    "$oid": "6a0f69a866dd57268361b544"
+  },
+  "cantidad": 3,
+  "precioUnitario": 1800,
+  "ventaId": {
+    "$oid": "6a106dea66dd57268361b5d3"
+  },
+  "productoId": {
+    "$oid": "6a0f69a166dd57268361b53b"
+  },
+  "subtotal": 5400
+},
+{
+  "_id": {
+    "$oid": "6a0f69a866dd57268361b547"
+  },
+  "cantidad": 1,
+  "precioUnitario": 2500,
+  "ventaId": {
+    "$oid": "6a106e1e66dd57268361b5d9"
+  },
+  "productoId": {
+    "$oid": "6a0f69a166dd57268361b53e"
+  },
+  "subtotal": 2500
+},
+{
+  "_id": {
+    "$oid": "6a0f69a866dd57268361b542"
+  },
+  "cantidad": 1,
+  "precioUnitario": 3100,
+  "ventaId": {
+    "$oid": "6a106dbd66dd57268361b5cf"
+  },
+  "productoId": {
+    "$oid": "6a0f69a166dd57268361b539"
+  },
+  "subtotal": 3100
+},
+{
+  "_id": {
+    "$oid": "6a0f69a866dd57268361b545"
+  },
+  "cantidad": 2,
+  "precioUnitario": 4600,
+  "ventaId": {
+    "$oid": "6a106dfd66dd57268361b5d5"
+  },
+  "productoId": {
+    "$oid": "6a0f69a166dd57268361b53c"
+  },
+  "subtotal": 9200
+},
+{
+  "_id": {
+    "$oid": "6a0f69a866dd57268361b541"
+  },
+  "cantidad": 1,
+  "precioUnitario": 4200,
+  "ventaId": {
+    "$oid": "6a106db166dd57268361b5cd"
+  },
+  "productoId": {
+    "$oid": "6a0f69a166dd57268361b538"
+  },
+  "subtotal": 4200
+},
+{
+  "_id": {
+    "$oid": "6a0f69a866dd57268361b543"
+  },
+  "cantidad": 3,
+  "precioUnitario": 1400,
+  "ventaId": {
+    "$oid": "6a106de166dd57268361b5d1"
+  },
+  "productoId": {
+    "$oid": "6a0f69a166dd57268361b53a"
+  },
+  "subtotal": 4200
+},
+{
+  "_id": {
+    "$oid": "6a0f69a866dd57268361b548"
+  },
+  "cantidad": 2,
+  "precioUnitario": 3200,
+  "ventaId": {
+    "$oid": "6a106e2766dd57268361b5db"
+  },
+  "productoId": {
+    "$oid": "6a0f69a166dd57268361b53f"
+  },
+  "subtotal": 6400
+},
+{
+  "_id": {
+    "$oid": "6a0f69a866dd57268361b549"
+  },
+  "cantidad": 1,
+  "precioUnitario": 900,
+  "ventaId": {
+    "$oid": "6a106e3266dd57268361b5dd"
+  },
+  "productoId": {
+    "$oid": "6a0f69a166dd57268361b53f"
+  },
+  "subtotal": 900
+},
+{
+  "_id": {
+    "$oid": "6a0f69a866dd57268361b546"
+  },
+  "cantidad": 2,
+  "precioUnitario": 6900,
+  "ventaId": {
+    "$oid": "6a106e0666dd57268361b5d7"
+  },
+  "productoId": {
+    "$oid": "6a0f69a166dd57268361b53d"
+  },
+  "subtotal": 13800
+},
+{
+  "_id": {
+    "$oid": "6a3f1ec59c3b41bfd306e03c"
+  },
+  "cantidad": 1,
+  "precioUnitario": 3100,
+  "ventaId": {
+    "$oid": "6a3f1ec59c3b41bfd306e03b"
+  },
+  "productoId": {
+    "$oid": "6a0f69a166dd57268361b539"
+  },
+  "subtotal": 3100,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a3f1ec59c3b41bfd306e03d"
+  },
+  "cantidad": 1,
+  "precioUnitario": 3200,
+  "ventaId": {
+    "$oid": "6a3f1ec59c3b41bfd306e03b"
+  },
+  "productoId": {
+    "$oid": "6a0f69a166dd57268361b53e"
+  },
+  "subtotal": 3200,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a3f1ec59c3b41bfd306e03e"
+  },
+  "cantidad": 2,
+  "precioUnitario": 900,
+  "ventaId": {
+    "$oid": "6a3f1ec59c3b41bfd306e03b"
+  },
+  "productoId": {
+    "$oid": "6a0f69a166dd57268361b53f"
+  },
+  "subtotal": 1800,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a3f1f0a9c3b41bfd306e042"
+  },
+  "cantidad": 1,
+  "precioUnitario": 1800,
+  "ventaId": {
+    "$oid": "6a3f1f0a9c3b41bfd306e041"
+  },
+  "productoId": {
+    "$oid": "6a0f69a166dd57268361b53a"
+  },
+  "subtotal": 1800,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a3f1f0b9c3b41bfd306e043"
+  },
+  "cantidad": 1,
+  "precioUnitario": 7900,
+  "ventaId": {
+    "$oid": "6a3f1f0a9c3b41bfd306e041"
+  },
+  "productoId": {
+    "$oid": "6a0f69a166dd57268361b53c"
+  },
+  "subtotal": 7900,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a3f2fcd57fc7f6cfceed469"
+  },
+  "cantidad": 1,
+  "precioUnitario": 1800,
+  "ventaId": {
+    "$oid": "6a3f2fcd57fc7f6cfceed468"
+  },
+  "productoId": {
+    "$oid": "6a0f69a166dd57268361b53a"
+  },
+  "subtotal": 1800,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a3f2fcd57fc7f6cfceed46a"
+  },
+  "cantidad": 1,
+  "precioUnitario": 7900,
+  "ventaId": {
+    "$oid": "6a3f2fcd57fc7f6cfceed468"
+  },
+  "productoId": {
+    "$oid": "6a0f69a166dd57268361b53c"
+  },
+  "subtotal": 7900,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a3f3261359181e33446e255"
+  },
+  "cantidad": 2,
+  "precioUnitario": 1800,
+  "ventaId": {
+    "$oid": "6a3f3261359181e33446e254"
+  },
+  "productoId": {
+    "$oid": "6a0f69a166dd57268361b53a"
+  },
+  "subtotal": 3600,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a3f3261359181e33446e256"
+  },
+  "cantidad": 3,
+  "precioUnitario": 7900,
+  "ventaId": {
+    "$oid": "6a3f3261359181e33446e254"
+  },
+  "productoId": {
+    "$oid": "6a0f69a166dd57268361b53c"
+  },
+  "subtotal": 23700,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a3f32a1359181e33446e259"
+  },
+  "cantidad": 8,
+  "precioUnitario": 1800,
+  "ventaId": {
+    "$oid": "6a3f32a1359181e33446e258"
+  },
+  "productoId": {
+    "$oid": "6a0f69a166dd57268361b53a"
+  },
+  "subtotal": 14400,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a3fbcec5d77b52616ac67ac"
+  },
+  "cantidad": 3,
+  "precioUnitario": 5600,
+  "ventaId": {
+    "$oid": "6a3fbceb5d77b52616ac67ab"
+  },
+  "productoId": {
+    "$oid": "6a0f69a166dd57268361b53b"
+  },
+  "subtotal": 16800,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a3fbcec5d77b52616ac67ad"
+  },
+  "cantidad": 1,
+  "precioUnitario": 5600,
+  "ventaId": {
+    "$oid": "6a3fbceb5d77b52616ac67ab"
+  },
+  "productoId": {
+    "$oid": "6a0f69a166dd57268361b53b"
+  },
+  "subtotal": 5600,
+  "__v": 0
+}]

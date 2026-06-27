@@ -1,0 +1,387 @@
+[{
+  "_id": {
+    "$oid": "6a0f69bd66dd57268361b558"
+  },
+  "receiptId": "REC-0002",
+  "grossAmount": 14600,
+  "feeAmount": 292,
+  "netAmount": 14308,
+  "date": "2026-04-19T10:20:00.000Z",
+  "status": "pending",
+  "paymentMethod": "Transfer",
+  "gatewayReference": "PAY-1002",
+  "saleId": {
+    "$oid": "6a10700f66dd57268361b602"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a0f69bd66dd57268361b559"
+  },
+  "receiptId": "REC-0003",
+  "grossAmount": 16300,
+  "feeAmount": 326,
+  "netAmount": 15974,
+  "date": "2026-04-20T09:10:00.000Z",
+  "status": "approved",
+  "paymentMethod": "Debit Card",
+  "gatewayReference": "PAY-1003",
+  "saleId": {
+    "$oid": "6a10701566dd57268361b603"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a0f69bd66dd57268361b55a"
+  },
+  "receiptId": "REC-0004",
+  "grossAmount": 7300,
+  "feeAmount": 146,
+  "netAmount": 7154,
+  "date": "2026-04-21T12:05:00.000Z",
+  "status": "rejected",
+  "paymentMethod": "Cash",
+  "gatewayReference": "PAY-1004",
+  "saleId": {
+    "$oid": "6a10701d66dd57268361b604"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a0f69bd66dd57268361b557"
+  },
+  "receiptId": "REC-0001",
+  "grossAmount": 11500,
+  "feeAmount": 230,
+  "netAmount": 11270,
+  "date": "2026-04-18T14:35:00.000Z",
+  "status": "approved",
+  "paymentMethod": "Credit Card",
+  "gatewayReference": "PAY-1001",
+  "saleId": {
+    "$oid": "6a10700a66dd57268361b601"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a10ade4cf68c06481d16901"
+  },
+  "receiptId": "REC-D16900",
+  "grossAmount": 5000,
+  "status": "approved",
+  "paymentMethod": "tarjeta",
+  "gatewayRef": "GW-1779477988952",
+  "saleId": {
+    "$oid": "6a10addccf68c06481d16900"
+  },
+  "date": {
+    "$date": "2026-05-22T19:26:28.953Z"
+  },
+  "feeAmount": 100,
+  "netAmount": 4900,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a10b22f444ff9e2f3da2f6f"
+  },
+  "receiptId": "REC-DA2F6E",
+  "grossAmount": 45000,
+  "status": "approved",
+  "paymentMethod": "efectivo",
+  "gatewayRef": "GW-1779479087851",
+  "saleId": {
+    "$oid": "6a10b226444ff9e2f3da2f6e"
+  },
+  "date": {
+    "$date": "2026-05-22T19:44:47.855Z"
+  },
+  "feeAmount": 900,
+  "netAmount": 44100,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a137790b9c71b803627967a"
+  },
+  "receiptId": "REC-279679",
+  "grossAmount": 20000,
+  "status": "approved",
+  "paymentMethod": "tarjeta",
+  "gatewayRef": "GW-1779660688682",
+  "saleId": {
+    "$oid": "6a137787b9c71b8036279679"
+  },
+  "date": {
+    "$date": "2026-05-24T22:11:28.682Z"
+  },
+  "feeAmount": 400,
+  "netAmount": 19600,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a3edc0a7fde9d0dd99c4d2b"
+  },
+  "receiptId": "REC-9C4D2A",
+  "grossAmount": 50000,
+  "status": "approved",
+  "paymentMethod": "tarjeta",
+  "gatewayRef": "GW-1782504458651",
+  "saleId": {
+    "$oid": "6a3edc027fde9d0dd99c4d2a"
+  },
+  "date": {
+    "$date": "2026-06-26T20:07:38.651Z"
+  },
+  "feeAmount": 1000,
+  "netAmount": 49000,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a3edcb07fde9d0dd99c4d2f"
+  },
+  "receiptId": "REC-9C4D2E",
+  "grossAmount": 100000,
+  "status": "approved",
+  "paymentMethod": "cuenta corriente",
+  "gatewayRef": "GW-1782504624896",
+  "saleId": {
+    "$oid": "6a3edcac7fde9d0dd99c4d2e"
+  },
+  "date": {
+    "$date": "2026-06-26T20:10:24.897Z"
+  },
+  "feeAmount": 2000,
+  "netAmount": 98000,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a3eddb6455d305a19f1ad4f"
+  },
+  "receiptId": "REC-F1AD4E",
+  "grossAmount": 500000,
+  "status": "approved",
+  "paymentMethod": "tarjeta",
+  "gatewayRef": "GW-1782504886129",
+  "saleId": {
+    "$oid": "6a3eddb2455d305a19f1ad4e"
+  },
+  "date": {
+    "$date": "2026-06-26T20:14:46.129Z"
+  },
+  "feeAmount": 10000,
+  "netAmount": 490000,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a3edf06d8dc8d33f4c4821b"
+  },
+  "receiptId": "REC-C4821A",
+  "grossAmount": 100000,
+  "status": "approved",
+  "paymentMethod": "tarjeta",
+  "gatewayRef": "GW-1782505222336",
+  "saleId": {
+    "$oid": "6a3edf02d8dc8d33f4c4821a"
+  },
+  "date": {
+    "$date": "2026-06-26T20:20:22.336Z"
+  },
+  "feeAmount": 5000,
+  "netAmount": 95000,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a3ee19bd8dc8d33f4c4821d"
+  },
+  "receiptId": "REC-C4821C",
+  "grossAmount": 45000,
+  "status": "approved",
+  "paymentMethod": "tarjeta",
+  "gatewayRef": "GW-1782505883799",
+  "saleId": {
+    "$oid": "6a3ee198d8dc8d33f4c4821c"
+  },
+  "date": {
+    "$date": "2026-06-26T20:31:23.799Z"
+  },
+  "feeAmount": 900,
+  "netAmount": 44100,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a3f03457e6c09b6c855c9c1"
+  },
+  "receiptId": "REC-55C9C0",
+  "grossAmount": 456000,
+  "status": "approved",
+  "paymentMethod": "tarjeta",
+  "gatewayRef": "GW-1782514501570",
+  "saleId": {
+    "$oid": "6a3f03407e6c09b6c855c9c0"
+  },
+  "date": {
+    "$date": "2026-06-26T22:55:01.570Z"
+  },
+  "feeAmount": 9120,
+  "netAmount": 446880,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a3f15e71ecfc7b46b798978"
+  },
+  "receiptId": "REC-94187B",
+  "grossAmount": 45,
+  "status": "approved",
+  "paymentMethod": "tarjeta",
+  "gatewayRef": "GW-1782519271934",
+  "saleId": {
+    "$oid": "6a3f156f9b27079aff94187b"
+  },
+  "date": {
+    "$date": "2026-06-27T00:14:31.935Z"
+  },
+  "feeAmount": 0.9,
+  "netAmount": 44.1,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a3f16031ecfc7b46b79897a"
+  },
+  "receiptId": "REC-798979",
+  "grossAmount": 7900,
+  "status": "approved",
+  "paymentMethod": "efectivo",
+  "gatewayRef": "GW-1782519299117",
+  "saleId": {
+    "$oid": "6a3f15fe1ecfc7b46b798979"
+  },
+  "date": {
+    "$date": "2026-06-27T00:14:59.117Z"
+  },
+  "feeAmount": 158,
+  "netAmount": 7742,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a3f1ecb9c3b41bfd306e03f"
+  },
+  "receiptId": "REC-06E03B",
+  "grossAmount": 8100,
+  "status": "approved",
+  "paymentMethod": "tarjeta",
+  "gatewayRef": "GW-1782521547304",
+  "saleId": {
+    "$oid": "6a3f1ec59c3b41bfd306e03b"
+  },
+  "date": {
+    "$date": "2026-06-27T00:52:27.305Z"
+  },
+  "feeAmount": 162,
+  "netAmount": 7938,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a3f1f119c3b41bfd306e044"
+  },
+  "receiptId": "REC-06E041",
+  "grossAmount": 9700,
+  "status": "approved",
+  "paymentMethod": "tarjeta",
+  "gatewayRef": "GW-1782521617298",
+  "saleId": {
+    "$oid": "6a3f1f0a9c3b41bfd306e041"
+  },
+  "date": {
+    "$date": "2026-06-27T00:53:37.298Z"
+  },
+  "feeAmount": 194,
+  "netAmount": 9506,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a3f2fd457fc7f6cfceed46b"
+  },
+  "receiptId": "REC-EED468",
+  "grossAmount": 9700,
+  "status": "approved",
+  "paymentMethod": "efectivo",
+  "gatewayRef": "GW-1782525908228",
+  "saleId": {
+    "$oid": "6a3f2fcd57fc7f6cfceed468"
+  },
+  "date": {
+    "$date": "2026-06-27T02:05:08.229Z"
+  },
+  "feeAmount": 970,
+  "netAmount": 8730,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a3f3266359181e33446e257"
+  },
+  "receiptId": "REC-46E254",
+  "grossAmount": 27300,
+  "status": "approved",
+  "paymentMethod": "tarjeta",
+  "gatewayRef": "GW-1782526566492",
+  "saleId": {
+    "$oid": "6a3f3261359181e33446e254"
+  },
+  "date": {
+    "$date": "2026-06-27T02:16:06.492Z"
+  },
+  "feeAmount": 1365,
+  "netAmount": 25935,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a3f32b4359181e33446e25a"
+  },
+  "receiptId": "REC-46E258",
+  "grossAmount": 14400,
+  "status": "approved",
+  "paymentMethod": "efectivo",
+  "gatewayRef": "GW-1782526644082",
+  "saleId": {
+    "$oid": "6a3f32a1359181e33446e258"
+  },
+  "date": {
+    "$date": "2026-06-27T02:17:24.082Z"
+  },
+  "feeAmount": 720,
+  "netAmount": 13680,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a3fbcf65d77b52616ac67ae"
+  },
+  "receiptId": "REC-AC67AB",
+  "grossAmount": 22400,
+  "status": "approved",
+  "paymentMethod": "cuenta corriente",
+  "gatewayRef": "GW-1782562038851",
+  "saleId": {
+    "$oid": "6a3fbceb5d77b52616ac67ab"
+  },
+  "date": {
+    "$date": "2026-06-27T12:07:18.851Z"
+  },
+  "feeAmount": 2240,
+  "netAmount": 20160,
+  "__v": 0
+}]

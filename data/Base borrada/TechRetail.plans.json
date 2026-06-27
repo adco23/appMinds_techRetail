@@ -1,0 +1,34 @@
+[{
+  "_id": {
+    "$oid": "6a3ec88a4660af3875687792"
+  },
+  "name": "Basico",
+  "price": "50000",
+  "minimum": "1 mes",
+  "status": "active",
+  "createdAt": "2026-02-01",
+  "commission": "2"
+},
+{
+  "_id": {
+    "$oid": "6a3ec88a4660af3875687794"
+  },
+  "name": "Premium",
+  "price": "150000",
+  "minimum": "6 meses",
+  "status": "active",
+  "createdAt": "2026-02-01",
+  "commission": "10"
+},
+{
+  "_id": {
+    "$oid": "6a3f2cdc57fc7f6cfceed466"
+  },
+  "name": "Profesional",
+  "price": "100000",
+  "status": "active",
+  "createdAt": "2026-06-27",
+  "minimum": "3 meses",
+  "commission": "5",
+  "__v": 0
+}]
