@@ -336,8 +336,8 @@ router.get('/orders/new', ensureAuthenticated, commerceNeedsSubscription, async 
 
     res.render('orders/new', {
       users,
-      stores,
-      products,
+      stores: stores.filter(store => store.status === 'Activo'),
+      products: products.filter(product => product.stock > 0),
       selectedStore: storeId || '',
       selectedClient: clientId || '',
       sim: req.simulation || { query: '' }
