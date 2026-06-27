@@ -6,10 +6,15 @@ export const getAll = async () => {
 
 const crear = async data => {
   const hoy = new Date();
-  const startDate = hoy.toISOString().split('T')[0];
+  const opciones = { timeZone: 'America/Argentina/Buenos_Aires', year: 'numeric', month: '2-digit', day: '2-digit' };
+
+  const [diaS, mesS, anioS] = hoy.toLocaleDateString('es-AR', opciones).split('/');
+  const startDate = `${anioS}-${mesS}-${diaS}`;
+
   const vencimiento = new Date();
   vencimiento.setDate(hoy.getDate() + 30);
-  const expDate = vencimiento.toISOString().split('T')[0];
+  const [diaE, mesE, anioE] = vencimiento.toLocaleDateString('es-AR', opciones).split('/');
+  const expDate = `${anioE}-${mesE}-${diaE}`;
 
   const parsedAmount = Number(data.amount);
 
@@ -31,6 +36,7 @@ const crear = async data => {
     expDate,
     status:  'Activa',
     storeId: data.storeId,
+    planId:  data.planId
   });
 
   return await nuevaSub.save();
