@@ -15,11 +15,11 @@ const saleDetailSchema = new mongoose.Schema(
   decimal128ToJSON
 );
 
-saleDetailSchema.pre('save', function (next) {
+saleDetailSchema.pre('save', async function() {
   const precio = fromD128(this.precioUnitario);
   const qty    = new Decimal(this.cantidad);
   this.subtotal = toD128(precio.mul(qty));
-  next();
+
 });
 
 export default mongoose.model('SaleDetail', saleDetailSchema);

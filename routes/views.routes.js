@@ -13,6 +13,7 @@ import {
   setAuthenticatedUser,
 } from '../middlewares/auth.middleware.js';
 import * as planService from '../services/plan.service.js';
+import { createOrder } from '../controllers/order.controller.js';
 
 const router = Router();
 
@@ -352,10 +353,9 @@ router.get('/orders/:id', ensureAuthenticated, commerceNeedsSubscription, async 
   res.render('orders/detail', { order, sim: req.simulation });
 });
 
-router.post('/orders/create', ensureAuthenticated, commerceNeedsSubscription, async (req, res) => {
+router.post('/orders/create', ensureAuthenticated, commerceNeedsSubscription, async (req, res, next) => {
   try {
-    await orderService.createOrder(req.body);
-    res.redirect(`/orders${req.simulation.query}`);
+    await createOrder(req, res, next);
   } catch (error) {
     res.status(500).send(error.message);
   }
