@@ -1,5 +1,6 @@
 import Product from "../models/product.model.js";
 import Store from "../models/store.model.js";
+import mongoose from "mongoose";
 
 const getAllProducts = async () => {
   return await Product.find().populate('storeId');
@@ -12,7 +13,13 @@ const getProductById = async id => {
 };
 
 const getProductsByStoreId = async storeId => {
-  return await Product.find({ storeId }).populate('storeId');
+  const idToSearch = mongoose.isValidObjectId(storeId)
+    ? new mongoose.Types.ObjectId(storeId)
+    : storeId;
+
+  return await Product.find({
+    storeId: { $in: [storeId, idToSearch] }
+  }).lean();
 };
 
 const createProduct = async data => {

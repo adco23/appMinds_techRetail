@@ -1,6 +1,6 @@
 import Plan from '../models/plan.model.js';
 
-export const getPlanes = async () => {
+export const getplans = async () => {
   return await Plan.find({ status: 'active' });
 };
 
@@ -11,10 +11,11 @@ export const getPlanById = async id => {
 export const createPlan = async data => {
   const plan = new Plan({
     name:   data.name,
-    precio: data.precio,
-    minimo: data.minimo,
+    price: data.price,
+    minimum: data.minimum,
     status: 'active',
     createdAt: new Date().toISOString().split('T')[0],
+    commission: data.commission,
   });
   return await plan.save();
 };
@@ -23,7 +24,7 @@ export const updatePlan = async (id, data) => {
   return await Plan.findByIdAndUpdate(id, {
     name:   data.name,
     precio: data.precio,
-    'perído mínimo': data.periodoMinimo,
+    'perído mínimo': data.minimum,
   }, { new: true });
 };
 

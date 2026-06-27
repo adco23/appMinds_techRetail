@@ -6,10 +6,13 @@ block content
   .box
     p.mb-4
       strong Plan seleccionado:
-      |  #{plan.name} — $#{plan.precio}
+      |  #{plan.name} — $#{plan.price}
     p.mb-4
       strong Período mínimo:
-      |  #{plan['perído mínimo']}
+      |  #{plan.minimum}
+    p.mb-4
+      strong Comisión por transacción:
+      |  #{plan.commission}%
 
     form(action=`/commerce-admin/subscription/crear${sim.query}` method="POST")
       input(type="hidden" name="planId" value=`${plan._id}`)

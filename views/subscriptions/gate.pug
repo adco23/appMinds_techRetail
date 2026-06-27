@@ -7,15 +7,16 @@ block content
     p.mt-3 Antes de acceder a órdenes, tiendas, productos y transacciones, tenés que crear una suscripción.
 
     .columns.is-centered.is-variable.is-6.mt-4
-      each plan in planes
+      each plan in plans
         .column.is-4
           .card
             header.card-header.has-background-light
               p.card-header-title.is-centered= plan.name
             .card-content
               .content.has-text-centered
-                p.is-size-3.has-text-weight-bold $#{Number(plan.precio).toLocaleString('es-AR')}
-                p.has-text-grey.is-size-7 Período mínimo: #{plan.minimo}
+                p.is-size-3.has-text-weight-bold $#{Number(plan.price).toLocaleString('es-AR')}
+                p.has-text-grey.is-size-7 Período mínimo: #{plan.minimum}
+                p.has-text-grey.is-size-7 Comisión por transacción: #{plan.commission}%
             footer.card-footer
               a.card-footer-item.button.is-primary(href=`/commerce-admin/subscription/tienda?planId=${plan._id}&role=commerce-admin`) Elegir plan
 

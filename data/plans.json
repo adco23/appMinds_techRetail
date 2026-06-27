@@ -1,0 +1,25 @@
+[{
+  "name": "Basico",
+  "price": "50000",
+  "minimum": "1 mes",
+  "status": "active",
+  "createdAt": "2026-02-01",
+  "commission": "0,02"
+  },
+  {
+    "name": "Profesional",
+    "price": "100000",
+    "minimum": "3 meses",
+    "status": "active",
+    "createdAt": "2026-02-01",
+    "commission": "0,05"
+  },
+  {
+    "name": "Premium",
+    "price": "150000",
+    "minimum": "6 meses",
+    "status": "active",
+    "createdAt": "2026-02-01",
+    "commission": "0,1"
+  }]
+

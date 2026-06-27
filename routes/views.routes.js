@@ -1,4 +1,5 @@
 import { Router } from "express";
+import productService from '../services/product.service.js';
 import * as commerceService from "../services/commerce.service.js";
 import * as orderService from "../services/order.service.js";
 import userService from "../services/user.service.js";
@@ -13,6 +14,10 @@ import {
   setAuthenticatedUser,
 } from '../middlewares/auth.middleware.js';
 import * as planService from '../services/plan.service.js';
+
+console.log("=========================================");
+console.log("🔥 ¡EL ARCHIVO DE RUTAS DE ÓRDENES SE CARGÓ CORRECTAMENTE! 🔥");
+console.log("=========================================");
 
 
 const router = Router();
@@ -202,8 +207,8 @@ router.post('/commerce-admin/create', ensureAuthenticated, async (req, res) => {
 });
 
 router.get('/commerce-admin/subscription', ensureAuthenticated, async (req, res) => {
-  const planes = await planService.getPlanes();
-  res.render('subscriptions/gate', { title: 'Suscripcion', planes, sim: res.locals.sim });
+  const plans = await planService.getplans();
+  res.render('subscriptions/gate', { title: 'Suscripcion', plans, sim: res.locals.sim });
 });
 
 router.get('/commerce-admin/subscription/tienda', async (req, res) => {
@@ -223,7 +228,7 @@ router.post('/commerce-admin/subscription/crear', async (req, res) => {
 
     await subscriptionService.crear({
       detail:  plan.name,
-      amount:  Number(plan.precio),
+      amount:  Number(plan.price),
       storeId,
     });
 
@@ -239,26 +244,53 @@ router.get('/commerces', ensureAuthenticated, onlyPlatformAdmin, async (req, res
   res.render('commerces/index', { view, commerces, sim: req.simulation });
 });
 
-router.get('/orders', ensureAuthenticated, commerceNeedsSubscription, async (req, res) => {
-  const view = req.query.view || 'index';
-  const orders = await orderService.getOrders();
-  res.render('orders/index', { view, orders, sim: req.simulation });
-});
-
-router.get('/orders/new', ensureAuthenticated, commerceNeedsSubscription, async (req, res) => {
+// 1. LA RUTA BASE QUE ANTES TE DABA 404 (Le quitamos commerceNeedsSubscription)
+router.get('/orders', ensureAuthenticated, async (req, res) => {
   try {
+    const view = req.query.view || 'index';
+    const orders = await orderService.getOrders();
+
+    // Traemos usuarios y tiendas por si el index.pug los necesita al incluir "create"
     const users = await userService.getUsers();
     const stores = await storeService.getAllStores();
-    res.render('orders/new', { users, stores, sim: req.simulation });
+
+    res.render('orders/index', {
+      view,
+      orders,
+      users,
+      stores,
+      products: [], // Enviamos un array vacío por defecto para que no explote
+      selectedStore: '',
+      selectedClient: '',
+      sim: req.simulation || { query: '' }
+    });
   } catch (error) {
     res.status(500).send(error.message);
   }
 });
 
-router.post('/orders/create', ensureAuthenticated, commerceNeedsSubscription, async (req, res) => {
+// 2. LA RUTA DE CREACIÓN DINÁMICA (Garantiza la carga de productos)
+router.get('/orders/new', ensureAuthenticated, async (req, res) => {
   try {
-    await orderService.createOrder(req.body);
-    res.redirect(`/orders${req.simulation.query}`);
+    const { storeId, clientId } = req.query;
+
+    const users = await userService.getUsers();
+    const stores = await storeService.getAllStores();
+
+    let products = [];
+    if (storeId) {
+      // Usamos tu servicio con .getProductsByStoreId pasándole el String limpio
+      products = await productService.getProductsByStoreId(storeId);
+    }
+
+    res.render('orders/new', {
+      users,
+      stores,
+      products,
+      selectedStore: storeId || '',
+      selectedClient: clientId || '',
+      sim: req.simulation || { query: '' }
+    });
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -268,6 +300,15 @@ router.get('/orders/:id', ensureAuthenticated, commerceNeedsSubscription, async 
   const orders = await orderService.getOrders();
   const order = orders.find(o => o._id.toString() === req.params.id);
   res.render('orders/detail', { order, sim: req.simulation });
+});
+
+router.post('/orders/create', ensureAuthenticated, commerceNeedsSubscription, async (req, res) => {
+  try {
+    await orderService.createOrder(req.body);
+    res.redirect(`/orders${req.simulation.query}`);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 });
 
 router.get('/stores', ensureAuthenticated, commerceNeedsSubscription, (req, res) => {
@@ -308,8 +349,8 @@ router.get('/transactions', ensureAuthenticated, commerceNeedsSubscription, asyn
 router.get('/subscriptions', ensureAuthenticated, onlyPlatformAdmin, async (req, res) => {
   try {
     const data = await subscriptionService.getAll();
-    const planes = await planService.getPlanes();
-    res.render('subscriptions/index', { subscriptions: data || [], planes, sim: req.simulation });
+    const plans = await planService.getplans();
+    res.render('subscriptions/index', { subscriptions: data || [], plans, sim: req.simulation });
   } catch (error) {
     res.status(500).send('Error');
   }
@@ -318,19 +359,19 @@ router.get('/subscriptions', ensureAuthenticated, onlyPlatformAdmin, async (req,
 router.get('/subscriptions/new', ensureAuthenticated, onlyPlatformAdmin, async (req, res) => {
   try {
     const stores = await storeService.getAllStores();
-    const planes = await planService.getPlanes();
+    const plans = await planService.getplans();
     const planId = req.query.planId || null;
-    res.render('subscriptions/new', { title: 'Nueva Suscripcion', stores, planes, planId, sim: req.simulation });
+    res.render('subscriptions/new', { title: 'Nueva Suscripcion', stores, plans, planId, sim: req.simulation });
   } catch (error) {
     res.status(500).send(error.message);
   }
 });
 
-router.get('/planes/new', onlyPlatformAdmin, async (req, res) => {
+router.get('/plans/new', onlyPlatformAdmin, async (req, res) => {
   res.render('subscriptions/new-plan', { sim: req.simulation });
 });
 
-router.post('/planes/create', onlyPlatformAdmin, async (req, res) => {
+router.post('/plans/create', onlyPlatformAdmin, async (req, res) => {
   try {
     await planService.createPlan(req.body);
     res.redirect('/subscriptions?role=platform-admin');
@@ -339,7 +380,7 @@ router.post('/planes/create', onlyPlatformAdmin, async (req, res) => {
   }
 });
 
-router.get('/planes/edit/:id', onlyPlatformAdmin, async (req, res) => {
+router.get('/plans/edit/:id', onlyPlatformAdmin, async (req, res) => {
   try {
     const plan = await planService.getPlanById(req.params.id);
     res.render('subscriptions/edit-plan', { plan, sim: req.simulation });
@@ -348,7 +389,7 @@ router.get('/planes/edit/:id', onlyPlatformAdmin, async (req, res) => {
   }
 });
 
-router.post('/planes/edit/:id', onlyPlatformAdmin, async (req, res) => {
+router.post('/plans/edit/:id', onlyPlatformAdmin, async (req, res) => {
   try {
     await planService.updatePlan(req.params.id, req.body);
     res.redirect('/subscriptions?role=platform-admin');
@@ -357,7 +398,7 @@ router.post('/planes/edit/:id', onlyPlatformAdmin, async (req, res) => {
   }
 });
 
-router.get('/planes/delete/:id', onlyPlatformAdmin, async (req, res) => {
+router.get('/plans/delete/:id', onlyPlatformAdmin, async (req, res) => {
   try {
     await planService.deletePlan(req.params.id);
     res.redirect('/subscriptions?role=platform-admin');

@@ -11,9 +11,22 @@ const crear = async data => {
   vencimiento.setDate(hoy.getDate() + 30);
   const expDate = vencimiento.toISOString().split('T')[0];
 
+  const parsedAmount = Number(data.amount);
+
+  if (isNaN(parsedAmount)) {
+    throw new Error('El monto (amount) enviado no es un número válido o no fue proporcionado.');
+  }
+
+  if (data.storeId) {
+    await Subscription.updateMany(
+      { storeId: data.storeId, status: 'Activa' },
+      { $set: { status: 'Inactiva' } }
+    );
+  }
+
   const nuevaSub = new Subscription({
     detail:  data.detail,
-    amount:  Number(data.amount),
+    amount:  parsedAmount,
     startDate,
     expDate,
     status:  'Activa',

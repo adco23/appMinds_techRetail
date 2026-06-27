@@ -8,10 +8,8 @@ const saleDetailSchema = new mongoose.Schema({
   productoId:     { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
 });
 
-// Equivalente a calculateSubtotal() — se calcula antes de guardar
-saleDetailSchema.pre('save', function (next) {
+saleDetailSchema.pre('save', function () {
   this.subtotal = this.cantidad * this.precioUnitario;
-  next();
 });
 
 export default mongoose.model('SaleDetail', saleDetailSchema);
