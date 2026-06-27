@@ -4,6 +4,10 @@ const getAllStores = async () => {
   return await Store.find().populate('commerceId');
 };
 
+const getStoresByCommerceId = async commerceId => {
+  return await Store.find({ commerceId }).populate('commerceId');
+};
+
 const getStoreById = async id => {
   const store = await Store.findById(id).populate('commerceId');
   if (!store) throw new Error('Store not found');
@@ -53,4 +57,4 @@ const deleteStore = async id => {
   return { message: 'Store deleted successfully' };
 };
 
-export { getAllStores, getStoreById, createStore, deleteStore };
+export { getAllStores, getStoresByCommerceId, getStoreById, createStore, deleteStore };

@@ -6,6 +6,13 @@ const getAllProducts = async () => {
   return products.map(p => p.toJSON());
 };
 
+const getProductsByCommerceId = async commerceId => {
+  const stores = await Store.find({ commerceId }).select('_id');
+  const storeIds = stores.map(s => s._id);
+  const products = await Product.find({ storeId: { $in: storeIds } }).populate('storeId');
+  return products.map(p => p.toJSON());
+};
+
 const getProductById = async id => {
   const product = await Product.findById(id).populate('storeId');
   if (!product) throw new Error('Product not found');
@@ -108,6 +115,7 @@ const deactivateProduct = async id => {
 
 export default {
   getAllProducts,
+  getProductsByCommerceId,
   getProductById,
   getProductsByStoreId,
   createProduct,

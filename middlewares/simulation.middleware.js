@@ -11,7 +11,7 @@ const buildSimulationData = req => {
   const queryRole = normalizeRole(req.query.role || '');
   const role = queryRole || userRole;
 
-  const subscribed = req.query.subscribed === '1';
+  const subscribed = req.query.subscribed === '1' || authenticatedUser?.hasSubscription === true;
 
   return {
     role,

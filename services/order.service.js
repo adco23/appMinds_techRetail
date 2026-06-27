@@ -1,22 +1,24 @@
 import Order from "../models/order.model.js";
+import Store from "../models/store.model.js";
 import transactionService from './transaction.service.js';
 
-export const getOrders = async () => {
-  const orders = await Order.find();
-
-  return orders.map(order => {
+const formatOrders = orders =>
+  orders.map(order => {
     const obj = order.toJSON();
-
     const d = new Date(obj.date);
-    const day   = String(d.getDate()).padStart(2, '0');
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const year  = d.getFullYear();
-    obj.date = `${day}/${month}/${year}`;
-
+    obj.date = `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
     obj.totalAmount = '$' + (obj.totalAmount ? parseFloat(obj.totalAmount).toFixed(2) : '0.00');
-
     return obj;
   });
+
+export const getOrders = async () => {
+  return formatOrders(await Order.find());
+};
+
+export const getOrdersByCommerceId = async commerceId => {
+  const stores = await Store.find({ commerceId }).select('_id');
+  const storeIds = stores.map(s => s._id);
+  return formatOrders(await Order.find({ storeId: { $in: storeIds } }));
 };
 
 export const findById = async id => {

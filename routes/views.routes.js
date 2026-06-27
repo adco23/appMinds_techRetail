@@ -295,7 +295,12 @@ router.get('/commerces', ensureAuthenticated, onlyPlatformAdmin, async (req, res
 
 router.get('/orders', ensureAuthenticated, commerceNeedsSubscription, async (req, res) => {
   const view = req.query.view || 'index';
-  const orders = await orderService.getOrders();
+  const user = req.session?.user;
+
+  const orders = req.simulation.isCommerceAdmin
+    ? await orderService.getOrdersByCommerceId(user.commerceId)
+    : await orderService.getOrders();
+
   res.render('orders/index', { view, orders, sim: req.simulation });
 });
 
@@ -348,7 +353,12 @@ router.get('/users/edit/:email', ensureAuthenticated, onlyPlatformAdmin, async (
 
 router.get('/transactions', ensureAuthenticated, commerceNeedsSubscription, async (req, res) => {
   try {
-    const data = await transactionService.getAll();
+    const user = req.session?.user;
+
+    const data = req.simulation.isCommerceAdmin
+      ? await transactionService.getAllByCommerceId(user.commerceId)
+      : await transactionService.getAll();
+
     res.render('transactions/index', {
       title: 'TechRetail - Transacciones',
       transactions: data || [],

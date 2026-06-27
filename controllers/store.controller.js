@@ -1,6 +1,7 @@
 import * as storeService from "../services/store.service.js";
 import productService from "../services/product.service.js";
 import * as commerceService from '../services/commerce.service.js';
+import { getSimulationData } from '../middlewares/simulation.middleware.js';
 
 export const getSimQuery = req => {
   const role = req.query.role || '';
@@ -20,8 +21,20 @@ export const getStores = async (req, res, next) => {
 
 export const getStoresView = async (req, res, next) => {
   try {
-    const stores = await storeService.getAllStores();
-    res.render('stores/index', { title: 'Tiendas', stores });
+    const sim = getSimulationData(req);
+    const user = req.session?.user;
+
+    let stores;
+    if (sim.isCommerceAdmin) {
+      if (!user?.commerceId) {
+        return res.redirect('/commerce-admin/create');
+      }
+      stores = await storeService.getStoresByCommerceId(user.commerceId);
+    } else {
+      stores = await storeService.getAllStores();
+    }
+
+    res.render('stores/index', { title: 'Tiendas', stores, sim });
   } catch (error) {
     next(error);
   }

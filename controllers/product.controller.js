@@ -19,8 +19,14 @@ export const getProducts = async (req, res, next) => {
 
 export const getProductsView = async (req, res, next) => {
   try {
-    const products = await productService.getAllProducts();
-    res.render('products/index', { title: 'Productos', products });
+    const user = req.session?.user;
+    const isCommerceAdmin = req.simulation?.isCommerceAdmin;
+
+    const products = isCommerceAdmin
+      ? await productService.getProductsByCommerceId(user.commerceId)
+      : await productService.getAllProducts();
+
+    res.render('products/index', { title: 'Productos', products, sim: req.simulation });
   } catch (error) {
     next(error);
   }
@@ -38,14 +44,18 @@ export const getProductDetailView = async (req, res, next) => {
 export const getProductEditView = async (req, res, next) => {
   try {
     const product = await productService.getProductById(req.params.id);
-    const stores = await Store.find();
+    const user = req.session?.user;
+    const stores = req.simulation?.isCommerceAdmin
+      ? await Store.find({ commerceId: user.commerceId })
+      : await Store.find();
     const storeId = product.storeId && product.storeId._id ? product.storeId._id : product.storeId;
 
     res.render('products/edit', {
       title: 'Editar producto',
       product,
       stores,
-      storeId
+      storeId,
+      sim: req.simulation,
     });
   } catch (error) {
     next(error);
@@ -55,9 +65,12 @@ export const getProductEditView = async (req, res, next) => {
 export const getProductNewView = async (req, res, next) => {
   try {
     const storeId = req.params.storeId || '';
-    const stores = await Store.find();
+    const user = req.session?.user;
+    const stores = req.simulation?.isCommerceAdmin
+      ? await Store.find({ commerceId: user.commerceId })
+      : await Store.find();
 
-    res.render('products/new', { title: 'Nuevo producto', storeId, stores });
+    res.render('products/new', { title: 'Nuevo producto', storeId, stores, sim: req.simulation });
   } catch (error) {
     next(error);
   }

@@ -1,11 +1,13 @@
 import userService from '../services/user.service.js';
+import subscriptionService from '../services/subscription.service.js';
 
-const buildSessionUser = user => ({
+const buildSessionUser = (user, hasSubscription = false) => ({
   firstName: user.firstName,
   lastName: user.lastName,
   email: user.email,
   role: user.role,
   commerceId: user.commerceId || null,
+  hasSubscription,
 });
 
 export const setAuthenticatedUser = (req, user) => {
@@ -32,7 +34,11 @@ export const loadAuthUser = async (req, res, next) => {
       return next();
     }
 
-    const sessionUser = buildSessionUser(user);
+    const hasSubscription = user.role === 'commerce-admin'
+      ? await subscriptionService.hasActiveSubscriptionForCommerce(user.commerceId)
+      : false;
+
+    const sessionUser = buildSessionUser(user, hasSubscription);
     req.session.user = sessionUser;
     res.locals.currentUser = sessionUser;
     next();
