@@ -48,7 +48,7 @@ block content
 
   script.
     async function handleDelete(email) {
-      if (!confirm('¿Seguro que querés eliminar este usuario?')) return;
+      if (!confirm('¿Estás seguro de que querés eliminar este usuario?')) return;
       const res = await fetch(`/api/users/${email}`, { method: 'DELETE' });
       if (res.ok) {
         const rowId = `row-${email.replace(/[@.]/g, '-')}`;
