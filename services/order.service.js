@@ -16,8 +16,27 @@ const formatOrders = orders =>
     return obj;
   });
 
-export const getOrders = async () => {
-  return formatOrders(await Order.find());
+export const getOrders = async (req, res, next) => {
+  try {
+    const { id } = req.query;
+    if (id) {
+      const order = await service.findById(id);
+      if (!order) return res.status(404).json({ error: 'Orden no encontrada.' });
+
+      const formatted = service.getOrdersByCommerceId ? [order].map(o => {
+        const obj = o.toJSON();
+        const d = new Date(obj.date);
+        obj.date = `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+        obj.totalAmount = '$' + (obj.totalAmount ? parseFloat(obj.totalAmount).toFixed(2) : '0.00');
+        return obj;
+      }) : [order];
+
+      return res.json(formatted[0]);
+    }
+    res.json(await service.getOrders());
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const getOrdersByCommerceId = async commerceId => {
