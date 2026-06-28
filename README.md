@@ -68,8 +68,7 @@ El proyecto migró además a ES Modules (import/export) de forma completa, unifi
 │   ├── user.routes.js
 │   └── views.routes.js
 ├── middlewares/         # Middlewares personalizados
-│   ├── error.middleware.js
-│   └── response.middleware.js
+│   └── error.middleware.js
 ├── utils/               # Utilidades
 │   ├── db.js             # Conexión a MongoDB
 │   └── validations.js    # Validaciones de datos
