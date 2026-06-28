@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from "url";
 
+import session from 'express-session';
 import routes from './routes/index.js';
 import { errorHandler } from './middlewares/error.middleware.js';
 import { loadAuthUser } from './middlewares/auth.middleware.js';
@@ -26,6 +27,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(morgan('dev'));
+
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'fallback_secret_dev',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { httpOnly: true },
+}));
+
 app.use(loadAuthUser);
 app.use(loadSimulation);
 

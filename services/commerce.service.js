@@ -44,6 +44,10 @@ export const updateCommerce = async (cuit, { name, email, phone, address }) => {
   return true;
 };
 
+export const getCommerceById = async id => {
+  return await Commerce.findById(id);
+};
+
 // Equivalente a commerce.activate()
 export const activateCommerce = async id => {
   const commerce = await Commerce.findById(id);

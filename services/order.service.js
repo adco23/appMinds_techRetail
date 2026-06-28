@@ -1,27 +1,39 @@
+import Decimal from 'decimal.js';
+import { toD128, fromD128 } from '../utils/decimal.helper.js';
+import productService from './product.service.js';
 import Order from "../models/order.model.js";
+import Store from "../models/store.model.js";
 import transactionService from './transaction.service.js';
+import mongoose from 'mongoose';
+import SaleDetail from "../models/saleDetail.model.js";
 
-export const getOrders = async () => {
-  const orders = await Order.find();
-
-  // Equivalente a dateOnlyFormat() y currencyFormat() de la clase
-  return orders.map(order => {
-    const obj = order.toObject();
-
+const formatOrders = orders =>
+  orders.map(order => {
+    const obj = order.toJSON();
     const d = new Date(obj.date);
-    const day   = String(d.getDate()).padStart(2, '0');
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const year  = d.getFullYear();
-    obj.date = `${day}/${month}/${year}`;
-
-    obj.totalAmount = '$' + (obj.totalAmount ? obj.totalAmount : '0.00');
-
+    obj.date = `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+    obj.totalAmount = '$' + (obj.totalAmount ? parseFloat(obj.totalAmount).toFixed(2) : '0.00');
     return obj;
   });
+
+const populateOrderDetails = query =>
+  query
+    .populate({ path: 'clientId', select: 'firstName lastName' })
+    .populate({ path: 'storeId', select: 'name' })
+    .populate({ path: 'detailsId', populate: { path: 'productoId', select: 'name' } });
+
+export const getOrders = async () => {
+  return formatOrders(await populateOrderDetails(Order.find()));
+};
+
+export const getOrdersByCommerceId = async commerceId => {
+  const stores = await Store.find({ commerceId }).select('_id');
+  const storeIds = stores.map(s => s._id);
+  return formatOrders(await populateOrderDetails(Order.find({ storeId: { $in: storeIds } })));
 };
 
 export const findById = async id => {
-  return await Order.findById(id);
+  return await populateOrderDetails(Order.findById(id));
 };
 
 export const exists = async id => {
@@ -29,20 +41,56 @@ export const exists = async id => {
   return !!order;
 };
 
-export const createOrder = async ({ clientId, storeId, paymentMethod, detailsId, totalAmount }) => {
+export const createOrder = async ({ clientId, storeId, paymentMethod, products }) => {
   const newOrder = new Order({
-    clientId,
-    storeId,
+    clientId:    new mongoose.Types.ObjectId(clientId),
+    storeId:     new mongoose.Types.ObjectId(storeId),
     paymentMethod,
-    detailsId: detailsId || [],
-    totalAmount,
+    detailsId:   [],
+    totalAmount: toD128('0'),
     paymentId:   `PAY-${Date.now()}`,
     logisticsId: `LOG-${Date.now()}`,
   });
-  return await newOrder.save();
+
+  const savedOrder = await newOrder.save();
+
+  const detailsIds = [];
+  let totalDecimal = new Decimal(0);
+
+  if (products && Array.isArray(products)) {
+    try {
+      for (const item of products) {
+        if (item.productId && item.quantity) {
+          const prod = await productService.getProductById(item.productId);
+
+          if (!prod || prod.stock < Number(item.quantity)) {
+            throw new Error(`Stock insuficiente para el producto: ${prod?.name || 'Desconocido'}. Disponible: ${prod?.stock || 0}`);
+          }
+
+          const detail = new SaleDetail({
+            cantidad:       Number(item.quantity),
+            precioUnitario: toD128(prod.price),
+            ventaId:         savedOrder._id,
+            productoId:     new mongoose.Types.ObjectId(item.productId),
+          });
+
+          await detail.save();
+          detailsIds.push(detail._id);
+          totalDecimal = totalDecimal.plus(fromD128(detail.subtotal));
+        }
+      }
+    } catch (error) {
+      await Order.findByIdAndDelete(savedOrder._id);
+      throw error;
+    }
+  }
+
+  savedOrder.detailsId   = detailsIds;
+  savedOrder.totalAmount = toD128(totalDecimal);
+
+  return await savedOrder.save();
 };
 
-// Equivalente a order.cancel()
 export const cancelOrder = async id => {
   const order = await Order.findById(id);
   if (!order) throw new Error('Order not found');
@@ -51,7 +99,6 @@ export const cancelOrder = async id => {
   return await order.save();
 };
 
-// Equivalente a order.complete()
 export const completeOrder = async (id, paymentId, logisticsId) => {
   const order = await Order.findById(id);
   if (!order) throw new Error('Order not found');
@@ -65,12 +112,23 @@ export const completeOrder = async (id, paymentId, logisticsId) => {
 export const updateOrder = async (id, status) => {
   if (status == 2) return await cancelOrder(id);
 
+  const currentOrder = await Order.findById(id).populate('detailsId');
+  if (!currentOrder) throw new Error('Order not found');
+  if (currentOrder.status === 1) throw new Error('La orden no puede ser modificada.');
+
+  if (status == 1) {
+    for (const item of currentOrder.detailsId) {
+      await productService.decreaseStock(item.productoId, item.cantidad);
+    }
+  }
+
   const order = await Order.findByIdAndUpdate(id, { status }, { new: true });
 
   if (status == 1 && order) {
+    const grossAmount = order.totalAmount ? order.totalAmount.toString() : '0';
     await transactionService.createTransaction({
       receiptId:     `REC-${order._id.toString().slice(-6).toUpperCase()}`,
-      grossAmount:   order.totalAmount || 0,
+      grossAmount,
       status:        'approved',
       paymentMethod: order.paymentMethod,
       gatewayRef:    `GW-${Date.now()}`,

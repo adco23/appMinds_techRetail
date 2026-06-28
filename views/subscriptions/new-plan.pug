@@ -4,7 +4,7 @@ block content
   h1.title Nuevo Plan
 
   .box
-    form(action=`/planes/create${sim.query}` method="POST")
+    form(action=`/plans/create${sim.query}` method="POST")
 
       .field
         label.label Nombre
@@ -14,12 +14,17 @@ block content
       .field
         label.label Precio
         .control
-          input.input(type="number" name="precio" placeholder="50000" required)
+          input.input(type="number" name="price" placeholder="50000" required)
+
+      .field
+        label.label Comisión
+        .control
+          input.input(type="number" name="commission" step="any" placeholder="0,05" required)
 
       .field
         label.label Período mínimo
         .control
-          input.input(type="text" name="minimo" placeholder="Ej: 1 mes" required)
+          input.input(type="text" name="minimum" placeholder="Ej: 1 mes" required)
 
       .buttons.mt-4
         button.button.is-primary(type="submit") Guardar plan

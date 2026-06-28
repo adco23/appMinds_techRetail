@@ -8,8 +8,8 @@ block content
       a.button(href=`/orders?view=list&role=${sim.role}&subscribed=1`) Volver al listado
 
   if order
-    //include ./_detailContent
+    include ./partials/_detailContent
   else
     .notification.is-warning
-      p No se encontro la orden solicitada.
+      p No se encontró la orden solicitada.
       a.button.is-light.mt-3(href=`/orders?view=list&role=${sim.role}&subscribed=1`) Ir al listado

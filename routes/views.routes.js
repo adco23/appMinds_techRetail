@@ -1,4 +1,5 @@
 import { Router } from "express";
+import productService from '../services/product.service.js';
 import * as commerceService from "../services/commerce.service.js";
 import * as orderService from "../services/order.service.js";
 import userService from "../services/user.service.js";
@@ -7,13 +8,13 @@ import subscriptionService from '../services/subscription.service.js';
 import * as storeService from '../services/store.service.js';
 import { commerceNeedsSubscription, onlyPlatformAdmin } from '../middlewares/simulation.middleware.js';
 import {
-  clearAuthenticatedUser,
   ensureAuthenticated,
   ensureGuest,
   setAuthenticatedUser,
 } from '../middlewares/auth.middleware.js';
 import * as planService from '../services/plan.service.js';
-
+import { createOrder } from '../controllers/order.controller.js';
+import productViewRoutes from './product.views.routes.js';
 
 const router = Router();
 
@@ -58,14 +59,17 @@ router.post('/auth/login', ensureGuest, async (req, res) => {
         title: 'Iniciar sesión',
         mode: 'login',
         redirectTo,
-        error: 'Credenciales invalidas o usuario inactivo.',
+        error: 'Credenciales inválidas o usuario inactivo.',
         formData: { email },
         sim: res.locals.sim,
       });
     }
 
     setAuthenticatedUser(req, user);
-    res.redirect(redirectTo && redirectTo !== '/' ? redirectTo : getDefaultRedirectByUser(user));
+    req.session.save(err => {
+      if (err) return res.status(500).send(err.message);
+      res.redirect(redirectTo && redirectTo !== '/' ? redirectTo : getDefaultRedirectByUser(user));
+    });
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -94,7 +98,7 @@ router.post('/auth/register', ensureGuest, async (req, res) => {
         mode: 'register',
         commerces,
         redirectTo,
-        error: 'Completa todos los campos obligatorios.',
+        error: 'Completá todos los campos obligatorios.',
         formData: req.body,
         sim: res.locals.sim,
       });
@@ -122,15 +126,20 @@ router.post('/auth/register', ensureGuest, async (req, res) => {
     });
 
     setAuthenticatedUser(req, user);
-    res.redirect(redirectTo && redirectTo !== '/' ? redirectTo : getDefaultRedirectByUser(user));
+    req.session.save(err => {
+      if (err) return res.status(500).send(err.message);
+      res.redirect(redirectTo && redirectTo !== '/' ? redirectTo : getDefaultRedirectByUser(user));
+    });
   } catch (error) {
     res.status(500).send(error.message);
   }
 });
 
 router.post('/auth/logout', (req, res) => {
-  clearAuthenticatedUser(req);
-  res.redirect('/');
+  req.session.destroy(err => {
+    if (err) console.error('Error al destruir sesión:', err);
+    res.redirect('/');
+  });
 });
 
 router.get('/commerce-admin/create', ensureAuthenticated, (req, res) => {
@@ -170,7 +179,7 @@ router.post('/commerce-admin/create', ensureAuthenticated, async (req, res) => {
         title: 'Crear mi comercio',
         user,
         sim: req.simulation,
-        error: 'La razon social y el CUIT son obligatorios.',
+        error: 'La razón social y la CUIT son obligatorias.',
         formData: req.body,
       });
     }
@@ -180,7 +189,7 @@ router.post('/commerce-admin/create', ensureAuthenticated, async (req, res) => {
         title: 'Crear mi comercio',
         user,
         sim: req.simulation,
-        error: 'Ya existe un comercio con ese CUIT.',
+        error: 'Ya existe un comercio con esa CUIT.',
         formData: req.body,
       });
     }
@@ -195,41 +204,89 @@ router.post('/commerce-admin/create', ensureAuthenticated, async (req, res) => {
 
     const updatedUser = await userService.assignCommerceToUser(user.email, commerce._id);
     setAuthenticatedUser(req, updatedUser);
-    res.redirect('/commerce-admin/subscription?role=commerce-admin');
+    req.session.save(err => {
+      if (err) return res.status(500).send(err.message);
+      res.redirect('/commerce-admin/subscription?role=commerce-admin');
+    });
   } catch (error) {
     res.status(500).send(error.message);
   }
 });
 
 router.get('/commerce-admin/subscription', ensureAuthenticated, async (req, res) => {
-  const planes = await planService.getPlanes();
-  res.render('subscriptions/gate', { title: 'Suscripcion', planes, sim: res.locals.sim });
+  const plans = await planService.getplans();
+  res.render('subscriptions/gate', { title: 'Suscripcion', plans, sim: res.locals.sim });
 });
 
-router.get('/commerce-admin/subscription/tienda', async (req, res) => {
+router.get('/commerce-admin/subscription/tienda', ensureAuthenticated, async (req, res) => {
   const { planId } = req.query;
   const plan = await planService.getPlanById(planId);
   if (!plan) return res.redirect('/commerce-admin/subscription?role=commerce-admin');
 
-  const stores = await storeService.getAllStores();
-  res.render('subscriptions/elegir-tienda', { plan, stores, sim: res.locals.sim });
+  const commerceId = req.session.user?.commerceId;
+  const commerce = commerceId ? await commerceService.getCommerceById(commerceId) : null;
+
+  res.render('subscriptions/elegir-tienda', { plan, commerce, sim: res.locals.sim });
 });
 
-router.post('/commerce-admin/subscription/crear', async (req, res) => {
+router.post('/commerce-admin/subscription/crear', ensureAuthenticated, async (req, res) => {
   try {
-    const { planId, storeId } = req.body;
+    const { planId, storeType, storeName, storeCategory, storeSubdomain } = req.body;
+
     const plan = await planService.getPlanById(planId);
     if (!plan) throw new Error('Plan no encontrado');
 
+    const commerceId = req.session.user?.commerceId;
+    if (!commerceId) throw new Error('No hay comercio asociado al usuario');
+
+    const commerce = await commerceService.getCommerceById(commerceId);
+    if (!commerce) throw new Error('Comercio no encontrado');
+
+    let storeData;
+    if (storeType === 'default') {
+      const baseSlug = commerce.name.toLowerCase()
+        .normalize('NFD').replace(/[̀-ͯ]/g, '')
+        .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      storeData = {
+        name: commerce.name,
+        category: 'General',
+        subdomain: `${baseSlug}-${Date.now().toString().slice(-4)}`,
+        status: 'active',
+        commerceId,
+        createdAt: new Date().toISOString().split('T')[0],
+      };
+    } else {
+      storeData = {
+        name: storeName,
+        category: storeCategory,
+        subdomain: storeSubdomain,
+        status: 'active',
+        commerceId,
+        createdAt: new Date().toISOString().split('T')[0],
+      };
+    }
+
+    const newStore = await storeService.createStore(storeData);
+
     await subscriptionService.crear({
       detail:  plan.name,
-      amount:  Number(plan.precio),
-      storeId,
+      amount:  parseFloat(plan.price),
+      storeId: newStore._id,
+      planId:  plan._id,
     });
 
     res.redirect('/?role=commerce-admin&subscribed=1');
   } catch (error) {
-    res.status(500).send(`Error: ${error.message}`);
+    const { planId } = req.body;
+    const plan = planId ? await planService.getPlanById(planId).catch(() => null) : null;
+    const commerceId = req.session.user?.commerceId;
+    const commerce = commerceId ? await commerceService.getCommerceById(commerceId).catch(() => null) : null;
+    res.render('subscriptions/elegir-tienda', {
+      plan,
+      commerce,
+      error: error.message,
+      sim: res.locals.sim,
+    });
   }
 });
 
@@ -240,39 +297,75 @@ router.get('/commerces', ensureAuthenticated, onlyPlatformAdmin, async (req, res
 });
 
 router.get('/orders', ensureAuthenticated, commerceNeedsSubscription, async (req, res) => {
-  const view = req.query.view || 'index';
-  const orders = await orderService.getOrders();
-  res.render('orders/index', { view, orders, sim: req.simulation });
-});
-
-router.get('/orders/new', ensureAuthenticated, commerceNeedsSubscription, async (req, res) => {
   try {
-    const users = await userService.getUsers();
+    const view = req.query.view || 'index';
+    const user = req.session?.user;
+
+    const orders = req.simulation.isCommerceAdmin
+      ? await orderService.getOrdersByCommerceId(user.commerceId)
+      : await orderService.getOrders();
+
+    const users  = await userService.getUsers();
     const stores = await storeService.getAllStores();
-    res.render('orders/new', { users, stores, sim: req.simulation });
+
+    res.render('orders/index', {
+      view,
+      orders,
+      users,
+      stores,
+      products:        [],
+      selectedStore:   '',
+      selectedClient:  '',
+      sim:             req.simulation,
+    });
   } catch (error) {
     res.status(500).send(error.message);
   }
 });
 
-router.post('/orders/create', ensureAuthenticated, commerceNeedsSubscription, async (req, res) => {
+router.get('/orders/new', ensureAuthenticated, commerceNeedsSubscription, async (req, res) => {
   try {
-    await orderService.createOrder(req.body);
-    res.redirect(`/orders${req.simulation.query}`);
+    const { storeId, clientId } = req.query;
+
+    const users = await userService.getUsers();
+    const stores = await storeService.getStoresByCommerceId(req.session.user.commerceId);
+
+    let products = [];
+    if (storeId) {
+      products = await productService.getProductsByStoreId(storeId);
+    }
+
+    res.render('orders/new', {
+      users,
+      stores: stores.filter(store => store.status === 'Activo'),
+      products: products.filter(product => product.stock > 0),
+      selectedStore: storeId || '',
+      selectedClient: clientId || '',
+      sim: req.simulation || { query: '' }
+    });
   } catch (error) {
     res.status(500).send(error.message);
   }
 });
 
 router.get('/orders/:id', ensureAuthenticated, commerceNeedsSubscription, async (req, res) => {
-  const orders = await orderService.getOrders();
-  const order = orders.find(o => o._id.toString() === req.params.id);
+  const order = await orderService.findById(req.params.id);
   res.render('orders/detail', { order, sim: req.simulation });
+});
+
+router.post('/orders/create', ensureAuthenticated, commerceNeedsSubscription, async (req, res, next) => {
+  try {
+    await createOrder(req, res, next);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 });
 
 router.get('/stores', ensureAuthenticated, commerceNeedsSubscription, (req, res) => {
   res.render('stores/index', { sim: req.simulation });
 });
+
+router.use('/products', productViewRoutes);
 
 router.get('/users', ensureAuthenticated, onlyPlatformAdmin, async (req, res) => {
   const users = await userService.getUsers();
@@ -294,7 +387,12 @@ router.get('/users/edit/:email', ensureAuthenticated, onlyPlatformAdmin, async (
 
 router.get('/transactions', ensureAuthenticated, commerceNeedsSubscription, async (req, res) => {
   try {
-    const data = await transactionService.getAll();
+    const user = req.session?.user;
+
+    const data = req.simulation.isCommerceAdmin
+      ? await transactionService.getAllByCommerceId(user.commerceId)
+      : await transactionService.getAll();
+
     res.render('transactions/index', {
       title: 'TechRetail - Transacciones',
       transactions: data || [],
@@ -308,8 +406,8 @@ router.get('/transactions', ensureAuthenticated, commerceNeedsSubscription, asyn
 router.get('/subscriptions', ensureAuthenticated, onlyPlatformAdmin, async (req, res) => {
   try {
     const data = await subscriptionService.getAll();
-    const planes = await planService.getPlanes();
-    res.render('subscriptions/index', { subscriptions: data || [], planes, sim: req.simulation });
+    const plans = await planService.getplans();
+    res.render('subscriptions/index', { subscriptions: data || [], plans, sim: req.simulation });
   } catch (error) {
     res.status(500).send('Error');
   }
@@ -318,19 +416,19 @@ router.get('/subscriptions', ensureAuthenticated, onlyPlatformAdmin, async (req,
 router.get('/subscriptions/new', ensureAuthenticated, onlyPlatformAdmin, async (req, res) => {
   try {
     const stores = await storeService.getAllStores();
-    const planes = await planService.getPlanes();
+    const plans = await planService.getplans();
     const planId = req.query.planId || null;
-    res.render('subscriptions/new', { title: 'Nueva Suscripcion', stores, planes, planId, sim: req.simulation });
+    res.render('subscriptions/new', { title: 'Nueva Suscripcion', stores, plans, planId, sim: req.simulation });
   } catch (error) {
     res.status(500).send(error.message);
   }
 });
 
-router.get('/planes/new', onlyPlatformAdmin, async (req, res) => {
+router.get('/plans/new', onlyPlatformAdmin, async (req, res) => {
   res.render('subscriptions/new-plan', { sim: req.simulation });
 });
 
-router.post('/planes/create', onlyPlatformAdmin, async (req, res) => {
+router.post('/plans/create', onlyPlatformAdmin, async (req, res) => {
   try {
     await planService.createPlan(req.body);
     res.redirect('/subscriptions?role=platform-admin');
@@ -339,7 +437,7 @@ router.post('/planes/create', onlyPlatformAdmin, async (req, res) => {
   }
 });
 
-router.get('/planes/edit/:id', onlyPlatformAdmin, async (req, res) => {
+router.get('/plans/edit/:id', onlyPlatformAdmin, async (req, res) => {
   try {
     const plan = await planService.getPlanById(req.params.id);
     res.render('subscriptions/edit-plan', { plan, sim: req.simulation });
@@ -348,7 +446,7 @@ router.get('/planes/edit/:id', onlyPlatformAdmin, async (req, res) => {
   }
 });
 
-router.post('/planes/edit/:id', onlyPlatformAdmin, async (req, res) => {
+router.post('/plans/edit/:id', onlyPlatformAdmin, async (req, res) => {
   try {
     await planService.updatePlan(req.params.id, req.body);
     res.redirect('/subscriptions?role=platform-admin');
@@ -357,7 +455,7 @@ router.post('/planes/edit/:id', onlyPlatformAdmin, async (req, res) => {
   }
 });
 
-router.get('/planes/delete/:id', onlyPlatformAdmin, async (req, res) => {
+router.get('/plans/delete/:id', onlyPlatformAdmin, async (req, res) => {
   try {
     await planService.deletePlan(req.params.id);
     res.redirect('/subscriptions?role=platform-admin');
@@ -372,7 +470,7 @@ router.post('/subscriptions/create', ensureAuthenticated, async (req, res) => {
     res.redirect('/subscriptions?role=platform-admin');
   } catch (error) {
     console.error(error);
-    res.status(500).send(`Error al crear la suscripcion: ${error.message}`);
+    res.status(500).send(`Error al crear la suscripción: ${error.message}`);
   }
 });
 

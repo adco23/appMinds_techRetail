@@ -1,35 +1,51 @@
 import Product from "../models/product.model.js";
 import Store from "../models/store.model.js";
+import mongoose from "mongoose";
 
 const getAllProducts = async () => {
-  return await Product.find().populate('storeId');
+  const products = await Product.find().populate('storeId');
+  return products.map(p => p.toJSON());
+};
+
+const getProductsByCommerceId = async commerceId => {
+  const stores = await Store.find({ commerceId }).select('_id');
+  const storeIds = stores.map(s => s._id);
+  const products = await Product.find({ storeId: { $in: storeIds } }).populate('storeId');
+  return products.map(p => p.toJSON());
 };
 
 const getProductById = async id => {
   const product = await Product.findById(id).populate('storeId');
   if (!product) throw new Error('Product not found');
-  return product;
+  return product.toJSON();
 };
 
 const getProductsByStoreId = async storeId => {
-  return await Product.find({ storeId }).populate('storeId');
+  const idToSearch = mongoose.isValidObjectId(storeId)
+    ? new mongoose.Types.ObjectId(storeId)
+    : storeId;
+
+  const products = await Product.find({
+    storeId: { $in: [storeId, idToSearch] }
+  }).populate('storeId');
+  return products.map(p => p.toJSON());
 };
 
 const createProduct = async data => {
   const { name, description, price, stock, category, storeId, status } = data;
 
-  if (!name)                                      throw new Error('Product name is required');
-  if (!description)                               throw new Error('Product description is required');
-  if (price === undefined || price === null || price === '') throw new Error('Product price is required');
-  if (stock === undefined || stock === null || stock === '') throw new Error('Product stock is required');
-  if (!category)                                  throw new Error('Product category is required');
-  if (!storeId)                                   throw new Error('Store id is required');
-  if (!status)                                    throw new Error('Product status is required');
-  if (Number(price) < 0)                          throw new Error('Price cannot be negative');
-  if (Number(stock) < 0)                          throw new Error('Stock cannot be negative');
+  if (!name)                                      throw new Error('Se requiere el nombre del producto');
+  if (!description)                               throw new Error('Se requiere la descripción del producto');
+  if (price === undefined || price === null || price === '') throw new Error('Se requiere el precio del producto');
+  if (stock === undefined || stock === null || stock === '') throw new Error('Se requiere el stock del producto');
+  if (!category)                                  throw new Error('Se requiere la categoría del producto');
+  if (!storeId)                                   throw new Error('Se requiere el id de la tienda');
+  if (!status)                                    throw new Error('Se requiere el estado del producto');
+  if (Number(price) < 0)                          throw new Error('El precio no puede ser negativo');
+  if (Number(stock) < 0)                          throw new Error('El stock no puede ser negativo');
 
   const storeExists = await Store.findById(storeId);
-  if (!storeExists) throw new Error('Store not found');
+  if (!storeExists) throw new Error('Tienda no encontrada');
 
   const newProduct = new Product({
     name,
@@ -46,15 +62,15 @@ const createProduct = async data => {
 
 const updateProduct = async (id, data) => {
   const product = await Product.findById(id);
-  if (!product) throw new Error('Product not found');
+  if (!product) throw new Error('Producto no encontrado');
 
   if (data.storeId) {
     const storeExists = await Store.findById(data.storeId);
-    if (!storeExists) throw new Error('Store not found');
+    if (!storeExists) throw new Error('Tienda no encontrada');
   }
 
-  if (data.price !== undefined && Number(data.price) < 0) throw new Error('Price cannot be negative');
-  if (data.stock !== undefined && Number(data.stock) < 0) throw new Error('Stock cannot be negative');
+  if (data.price !== undefined && Number(data.price) < 0) throw new Error('El precio no puede ser negativo');
+  if (data.stock !== undefined && Number(data.stock) < 0) throw new Error('El stock no puede ser negativo');
 
   const updated = await Product.findByIdAndUpdate(
     id,
@@ -75,15 +91,15 @@ const updateProduct = async (id, data) => {
 
 const deleteProduct = async id => {
   const product = await Product.findByIdAndDelete(id);
-  if (!product) throw new Error('Product not found');
-  return { message: 'Product deleted successfully' };
+  if (!product) throw new Error('Producto no encontrado');
+  return { message: 'Producto eliminado exitosamente' };
 };
 
 // Equivalente a product.decreaseStock()
 const decreaseStock = async (id, quantity) => {
   const product = await Product.findById(id);
-  if (!product) throw new Error('Product not found');
-  if (quantity > product.stock) throw new Error('Insufficient stock');
+  if (!product) throw new Error('Producto no encontrado');
+  if (quantity > product.stock) throw new Error('Stock insuficiente');
 
   product.stock -= quantity;
   return await product.save();
@@ -92,20 +108,21 @@ const decreaseStock = async (id, quantity) => {
 // Equivalente a product.activate() / deactivate()
 const activateProduct = async id => {
   const product = await Product.findById(id);
-  if (!product) throw new Error('Product not found');
+  if (!product) throw new Error('Producto no encontrado');
   product.status = 'active';
   return await product.save();
 };
 
 const deactivateProduct = async id => {
   const product = await Product.findById(id);
-  if (!product) throw new Error('Product not found');
+  if (!product) throw new Error('Producto no encontrado');
   product.status = 'inactive';
   return await product.save();
 };
 
 export default {
   getAllProducts,
+  getProductsByCommerceId,
   getProductById,
   getProductsByStoreId,
   createProduct,

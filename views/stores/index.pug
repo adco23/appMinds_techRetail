@@ -40,7 +40,7 @@ block content
                   a.button.is-info.is-small(href=`/stores/view/${store.id}${sim.query}`) Ver
                   a.button.is-warning.is-small(href=`/stores/edit/${store.id}${sim.query}`) Editar
                   form(method="POST", action=`/stores/delete/${store.id}${sim.query}`, style="margin:0;")
-                    button.button.is-danger.is-small(type="submit", onclick="return confirm('Eliminar esta tienda?')") Eliminar
+                    button.button.is-danger.is-small(type="submit", onclick="return confirm('¿Eliminar esta tienda?')") Eliminar
   else
     article.message.is-warning
       .message-body

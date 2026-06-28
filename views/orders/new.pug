@@ -4,13 +4,13 @@ block content
   h1.title Nueva Orden
 
   .box
-    form(action=`/orders/create${sim.query}` method="POST")
+    form(action=`/orders/create${sim.query}` method="POST" id="orderForm")
 
       .field
         label.label Cliente
         .control
           div.select.is-fullwidth
-            select(name="clientId" required)
+            select(name="clientId" id="clientSelect" required)
               option(value="") Seleccioná un cliente
               each user in users
                 option(value=`${user._id}`)= `${user.firstName} ${user.lastName}`
@@ -19,10 +19,35 @@ block content
         label.label Tienda
         .control
           div.select.is-fullwidth
-            select(name="storeId" required)
+            select(name="storeId" id="storeSelect" required onchange="onStoreChange()")
               option(value="") Seleccioná una tienda
               each store in stores
                 option(value=`${store._id}`)= store.name
+
+      label.label Productos de la Orden
+      div#productos-container.mb-4
+        .producto-fila.box.is-light.mb-2(style="padding: 15px;")
+          .columns.is-vcentered
+            .column.is-6
+              .field
+                label.label Producto
+                div.select.is-fullwidth
+                  select(name="products[0][productId]" class="product-select" required disabled=((products || []).length === 0))
+                    if !(products && products.length)
+                      option(value="") Primero seleccioná una tienda con productos
+                    else
+                      option(value="") Seleccioná un producto
+                      each product in products
+                        option(value=`${product._id}` data-stock=product.stock)= `${product.name} - $${product.price} (Stock: ${product.stock})`
+            .column.is-4
+              .field
+                label.label Cantidad
+                input.input(type="number" name="products[0][quantity]" class="product-quantity" value="1" min="1" required)
+            .column.is-2.has-text-centered
+              label.label &nbsp;
+              button.button.is-danger.is-fullwidth(type="button" onclick="eliminarFila(this)") Eliminar
+
+      button.button.is-info.is-small.mb-5(type="button" id="btn-agregar-producto" disabled=((products || []).length === 0)) + Agregar otro producto
 
       .field
         label.label Método de Pago
@@ -34,21 +59,95 @@ block content
               option(value="tarjeta") Tarjeta
               option(value="cuenta corriente") Cuenta Corriente
 
-      .field
-        label.label Monto Total
-        .control
-          input.input(type="number" name="totalAmount" placeholder="0" min="0" required)
-
-      .field
-        label.label ID de Pago
-        .control
-          input.input(type="text" placeholder="Generado automáticamente" disabled style="background-color: #f5f5f5; color: #aaa; cursor: not-allowed;")
-
-      .field
-        label.label ID de Logística
-        .control
-          input.input(type="text" placeholder="Generado automáticamente" disabled style="background-color: #f5f5f5; color: #aaa; cursor: not-allowed;")
-
       .buttons.mt-4
         button.button.is-primary(type="submit") Crear Orden
         a.button.is-light(href=`/orders${sim.query}`) Cancelar
+
+  script.
+    let filaContador = 1;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const storeId = urlParams.get('storeId');
+      const clientId = urlParams.get('clientId');
+
+      if (storeId) {
+        document.getElementById('storeSelect').value = storeId;
+      }
+      if (clientId) {
+        document.getElementById('clientSelect').value = clientId;
+      }
+    });
+
+    function onStoreChange() {
+      const storeId = document.getElementById('storeSelect').value;
+      const clientId = document.getElementById('clientSelect').value;
+      const currentUrl = new URL(window.location.href);
+
+      if (storeId) {
+        currentUrl.searchParams.set('storeId', storeId);
+      } else {
+        currentUrl.searchParams.delete('storeId');
+      }
+
+      if (clientId) {
+        currentUrl.searchParams.set('clientId', clientId);
+      }
+
+      window.location.href = currentUrl.toString();
+    }
+
+    document.getElementById('btn-agregar-producto').addEventListener('click', () => {
+      const container = document.getElementById('productos-container');
+      const primeraFila = container.querySelector('.producto-fila');
+      const nuevaFila = primeraFila.cloneNode(true);
+
+      nuevaFila.querySelector('.product-select').value = "";
+      nuevaFila.querySelector('.product-quantity').value = "1";
+
+      nuevaFila.querySelector('.product-select').setAttribute('name', `products[${filaContador}][productId]`);
+      nuevaFila.querySelector('.product-quantity').setAttribute('name', `products[${filaContador}][quantity]`);
+
+      container.appendChild(nuevaFila);
+      filaContador++;
+    });
+
+    function eliminarFila(boton) {
+      const container = document.getElementById('productos-container');
+      if (container.querySelectorAll('.producto-fila').length > 1) {
+        boton.closest('.producto-fila').remove();
+      } else {
+        alert("La orden debe contener al menos un producto.");
+      }
+    }
+
+    document.getElementById('orderForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const form = e.target;
+      const formData = new URLSearchParams(new FormData(form));
+
+      try {
+        const response = await fetch(form.action, {
+          method: form.method,
+          body: formData,
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        });
+
+        if (response.ok) {
+          if (response.redirected) {
+            window.location.href = response.url;
+          } else {
+            window.location.href = `/orders${window.location.search}`;
+          }
+        } else {
+          const result = await response.json();
+          alert(result.error || 'Ocurrió un error al procesar la orden.');
+        }
+      } catch (error) {
+        console.error(error);
+        alert('Error de conexión con el servidor.');
+      }
+    });

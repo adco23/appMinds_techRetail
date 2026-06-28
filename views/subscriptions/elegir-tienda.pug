@@ -1,28 +1,87 @@
 extends ../layouts/main.pug
 
 block content
-  h1.title Elegir tienda
+  h1.title Crear tu tienda
+
+  if error
+    .notification.is-danger.mb-4= error
 
   .box
-    p.mb-4
+    p.mb-2
       strong Plan seleccionado:
-      |  #{plan.name} — $#{plan.precio}
-    p.mb-4
+      |  #{plan.name} — $#{plan.price}
+    p.mb-2
       strong Período mínimo:
-      |  #{plan['perído mínimo']}
+      |  #{plan.minimum}
+    p.mb-4
+      strong Comisión por transacción:
+      |  #{plan.commission}%
+
+    hr
 
     form(action=`/commerce-admin/subscription/crear${sim.query}` method="POST")
       input(type="hidden" name="planId" value=`${plan._id}`)
+      input(type="hidden" name="storeType" id="storeTypeInput" value="default")
 
-      .field
-        label.label Tienda
-        .control
-          div.select.is-fullwidth
-            select(name="storeId" required)
-              option(value="") Seleccioná una tienda
-              each store in stores
-                option(value=`${store._id}`)= store.name
+      p.mb-4 ¿Cómo querés configurar tu tienda?
 
-      .buttons.mt-4
+      .buttons.mb-5
+        button.button.is-primary#btnDefault(type="button") Tienda por defecto
+        button.button.is-light#btnCustom(type="button") Tienda personalizada
+
+      - const commerceName = commerce ? commerce.name : ''
+
+      #defaultInfo.mb-4
+        .notification.is-info.is-light
+          p
+            | Se creará una tienda con el nombre
+            strong  "#{commerceName}"
+            |  y configuración estándar. Podés editarla después desde el panel.
+
+      #customForm.is-hidden
+        .field
+          label.label Nombre de la tienda
+          .control
+            input.input(type="text" name="storeName" placeholder=`${commerceName}`)
+
+        .field
+          label.label Rubro
+          .control
+            input.input(type="text" name="storeCategory" placeholder="Ej: Indumentaria, Electrónica")
+
+        .field
+          label.label Subdominio
+          .control
+            input.input(type="text" name="storeSubdomain" placeholder="mi-tienda")
+          p.help Solo letras minúsculas, números y guiones. Debe ser único.
+
+      .buttons.mt-5
         button.button.is-primary(type="submit") Confirmar suscripción
         a.button.is-light(href=`/commerce-admin/subscription?role=commerce-admin`) Volver
+
+  script.
+    const btnDefault = document.getElementById('btnDefault');
+    const btnCustom  = document.getElementById('btnCustom');
+    const defaultInfo = document.getElementById('defaultInfo');
+    const customForm  = document.getElementById('customForm');
+    const storeTypeInput = document.getElementById('storeTypeInput');
+
+    btnDefault.addEventListener('click', () => {
+      storeTypeInput.value = 'default';
+      defaultInfo.classList.remove('is-hidden');
+      customForm.classList.add('is-hidden');
+      btnDefault.classList.remove('is-light');
+      btnDefault.classList.add('is-primary');
+      btnCustom.classList.remove('is-primary');
+      btnCustom.classList.add('is-light');
+    });
+
+    btnCustom.addEventListener('click', () => {
+      storeTypeInput.value = 'custom';
+      customForm.classList.remove('is-hidden');
+      defaultInfo.classList.add('is-hidden');
+      btnCustom.classList.remove('is-light');
+      btnCustom.classList.add('is-primary');
+      btnDefault.classList.remove('is-primary');
+      btnDefault.classList.add('is-light');
+    });

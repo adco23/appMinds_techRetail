@@ -3,25 +3,26 @@ extends ../layouts/main.pug
 block content
   h1.title Suscripciones
 
-  h2.subtitle.mt-4 Planes disponibles
+  h2.subtitle.mt-4 planes disponibles
 
   .columns.is-variable.is-4.mb-6.is-multiline
-    each plan in planes
+    each plan in plans
       .column.is-4-desktop.is-6-tablet.is-12-mobile
         .card
           header.card-header.has-background-light
             p.card-header-title.is-centered.is-size-7= plan.name
           .card-content.p-3
             .content.has-text-centered
-              p.is-size-4.has-text-weight-bold.mb-1 $#{Number(plan.precio).toLocaleString('es-AR')}
-              p.has-text-grey.is-size-7 Período mínimo: #{plan.minimo}
+              p.is-size-4.has-text-weight-bold.mb-1 $#{Number(plan.price).toLocaleString('es-AR')}
+              p.has-text-grey.is-size-7 Período mínimo: #{plan.minimum}
+              p.has-text-grey.is-size-7 Comisión por transacción: #{plan.commission}%
           .card-footer(style="display:flex; border-top: 1px solid #ededed;")
               a(href=`/subscriptions/new${sim.query}&planId=${plan._id}` style="flex:1; text-align:center; padding:0.75rem; color:#48c78e; font-weight:500;") Elegir
-              a(href=`/planes/edit/${plan._id}${sim.query}` style="flex:1; text-align:center; padding:0.75rem; color:#f0a500; font-weight:500; border-left:1px solid #ededed; border-right:1px solid #ededed;") Editar
-              a(href=`/planes/delete/${plan._id}${sim.query}` style="flex:1; text-align:center; padding:0.75rem; color:#f14668; font-weight:500;") Eliminar
+              a(href=`/plans/edit/${plan._id}${sim.query}` style="flex:1; text-align:center; padding:0.75rem; color:#f0a500; font-weight:500; border-left:1px solid #ededed; border-right:1px solid #ededed;") Editar
+              a(href=`/plans/delete/${plan._id}${sim.query}` style="flex:1; text-align:center; padding:0.75rem; color:#f14668; font-weight:500;") Eliminar
 
   .buttons.mt-5
-    a.button.is-primary.is-rounded(href=`/planes/new${sim.query}`)
+    a.button.is-primary.is-rounded(href=`/plans/new${sim.query}`)
       span Nuevo Plan
     button.button.is-info.is-rounded(onclick="toggleLista()")
       span Ver suscripciones de tiendas

@@ -12,12 +12,12 @@ block content
             .select.is-fullwidth
               select#planSelect(name="detail" required onchange="actualizarMonto(this)")
                 option(value="" disabled selected) Seleccioná un plan
-                each plan in planes
+                each plan in plans
                   option(
                     value=plan.name
-                    data-precio=plan.precio
+                    data-precio=plan.price
                     selected=planId && plan._id.toString() === planId
-                  )= `${plan.name} — $${Number(plan.precio).toLocaleString('es-AR')}`
+                  )= `${plan.name} — $${Number(plan.price).toLocaleString('es-AR')}`
 
         .field
           label.label Monto

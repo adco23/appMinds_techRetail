@@ -1,5 +1,6 @@
 import productService from "../services/product.service.js";
 import Store from "../models/store.model.js";
+import mongoose from "mongoose";
 
 export const getSimQuery = req => {
   const role = req.query.role || '';
@@ -19,8 +20,14 @@ export const getProducts = async (req, res, next) => {
 
 export const getProductsView = async (req, res, next) => {
   try {
-    const products = await productService.getAllProducts();
-    res.render('products/index', { title: 'Productos', products });
+    const user = req.session?.user;
+    const isCommerceAdmin = req.simulation?.isCommerceAdmin;
+
+    const products = isCommerceAdmin
+      ? await productService.getProductsByCommerceId(user.commerceId)
+      : await productService.getAllProducts();
+
+    res.render('products/index', { title: 'Productos', products, sim: req.simulation });
   } catch (error) {
     next(error);
   }
@@ -38,14 +45,18 @@ export const getProductDetailView = async (req, res, next) => {
 export const getProductEditView = async (req, res, next) => {
   try {
     const product = await productService.getProductById(req.params.id);
-    const stores = await Store.find();
+    const user = req.session?.user;
+    const stores = req.simulation?.isCommerceAdmin
+      ? await Store.find({ commerceId: user.commerceId })
+      : await Store.find();
     const storeId = product.storeId && product.storeId._id ? product.storeId._id : product.storeId;
 
     res.render('products/edit', {
       title: 'Editar producto',
       product,
       stores,
-      storeId
+      storeId,
+      sim: req.simulation,
     });
   } catch (error) {
     next(error);
@@ -55,9 +66,12 @@ export const getProductEditView = async (req, res, next) => {
 export const getProductNewView = async (req, res, next) => {
   try {
     const storeId = req.params.storeId || '';
-    const stores = await Store.find();
+    const user = req.session?.user;
+    const stores = req.simulation?.isCommerceAdmin
+      ? await Store.find({ commerceId: user.commerceId })
+      : await Store.find();
 
-    res.render('products/new', { title: 'Nuevo producto', storeId, stores });
+    res.render('products/new', { title: 'Nuevo producto', storeId, stores, sim: req.simulation });
   } catch (error) {
     next(error);
   }
@@ -75,7 +89,7 @@ export const getProductById = async (req, res, next) => {
 export const createProduct = async (req, res, next) => {
   try {
     const newProduct = await productService.createProduct(req.body);
-    res.status(201).json({ message: 'Product created successfully', product: newProduct });
+    res.status(201).json({ message: 'Producto creado exitosamente', product: newProduct });
   } catch (error) {
     next(error);
   }
@@ -93,7 +107,7 @@ export const createProductFromView = async (req, res, next) => {
 export const updateProduct = async (req, res, next) => {
   try {
     const updatedProduct = await productService.updateProduct(req.params.id, req.body);
-    res.json({ message: 'Product updated successfully', product: updatedProduct });
+    res.json({ message: 'Producto actualizado exitosamente', product: updatedProduct });
   } catch (error) {
     next(error);
   }
@@ -111,6 +125,10 @@ export const updateProductFromView = async (req, res, next) => {
 
 export const deleteProduct = async (req, res, next) => {
   try {
+    if (!mongoose.isValidObjectId(req.params.id)) {
+      return res.status(400).json({ error: 'ID de producto inválido.' });
+    }
+
     const result = await productService.deleteProduct(req.params.id);
     res.json(result);
   } catch (error) {
@@ -120,6 +138,10 @@ export const deleteProduct = async (req, res, next) => {
 
 export const deleteProductFromView = async (req, res, next) => {
   try {
+    if (!mongoose.isValidObjectId(req.params.id)) {
+      return res.status(400).send('ID de producto inválido.');
+    }
+
     const product = await productService.getProductById(req.params.id);
     await productService.deleteProduct(req.params.id);
 

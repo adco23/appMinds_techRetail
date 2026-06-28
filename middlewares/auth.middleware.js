@@ -1,38 +1,44 @@
 import userService from '../services/user.service.js';
+import subscriptionService from '../services/subscription.service.js';
 
-const buildSessionUser = user => ({
+const buildSessionUser = (user, hasSubscription = false) => ({
   firstName: user.firstName,
   lastName: user.lastName,
   email: user.email,
   role: user.role,
   commerceId: user.commerceId || null,
+  hasSubscription,
 });
 
 export const setAuthenticatedUser = (req, user) => {
-  req.app.locals.currentUser = buildSessionUser(user);
+  req.session.user = buildSessionUser(user);
 };
 
 export const clearAuthenticatedUser = req => {
-  req.app.locals.currentUser = null;
+  req.session.destroy(err => {
+    if (err) console.error('Error al destruir sesion:', err);
+  });
 };
 
 export const loadAuthUser = async (req, res, next) => {
-  const storedUser = req.app.locals.currentUser;
-
-  req.session = { user: null };
   res.locals.currentUser = null;
 
+  const storedUser = req.session?.user;
   if (!storedUser?.email) return next();
 
   try {
     const user = await userService.findByEmail(storedUser.email);
 
     if (!user || user.status !== 'Activo') {
-      clearAuthenticatedUser(req);
+      req.session.user = null;
       return next();
     }
 
-    const sessionUser = buildSessionUser(user);
+    const hasSubscription = user.role === 'commerce-admin'
+      ? await subscriptionService.hasActiveSubscriptionForCommerce(user.commerceId)
+      : false;
+
+    const sessionUser = buildSessionUser(user, hasSubscription);
     req.session.user = sessionUser;
     res.locals.currentUser = sessionUser;
     next();
@@ -43,15 +49,11 @@ export const loadAuthUser = async (req, res, next) => {
 
 export const ensureAuthenticated = (req, res, next) => {
   if (req.session?.user) return next();
-
   const redirectTo = encodeURIComponent(req.originalUrl || '/');
   res.redirect(`/auth/login?redirect=${redirectTo}`);
 };
 
 export const ensureGuest = (req, res, next) => {
-  if (req.session?.user) {
-    return res.redirect('/');
-  }
-
+  if (req.session?.user) return res.redirect('/');
   next();
 };

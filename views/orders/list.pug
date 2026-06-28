@@ -44,7 +44,7 @@ include ./partials/_statusTag
 
   script.
     async function updateOrder(id, action) {
-      if (!confirm(`¿Esta seguro de ${action} este pedido?`)) return;
+      if (!confirm(`¿Estás seguro de ${action} este pedido?`)) return;
 
       let status = action === 'pagar' ? 1 : action === 'cancelar' ? 2 : null;
 

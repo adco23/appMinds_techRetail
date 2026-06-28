@@ -21,10 +21,10 @@ const createCommerce = async (req, res, next) => {
     const { name, cuit, email, phone, address } = req.body;
 
     const validations = [
-      { condition: !name,                          message: 'La razon social es obligatoria.' },
-      { condition: !cuit,                          message: 'El CUIT es obligatorio.' },
+      { condition: !name,                          message: 'La razón social es obligatoria.' },
+      { condition: !cuit,                          message: 'La CUIT es obligatoria.' },
       { condition: !email,                         message: 'El correo es obligatorio.' },
-      { condition: await service.existsByCuit(cuit), message: 'El CUIT ya existe.' },
+      { condition: await service.existsByCuit(cuit), message: 'La CUIT ya existe.' },
     ];
 
     if (!validate(validations, res)) return;
@@ -40,7 +40,7 @@ const createCommerce = async (req, res, next) => {
 const deleteCommerce = async (req, res, next) => {
   try {
     const { cuit } = req.params;
-    if (!cuit) return res.status(400).json({ error: 'El CUIT es obligatorio.' });
+    if (!cuit) return res.status(400).json({ error: 'La CUIT es obligatoria.' });
 
     const commerce = await service.findByCuit(cuit);
     if (!commerce) return res.status(404).json({ error: 'Comercio no encontrado.' });
@@ -58,13 +58,13 @@ const updateCommerce = async (req, res, next) => {
     const { cuit } = req.params;
     const { name, email, phone, address } = req.body;
 
-    if (!cuit) return res.status(400).json({ error: 'El CUIT es obligatorio.' });
+    if (!cuit) return res.status(400).json({ error: 'La CUIT es obligatoria.' });
 
     const commerce = await service.findByCuit(cuit);
     if (!commerce) return res.status(404).json({ error: 'Comercio no encontrado.' });
 
     const validations = [
-      { condition: !name,  message: 'La razon social es obligatoria.' },
+      { condition: !name,  message: 'La razón social es obligatoria.' },
       { condition: !email, message: 'El correo es obligatorio.' },
     ];
 
