@@ -1,5 +1,6 @@
 import productService from "../services/product.service.js";
 import Store from "../models/store.model.js";
+import mongoose from "mongoose";
 
 export const getSimQuery = req => {
   const role = req.query.role || '';
@@ -124,6 +125,10 @@ export const updateProductFromView = async (req, res, next) => {
 
 export const deleteProduct = async (req, res, next) => {
   try {
+    if (!mongoose.isValidObjectId(req.params.id)) {
+      return res.status(400).json({ error: 'ID de producto inválido.' });
+    }
+
     const result = await productService.deleteProduct(req.params.id);
     res.json(result);
   } catch (error) {
@@ -133,6 +138,10 @@ export const deleteProduct = async (req, res, next) => {
 
 export const deleteProductFromView = async (req, res, next) => {
   try {
+    if (!mongoose.isValidObjectId(req.params.id)) {
+      return res.status(400).send('ID de producto inválido.');
+    }
+
     const product = await productService.getProductById(req.params.id);
     await productService.deleteProduct(req.params.id);
 

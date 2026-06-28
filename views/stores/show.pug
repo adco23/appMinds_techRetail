@@ -60,9 +60,9 @@ block content
                   |  #{product.status}
 
             footer.card-footer
-              a.card-footer-item(href=`/products/view/${product.id}${sim.query}`) Ver
-              a.card-footer-item(href=`/products/edit/${product.id}${sim.query}`) Editar
-              form(method="POST", action=`/products/delete/${product.id}${sim.query}`, style="width:100%;")
+              a.card-footer-item(href=`/products/view/${product._id}${sim.query}`) Ver
+              a.card-footer-item(href=`/products/edit/${product._id}${sim.query}`) Editar
+              form(method="POST", action=`/products/delete/${product._id}${sim.query}`, style="width:100%;")
                 button.card-footer-item(type="submit", style="width:100%; border:none; background:none; cursor:pointer;", onclick="return confirm('Eliminar este producto?')") Eliminar
   else
     article.message.is-warning
