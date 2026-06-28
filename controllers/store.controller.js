@@ -91,7 +91,7 @@ export const getStoreById = async (req, res, next) => {
 export const createStore = async (req, res, next) => {
   try {
     const newStore = await storeService.createStore(req.body);
-    res.status(201).json({ message: 'Store created successfully', store: newStore });
+    res.status(201).json({ message: 'Tienda creada exitosamente', store: newStore });
   } catch (error) {
     next(error);
   }
@@ -117,7 +117,7 @@ export const createStoreFromView = async (req, res, next) => {
 export const updateStore = async (req, res, next) => {
   try {
     const updatedStore = await storeService.updateStore(req.params.id, req.body);
-    res.json({ message: 'Store updated successfully', store: updatedStore });
+    res.json({ message: 'Tienda actualizada exitosamente', store: updatedStore });
   } catch (error) {
     next(error);
   }

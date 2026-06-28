@@ -13,7 +13,7 @@ const createSubscription = async (req, res) => {
   try {
     const newSub = await subscriptionService.crear(req.body);
     res.status(201).json({
-      message: 'Subscription created successfully',
+      message: 'Subscripción creatda exitosamente',
       data: newSub,
     });
   } catch (error) {

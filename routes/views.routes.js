@@ -58,7 +58,7 @@ router.post('/auth/login', ensureGuest, async (req, res) => {
         title: 'Iniciar sesión',
         mode: 'login',
         redirectTo,
-        error: 'Credenciales invalidas o usuario inactivo.',
+        error: 'Credenciales inválidas o usuario inactivo.',
         formData: { email },
         sim: res.locals.sim,
       });
@@ -97,7 +97,7 @@ router.post('/auth/register', ensureGuest, async (req, res) => {
         mode: 'register',
         commerces,
         redirectTo,
-        error: 'Completa todos los campos obligatorios.',
+        error: 'Completá todos los campos obligatorios.',
         formData: req.body,
         sim: res.locals.sim,
       });
@@ -136,7 +136,7 @@ router.post('/auth/register', ensureGuest, async (req, res) => {
 
 router.post('/auth/logout', (req, res) => {
   req.session.destroy(err => {
-    if (err) console.error('Error al destruir sesion:', err);
+    if (err) console.error('Error al destruir sesión:', err);
     res.redirect('/');
   });
 });
@@ -178,7 +178,7 @@ router.post('/commerce-admin/create', ensureAuthenticated, async (req, res) => {
         title: 'Crear mi comercio',
         user,
         sim: req.simulation,
-        error: 'La razon social y el CUIT son obligatorios.',
+        error: 'La razón social y la CUIT son obligatorias.',
         formData: req.body,
       });
     }
@@ -188,7 +188,7 @@ router.post('/commerce-admin/create', ensureAuthenticated, async (req, res) => {
         title: 'Crear mi comercio',
         user,
         sim: req.simulation,
-        error: 'Ya existe un comercio con ese CUIT.',
+        error: 'Ya existe un comercio con esa CUIT.',
         formData: req.body,
       });
     }
@@ -467,7 +467,7 @@ router.post('/subscriptions/create', ensureAuthenticated, async (req, res) => {
     res.redirect('/subscriptions?role=platform-admin');
   } catch (error) {
     console.error(error);
-    res.status(500).send(`Error al crear la suscripcion: ${error.message}`);
+    res.status(500).send(`Error al crear la suscripción: ${error.message}`);
   }
 });
 

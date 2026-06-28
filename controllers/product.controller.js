@@ -88,7 +88,7 @@ export const getProductById = async (req, res, next) => {
 export const createProduct = async (req, res, next) => {
   try {
     const newProduct = await productService.createProduct(req.body);
-    res.status(201).json({ message: 'Product created successfully', product: newProduct });
+    res.status(201).json({ message: 'Producto creado exitosamente', product: newProduct });
   } catch (error) {
     next(error);
   }
@@ -106,7 +106,7 @@ export const createProductFromView = async (req, res, next) => {
 export const updateProduct = async (req, res, next) => {
   try {
     const updatedProduct = await productService.updateProduct(req.params.id, req.body);
-    res.json({ message: 'Product updated successfully', product: updatedProduct });
+    res.json({ message: 'Producto actualizado exitosamente', product: updatedProduct });
   } catch (error) {
     next(error);
   }

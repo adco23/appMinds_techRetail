@@ -27,7 +27,7 @@ export const createOrder = async (req, res) => {
       { condition: !clientId,      message: 'El ID del cliente es obligatorio.' },
       { condition: !storeId,       message: 'El ID de la tienda es obligatorio.' },
       { condition: !paymentMethod, message: 'El método de pago es obligatorio.' },
-      { condition: !detailsId && !tieneProductosValidos, message: 'Debe seleccionar al menos un producto.' },
+      { condition: !detailsId && !tieneProductosValidos, message: 'Tenés que seleccionar al menos un producto.' },
     ];
 
     if (!validate(validations, res)) return;
