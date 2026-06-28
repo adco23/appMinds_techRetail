@@ -11,11 +11,20 @@ const orderSchema = new mongoose.Schema(
     totalAmount:   { type: Decimal128, default: null },
     detailsId:     [{ type: mongoose.Schema.Types.ObjectId, ref: 'SaleDetail' }],
     date:          { type: Date,   default: Date.now },
-    status:        { type: Number, default: 0 }, // 0 = pendiente, 1 = completo, 2 = cancelado
+    status:        { type: Number, default: 0 },
     paymentId:     { type: String, default: null },
     logisticsId:   { type: String, default: null },
   },
   decimal128ToJSON
 );
+
+const autoPopulate = function() {
+  this.populate({ path: 'clientId', select: 'firstName lastName' })
+      .populate({ path: 'storeId', select: 'name' })
+      .populate({ path: 'detailsId', populate: { path: 'productoId', select: 'name' } });
+};
+
+orderSchema.pre('find', autoPopulate);
+orderSchema.pre('findOne', autoPopulate);
 
 export default mongoose.model('Order', orderSchema);

@@ -43,7 +43,9 @@ script.
               tr
                 td= item.productoId ? item.productoId.name : 'Sin producto'
                 td= item.cantidad
-                td= item.subtotal
+                - const precio = item.precioUnitario ? parseFloat(item.precioUnitario.toString()) : 0
+                - const subtotalCalculado = '$' + (item.cantidad * precio).toFixed(2)
+                td= item.subtotal || subtotalCalculado
       else
         p No disponible
 

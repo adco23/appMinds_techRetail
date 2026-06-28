@@ -17,7 +17,12 @@ const formatOrders = orders =>
   });
 
 export const getOrders = async () => {
-  return formatOrders(await Order.find());
+  return formatOrders(
+    await Order.find()
+      .populate({ path: 'clientId', select: 'firstName lastName' })
+      .populate({ path: 'storeId', select: 'name' })
+      .populate({ path: 'detailsId', populate: { path: 'productoId', select: 'name' } })
+  );
 };
 
 export const getOrdersByCommerceId = async commerceId => {
@@ -55,21 +60,30 @@ export const createOrder = async ({ clientId, storeId, paymentMethod, products }
   let totalDecimal = new Decimal(0);
 
   if (products && Array.isArray(products)) {
-    for (const item of products) {
-      if (item.productId && item.quantity) {
-        const prod = await productService.getProductById(item.productId);
+    try {
+      for (const item of products) {
+        if (item.productId && item.quantity) {
+          const prod = await productService.getProductById(item.productId);
 
-        const detail = new SaleDetail({
-          cantidad:       Number(item.quantity),
-          precioUnitario: toD128(prod.price),
-          ventaId:        savedOrder._id,
-          productoId:     new mongoose.Types.ObjectId(item.productId),
-        });
+          if (!prod || prod.stock < Number(item.quantity)) {
+            throw new Error(`Stock insuficiente para el producto: ${prod?.name || 'Desconocido'}. Disponible: ${prod?.stock || 0}`);
+          }
 
-        await detail.save();
-        detailsIds.push(detail._id);
-        totalDecimal = totalDecimal.plus(fromD128(detail.subtotal));
+          const detail = new SaleDetail({
+            cantidad:       Number(item.quantity),
+            precioUnitario: toD128(prod.price),
+            ventaId:         savedOrder._id,
+            productoId:     new mongoose.Types.ObjectId(item.productId),
+          });
+
+          await detail.save();
+          detailsIds.push(detail._id);
+          totalDecimal = totalDecimal.plus(fromD128(detail.subtotal));
+        }
       }
+    } catch (error) {
+      await Order.findByIdAndDelete(savedOrder._id);
+      throw error;
     }
   }
 
