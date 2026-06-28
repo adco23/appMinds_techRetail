@@ -348,8 +348,7 @@ router.get('/orders/new', ensureAuthenticated, commerceNeedsSubscription, async 
 });
 
 router.get('/orders/:id', ensureAuthenticated, commerceNeedsSubscription, async (req, res) => {
-  const orders = await orderService.getOrders();
-  const order = orders.find(o => o._id.toString() === req.params.id);
+  const order = await orderService.findById(req.params.id);
   res.render('orders/detail', { order, sim: req.simulation });
 });
 

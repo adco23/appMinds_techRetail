@@ -1,21 +1,24 @@
 include ./_statusTag
 
+script.
+  console.log('order', !{JSON.stringify(order)});
+
 .container
   .level.is-mobile.mb-4
     .level-left
       div
         p.heading Orden
-        p.title.is-4.mb-0 ##{order.id}
+        p.title.is-4.mb-0 ##{order._id}
     .level-right
       +orderStatusTag(order.status)
 
   .columns.is-multiline
     .column.is-half
       p.heading.mb-1 Cliente
-      p= order.clientId || 'No disponible'
+      p= order.clientId ? order.clientId.firstName + ' ' + order.clientId.lastName : 'No disponible'
     .column.is-half
       p.heading.mb-1 Tienda
-      p= order.storeId || 'No disponible'
+      p= order.storeId ? order.storeId.name : 'No disponible'
     .column.is-half
       p.heading.mb-1 Método de pago
       p= order.paymentMethod || 'No disponible'
@@ -25,9 +28,25 @@ include ./_statusTag
     .column.is-half
       p.heading.mb-1 Fecha
       p= order.date || 'No disponible'
-    .column.is-half
+    .column.is-full
       p.heading.mb-1 Detalle
-      p= order.detailsId || 'No disponible'
+
+      if order.detailsId && order.detailsId.length > 0
+        table.table.is-striped.is-fullwidth
+          thead
+            tr
+              th Producto
+              th Cantidad
+              th Subtotal
+          tbody
+            for item in order.detailsId
+              tr
+                td= item.productoId ? item.productoId.name : 'Sin producto'
+                td= item.cantidad
+                td= item.subtotal
+      else
+        p No disponible
+
     .column.is-half
       p.heading.mb-1 Pago
       p= order.paymentId || 'Sin asignar'

@@ -27,7 +27,10 @@ export const getOrdersByCommerceId = async commerceId => {
 };
 
 export const findById = async id => {
-  return await Order.findById(id);
+  return await Order.findById(id)
+    .populate({path: 'clientId', select: 'firstName lastName'})
+    .populate({path: 'storeId', select: 'name'})
+    .populate({ path: 'detailsId', populate: { path: 'productoId', select: 'name' } });
 };
 
 export const exists = async id => {
