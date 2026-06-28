@@ -54,6 +54,11 @@ export const createOrder = async (req, res) => {
 
   } catch (error) {
     console.error("Error en createOrder:", error);
+
+    if (error.message.includes('Stock insuficiente')) {
+      return res.status(400).json({ error: error.message });
+    }
+
     return res.status(500).json({ error: 'Ocurrió un error interno en el servidor.' });
   }
 };

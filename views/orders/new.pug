@@ -4,7 +4,7 @@ block content
   h1.title Nueva Orden
 
   .box
-    form(action=`/orders/create${sim.query}` method="POST")
+    form(action=`/orders/create${sim.query}` method="POST" id="orderForm")
 
       .field
         label.label Cliente
@@ -24,7 +24,6 @@ block content
               each store in stores
                 option(value=`${store._id}`)= store.name
 
-      //- Sección Dinámica Multiproducto (Dentro del Formulario)
       label.label Productos de la Orden
       div#productos-container.mb-4
         .producto-fila.box.is-light.mb-2(style="padding: 15px;")
@@ -39,7 +38,7 @@ block content
                     else
                       option(value="") Seleccioná un producto
                       each product in products
-                        option(value=`${product._id}`)= `${product.name} - $${product.price}`
+                        option(value=`${product._id}` data-stock=product.stock)= `${product.name} - $${product.price} (Stock: ${product.stock})`
             .column.is-4
               .field
                 label.label Cantidad
@@ -67,7 +66,6 @@ block content
   script.
     let filaContador = 1;
 
-    // 1. Al cargar la página, persistimos las selecciones de la URL
     window.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
       const storeId = urlParams.get('storeId');
@@ -81,7 +79,6 @@ block content
       }
     });
 
-    // 2. Manejo del cambio de tienda para actualizar la URL y recargar productos
     function onStoreChange() {
       const storeId = document.getElementById('storeSelect').value;
       const clientId = document.getElementById('clientSelect').value;
@@ -100,17 +97,14 @@ block content
       window.location.href = currentUrl.toString();
     }
 
-    // 3. Clonar filas incrementando dinámicamente el índice del array products
     document.getElementById('btn-agregar-producto').addEventListener('click', () => {
       const container = document.getElementById('productos-container');
       const primeraFila = container.querySelector('.producto-fila');
       const nuevaFila = primeraFila.cloneNode(true);
 
-      // Reseteamos los valores en la fila nueva
       nuevaFila.querySelector('.product-select').value = "";
       nuevaFila.querySelector('.product-quantity').value = "1";
 
-      // Asignamos los nuevos nombres indexados para que el Backend mapee el Array a la perfección
       nuevaFila.querySelector('.product-select').setAttribute('name', `products[${filaContador}][productId]`);
       nuevaFila.querySelector('.product-quantity').setAttribute('name', `products[${filaContador}][quantity]`);
 
@@ -118,7 +112,6 @@ block content
       filaContador++;
     });
 
-    // 4. Eliminar filas asegurando que quede al menos una
     function eliminarFila(boton) {
       const container = document.getElementById('productos-container');
       if (container.querySelectorAll('.producto-fila').length > 1) {
@@ -127,3 +120,34 @@ block content
         alert("La orden debe contener al menos un producto.");
       }
     }
+
+    document.getElementById('orderForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const form = e.target;
+      const formData = new URLSearchParams(new FormData(form));
+
+      try {
+        const response = await fetch(form.action, {
+          method: form.method,
+          body: formData,
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        });
+
+        if (response.ok) {
+          if (response.redirected) {
+            window.location.href = response.url;
+          } else {
+            window.location.href = `/orders${window.location.search}`;
+          }
+        } else {
+          const result = await response.json();
+          alert(result.error || 'Ocurrió un error al procesar la orden.');
+        }
+      } catch (error) {
+        console.error(error);
+        alert('Error de conexión con el servidor.');
+      }
+    });

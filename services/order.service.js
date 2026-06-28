@@ -16,27 +16,13 @@ const formatOrders = orders =>
     return obj;
   });
 
-export const getOrders = async (req, res, next) => {
-  try {
-    const { id } = req.query;
-    if (id) {
-      const order = await service.findById(id);
-      if (!order) return res.status(404).json({ error: 'Orden no encontrada.' });
-
-      const formatted = service.getOrdersByCommerceId ? [order].map(o => {
-        const obj = o.toJSON();
-        const d = new Date(obj.date);
-        obj.date = `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
-        obj.totalAmount = '$' + (obj.totalAmount ? parseFloat(obj.totalAmount).toFixed(2) : '0.00');
-        return obj;
-      }) : [order];
-
-      return res.json(formatted[0]);
-    }
-    res.json(await service.getOrders());
-  } catch (error) {
-    next(error);
-  }
+export const getOrders = async () => {
+  return formatOrders(
+    await Order.find()
+      .populate({ path: 'clientId', select: 'firstName lastName' })
+      .populate({ path: 'storeId', select: 'name' })
+      .populate({ path: 'detailsId', populate: { path: 'productoId', select: 'name' } })
+  );
 };
 
 export const getOrdersByCommerceId = async commerceId => {
@@ -74,21 +60,30 @@ export const createOrder = async ({ clientId, storeId, paymentMethod, products }
   let totalDecimal = new Decimal(0);
 
   if (products && Array.isArray(products)) {
-    for (const item of products) {
-      if (item.productId && item.quantity) {
-        const prod = await productService.getProductById(item.productId);
+    try {
+      for (const item of products) {
+        if (item.productId && item.quantity) {
+          const prod = await productService.getProductById(item.productId);
 
-        const detail = new SaleDetail({
-          cantidad:       Number(item.quantity),
-          precioUnitario: toD128(prod.price),
-          ventaId:        savedOrder._id,
-          productoId:     new mongoose.Types.ObjectId(item.productId),
-        });
+          if (!prod || prod.stock < Number(item.quantity)) {
+            throw new Error(`Stock insuficiente para el producto: ${prod?.name || 'Desconocido'}. Disponible: ${prod?.stock || 0}`);
+          }
 
-        await detail.save();
-        detailsIds.push(detail._id);
-        totalDecimal = totalDecimal.plus(fromD128(detail.subtotal));
+          const detail = new SaleDetail({
+            cantidad:       Number(item.quantity),
+            precioUnitario: toD128(prod.price),
+            ventaId:         savedOrder._id,
+            productoId:     new mongoose.Types.ObjectId(item.productId),
+          });
+
+          await detail.save();
+          detailsIds.push(detail._id);
+          totalDecimal = totalDecimal.plus(fromD128(detail.subtotal));
+        }
       }
+    } catch (error) {
+      await Order.findByIdAndDelete(savedOrder._id);
+      throw error;
     }
   }
 
