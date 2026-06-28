@@ -16,26 +16,24 @@ const formatOrders = orders =>
     return obj;
   });
 
+const populateOrderDetails = query =>
+  query
+    .populate({ path: 'clientId', select: 'firstName lastName' })
+    .populate({ path: 'storeId', select: 'name' })
+    .populate({ path: 'detailsId', populate: { path: 'productoId', select: 'name' } });
+
 export const getOrders = async () => {
-  return formatOrders(
-    await Order.find()
-      .populate({ path: 'clientId', select: 'firstName lastName' })
-      .populate({ path: 'storeId', select: 'name' })
-      .populate({ path: 'detailsId', populate: { path: 'productoId', select: 'name' } })
-  );
+  return formatOrders(await populateOrderDetails(Order.find()));
 };
 
 export const getOrdersByCommerceId = async commerceId => {
   const stores = await Store.find({ commerceId }).select('_id');
   const storeIds = stores.map(s => s._id);
-  return formatOrders(await Order.find({ storeId: { $in: storeIds } }));
+  return formatOrders(await populateOrderDetails(Order.find({ storeId: { $in: storeIds } })));
 };
 
 export const findById = async id => {
-  return await Order.findById(id)
-    .populate({path: 'clientId', select: 'firstName lastName'})
-    .populate({path: 'storeId', select: 'name'})
-    .populate({ path: 'detailsId', populate: { path: 'productoId', select: 'name' } });
+  return await populateOrderDetails(Order.findById(id));
 };
 
 export const exists = async id => {

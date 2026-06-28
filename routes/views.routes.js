@@ -14,6 +14,7 @@ import {
 } from '../middlewares/auth.middleware.js';
 import * as planService from '../services/plan.service.js';
 import { createOrder } from '../controllers/order.controller.js';
+import productViewRoutes from './product.views.routes.js';
 
 const router = Router();
 
@@ -363,6 +364,8 @@ router.post('/orders/create', ensureAuthenticated, commerceNeedsSubscription, as
 router.get('/stores', ensureAuthenticated, commerceNeedsSubscription, (req, res) => {
   res.render('stores/index', { sim: req.simulation });
 });
+
+router.use('/products', productViewRoutes);
 
 router.get('/users', ensureAuthenticated, onlyPlatformAdmin, async (req, res) => {
   const users = await userService.getUsers();
