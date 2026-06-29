@@ -1,5 +1,7 @@
 # App Minds - Tech Retail Solutions SRL
 
+### Despliegue en [`https://appminds-techretail.onrender.com/`](https://appminds-techretail.onrender.com/)
+
 ## Descripción
 
 Sistema backend para una plataforma de e-commerce autogestionada, que permite a comercios crear sus propias tiendas online integrando servicios de pagos y logística mediante un modelo de suscripción mensual más comisión por transacción.
@@ -11,7 +13,7 @@ Esta tercera entrega incorpora autenticación con sesiones, autorización basada
 ## Tecnologías utilizadas
 
 - **Node.js** — Entorno de ejecución del servidor
-- **Express.js v5** — Framework para el manejo de rutas, middlewares y controladores
+- **Express.js** — Framework para el manejo de rutas, middlewares y controladores
 - **MongoDB Atlas** — Base de datos NoSQL en la nube
 - **Mongoose** — ODM para modelado de datos, validaciones y consultas a MongoDB
 - **bcrypt** — Hash seguro de contraseñas
@@ -20,7 +22,6 @@ Esta tercera entrega incorpora autenticación con sesiones, autorización basada
 - **decimal.js** — Aritmética de precisión para montos monetarios
 - **morgan** — Logger de peticiones HTTP
 - **dotenv** — Gestión de variables de entorno
-- **cors** — Habilitación de CORS
 - **Nodemon** — Recarga automática del servidor en desarrollo
 - **Prettier** — Formateo de código
 - **ES Modules (import/export)** — Sintaxis moderna unificada en todo el proyecto
@@ -88,7 +89,6 @@ Esta tercera entrega incorpora autenticación con sesiones, autorización basada
 │   ├── subscriptions/
 │   ├── transactions/
 │   └── users/
-├── data/                # JSON de seed para desarrollo
 ├── .env                 # Variables de entorno (no incluido en el repositorio)
 ├── .env.example         # Plantilla de variables de entorno
 ├── app.js               # Configuración de Express
